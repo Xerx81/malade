@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feuille de Surveillance de la Grossesse</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #e8f5e9;
+            --secondary-color: #c8e6c9;
+            --border-color: #81c784;
+            --text-color: #2e7d32;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --hover-color: #a5d6a7;
+        }
+
+        body {
+            font-family: "Raleway", sans-serif;
+            background-color: var(--primary-color);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--secondary-color), #a5d6a7);
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            transition: transform 0.3s ease;
+        }
+
+        header:hover {
+            transform: translateY(-2px);
+        }
+
+        section {
+            background-color: white;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            transition: all 0.3s ease;
+        }
+
+        section:hover {
+            box-shadow: 0 6px 12px var(--shadow-color);
+            transform: translateY(-2px);
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            color: var(--text-color);
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+        }
+
+        h4 {
+            font-size: 1.2rem;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        input[type="date"],
+        input[type="number"],
+        textarea,
+        select {
+            padding: 10px 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            margin: 8px 0;
+            width: 200px;
+            font-family: "Raleway", sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--text-color);
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        th {
+            background: linear-gradient(135deg, var(--secondary-color), #a5d6a7);
+            color: var(--text-color);
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+
+        label {
+            display: inline-flex;
+            align-items: center;
+            margin: 8px 0;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            input[type="text"],
+            input[type="tel"],
+            input[type="date"],
+            input[type="number"],
+            select {
+                width: 100%;
+            }
+
+            section {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Clinique des Drs. LARSEN Erick et Vladimir</h1>
+        <h2>Feuille de Surveillance de la Grossesse</h2>
+    </header>
+
+    <section class="bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-xl shadow-lg max-w-4xl mx-auto my-10">
+  <h3 class="text-3xl font-bold mb-8 text-center text-indigo-700">Informations personnelles</h3>
+  <form class="grid grid-cols-1 md:grid-cols-2 gap-6 mx-auto max-w-3xl">
+    <div class="group">
+      <label for="full_name" class="block text-sm font-medium text-gray-700 mb-1 group-hover:text-indigo-600 transition-colors">Nom et Prénom</label>
+      <input type="text" id="full_name" name="full_name" required class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 ease-in-out hover:shadow-md" placeholder="Jean Dupont">
+    </div>
+    <div class="group">
+      <label for="address" class="block text-sm font-medium text-gray-700 mb-1 group-hover:text-indigo-600 transition-colors">Adresse</label>
+      <input type="text" id="address" name="address" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 ease-in-out hover:shadow-md" placeholder="123 Rue de la République">
+    </div>
+    <div class="group">
+      <label for="phone" class="block text-sm font-medium text-gray-700 mb-1 group-hover:text-indigo-600 transition-colors">Tél</label>
+      <input type="tel" id="phone" name="phone" pattern="\+509[0-9]{8}" placeholder="+50912345678" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 ease-in-out hover:shadow-md">
+    </div>
+    <div class="group">
+      <label for="birth_date" class="block text-sm font-medium text-gray-700 mb-1 group-hover:text-indigo-600 transition-colors">Date de Naissance</label>
+      <input type="date" id="birth_date" name="birth_date" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 ease-in-out hover:shadow-md">
+    </div>
+    <div class="group">
+      <label for="age" class="block text-sm font-medium text-gray-700 mb-1 group-hover:text-indigo-600 transition-colors">Âge</label>
+      <input type="number" id="age" name="age" min="0" max="150" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 ease-in-out hover:shadow-md">
+    </div>
+    <div class="group">
+      <label for="marital_status" class="block text-sm font-medium text-gray-700 mb-1 group-hover:text-indigo-600 transition-colors">Statut Matrimonial</label>
+      <select id="marital_status" name="marital_status" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 ease-in-out hover:shadow-md appearance-none bg-white">
+        <option value="">Sélectionner</option>
+        <option value="single">Célibataire</option>
+        <option value="married">Marié(e)</option>
+        <option value="divorced">Divorcé(e)</option>
+        <option value="widowed">Veuf/Veuve</option>
+      </select>
+    </div>
+    <div class="group">
+      <label for="occupation" class="block text-sm font-medium text-gray-700 mb-1 group-hover:text-indigo-600 transition-colors">Occupation</label>
+      <input type="text" id="occupation" name="occupation" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 ease-in-out hover:shadow-md" placeholder="Enseignant">
+    </div>
+    <div class="group">
+      <label for="office_phone" class="block text-sm font-medium text-gray-700 mb-1 group-hover:text-indigo-600 transition-colors">Tél Bur</label>
+      <input type="tel" id="office_phone" name="office_phone" pattern="\+509[0-9]{8}" placeholder="+50987654321" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 ease-in-out hover:shadow-md">
+    </div>
+    <div class="group">
+      <label for="spouse_full_name" class="block text-sm font-medium text-gray-700 mb-1 group-hover:text-indigo-600 transition-colors">Nom et Prénom du conjoint</label>
+      <input type="text" id="spouse_full_name" name="spouse_full_name" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 ease-in-out hover:shadow-md" placeholder="Marie Dupont">
+    </div>
+    <div class="group">
+      <label for="spouse_occupation" class="block text-sm font-medium text-gray-700 mb-1 group-hover:text-indigo-600 transition-colors">Occupation du conjoint</label>
+      <input type="text" id="spouse_occupation" name="spouse_occupation" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 ease-in-out hover:shadow-md" placeholder="Infirmière">
+    </div>
+    <div class="group">
+      <label for="spouse_age" class="block text-sm font-medium text-gray-700 mb-1 group-hover:text-indigo-600 transition-colors">Âge du conjoint</label>
+      <input type="number" id="spouse_age" name="spouse_age" class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 ease-in-out hover:shadow-md">
+    </div>
+  </form>
+</section>
+
+<section class="bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-xl shadow-lg max-w-4xl mx-auto my-10">
+  <header class="mb-6 text-center">
+    <h1 class="text-2xl font-bold text-gray-800">Résumé de la Grossesse</h1>
+  </header>
+  <h2 class="text-xl font-semibold mb-4 text-gray-700">Histoire Menstruelle</h2>
+  <form class="space-y-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="flex flex-col">
+        <label for="last_period" class="text-sm font-medium text-gray-600 mb-1">DDR:</label>
+        <input type="date" id="last_period" name="last_period" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div class="flex flex-col">
+        <label for="menstrual_cycle" class="text-sm font-medium text-gray-600 mb-1">Cycle:</label>
+        <input type="text" id="menstrual_cycle" name="menstrual_cycle" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+    </div>
+    <div class="grid grid-cols-3 gap-4">
+      <div class="flex flex-col">
+        <label for="gravida" class="text-sm font-medium text-gray-600 mb-1">G:</label>
+        <input type="number" id="gravida" name="gravida" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div class="flex flex-col">
+        <label for="term" class="text-sm font-medium text-gray-600 mb-1">T:</label>
+        <input type="number" id="term" name="term" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div class="flex flex-col">
+        <label for="parity" class="text-sm font-medium text-gray-600 mb-1">P:</label>
+        <input type="number" id="parity" name="parity" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="flex flex-col">
+        <label for="expected_date" class="text-sm font-medium text-gray-600 mb-1">DPA:</label>
+        <input type="date" id="expected_date" name="expected_date" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div class="flex flex-col">
+        <label for="cycle_duration" class="text-sm font-medium text-gray-600 mb-1">Durée:</label>
+        <input type="text" id="cycle_duration" name="cycle_duration" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="flex flex-col">
+        <label for="parity2" class="text-sm font-medium text-gray-600 mb-1">P:</label>
+        <input type="number" id="parity2" name="parity2" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div class="flex flex-col">
+        <label for="abortion" class="text-sm font-medium text-gray-600 mb-1">A:</label>
+        <input type="number" id="abortion" name="abortion" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div class="flex flex-col">
+        <label for="ectopic" class="text-sm font-medium text-gray-600 mb-1">E:</label>
+        <input type="number" id="ectopic" name="ectopic" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div class="flex flex-col">
+        <label for="multiple" class="text-sm font-medium text-gray-600 mb-1">Mult:</label>
+        <input type="number" id="multiple" name="multiple" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+    </div>
+  </form>
+</section>
+
+<section class="bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-xl shadow-lg max-w-4xl mx-auto my-10">
+  <h2 class="text-2xl font-bold text-gray-800 mb-6">Contraception</h2>
+  <form class="space-y-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <label for="contraception_type" class="block text-sm font-medium text-gray-700 mb-1">Type:</label>
+        <input type="text" id="contraception_type" name="contraception_type" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div>
+        <label for="type_notes" class="block text-sm font-medium text-gray-700 mb-1">Commentaire:</label>
+        <input type="text" id="type_notes" name="type_notes" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <label for="contraception_duration" class="block text-sm font-medium text-gray-700 mb-1">Durée:</label>
+        <input type="text" id="contraception_duration" name="contraception_duration" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div>
+        <label for="duration_notes" class="block text-sm font-medium text-gray-700 mb-1">Commentaire:</label>
+        <input type="text" id="duration_notes" name="duration_notes" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <label for="last_use" class="block text-sm font-medium text-gray-700 mb-1">Dernière utilisation:</label>
+        <input type="text" id="last_use" name="last_use" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div>
+        <label for="last_use_notes" class="block text-sm font-medium text-gray-700 mb-1">Commentaire:</label>
+        <input type="text" id="last_use_notes" name="last_use_notes" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+    </div>
+    <div>
+      <label for="last_use_notes2" class="block text-sm font-medium text-gray-700 mb-1">Commentaire supplémentaire:</label>
+      <input type="text" id="last_use_notes2" name="last_use_notes2" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+  </form>
+</section>
+
+<section class="bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-xl shadow-lg max-w-4xl mx-auto my-10">
+  <h2 class="text-2xl font-bold text-gray-800 mb-6">Histoire de la Grossesse</h2>
+  <form class="space-y-4">
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <div class="flex items-center space-x-2">
+        <input type="checkbox" id="bleeding" name="bleeding" class="form-checkbox h-5 w-5 text-blue-600">
+        <label for="bleeding" class="text-gray-700">Saignement</label>
+      </div>
+      <div class="flex items-center space-x-2">
+        <input type="checkbox" id="vomiting" name="vomiting" class="form-checkbox h-5 w-5 text-blue-600">
+        <label for="vomiting" class="text-gray-700">Vomissement</label>
+      </div>
+      <div class="flex items-center space-x-2">
+        <input type="checkbox" id="fever" name="fever" class="form-checkbox h-5 w-5 text-blue-600">
+        <label for="fever" class="text-gray-700">Fièvre</label>
+      </div>
+      <div class="flex items-center space-x-2">
+        <input type="checkbox" id="tobacco" name="tobacco" class="form-checkbox h-5 w-5 text-blue-600">
+        <label for="tobacco" class="text-gray-700">Tabac</label>
+      </div>
+      <div class="flex items-center space-x-2">
+        <input type="checkbox" id="alcohol" name="alcohol" class="form-checkbox h-5 w-5 text-blue-600">
+        <label for="alcohol" class="text-gray-700">Alcool</label>
+      </div>
+      <div class="flex items-center space-x-2">
+        <input type="checkbox" id="radiation" name="radiation" class="form-checkbox h-5 w-5 text-blue-600">
+        <label for="radiation" class="text-gray-700">Radiation</label>
+      </div>
+    </div>
+  </form>
+</section>
+
+      <section class="bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-xl shadow-lg max-w-4xl mx-auto my-10">
+  <header class="mb-6">
+    <h1 class="text-2xl font-bold text-gray-800">Histoire Obstétricale</h1>
+  </header>
+  <div class="overflow-x-auto">
+    <table class="w-full min-w-max table-auto text-sm">
+      <thead>
+        <tr class="bg-gray-200">
+          <th class="border-b border-gray-300 p-2">No</th>
+          <th class="border-b border-gray-300 p-2">Année</th>
+          <th class="border-b border-gray-300 p-2">Sexe</th>
+          <th class="border-b border-gray-300 p-2">Âge gest.</th>
+          <th class="border-b border-gray-300 p-2">Poids</th>
+          <th class="border-b border-gray-300 p-2">Lieu d'acc</th>
+          <th class="border-b border-gray-300 p-2">Type d'acc</th>
+          <th class="border-b border-gray-300 p-2">Remarques</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="p-2"><input type="text" name="no1" class="w-full px-2 py-1 rounded"></td>
+          <td class="p-2"><input type="text" name="year1" class="w-full px-2 py-1 rounded"></td>
+          <td class="p-2"><input type="text" name="sex1" class="w-full px-2 py-1 rounded"></td>
+          <td class="p-2"><input type="text" name="gestational_age1" class="w-full px-2 py-1 rounded"></td>
+          <td class="p-2"><input type="text" name="weight1" class="w-full px-2 py-1 rounded"></td>
+          <td class="p-2"><input type="text" name="delivery_place1" class="w-full px-2 py-1 rounded"></td>
+          <td class="p-2"><input type="text" name="delivery_type1" class="w-full px-2 py-1 rounded"></td>
+          <td class="p-2"><input type="text" name="notes1" class="w-full px-2 py-1 rounded"></td>
+        </tr>
+        <tr>
+          <td class="p-2"><input type="text" name="no2" class="w-full px-2 py-1 rounded"></td>
+          <td class="p-2"><input type="text" name="year2" class="w-full px-2 py-1 rounded"></td>
+          <td class="p-2"><input type="text" name="sex2" class="w-full px-2 py-1 rounded"></td>
+          <td class="p-2"><input type="text" name="gestational_age2" class="w-full px-2 py-1 rounded"></td>
+          <td class="p-2"><input type="text" name="weight2" class="w-full px-2 py-1 rounded"></td>
+          <td class="p-2"><input type="text" name="delivery_place2" class="w-full px-2 py-1 rounded"></td>
+          <td class="p-2"><input type="text" name="delivery_type2" class="w-full px-2 py-1 rounded"></td>
+          <td class="p-2"><input type="text" name="notes2" class="w-full px-2 py-1 rounded"></td>
+        </tr>
+        <tr>
+          <td class="p-2"><input type="text" name="no3" class="w-full px-2 py-1 rounded"></td>
+          <td class="p-2"><input type="text" name="year3" class="w-full px-2 py-1 rounded"></td>
+          <td class="p-2"><input type="text" name="sex3" class="w-full px-2 py-1 rounded"></td>
+          <td class="p-2"><input type="text" name="gestational_age3" class="w-full px-2 py-1 rounded"></td>
+          <td class="p-2"><input type="text" name="weight3" class="w-full px-2 py-1 rounded"></td>
+          <td class="p-2"><input type="text" name="delivery_place3" class="w-full px-2 py-1 rounded"></td>
+          <td class="p-2"><input type="text" name="delivery_type3" class="w-full px-2 py-1 rounded"></td>
+          <td class="p-2"><input type="text" name="notes3" class="w-full px-2 py-1 rounded"></td>
+        </tr>
+        <tr>
+          <td class="p-2"><input type="text" name="no4" class="w-full px-2 py-1 rounded"></td>
+          <td class="p-2"><input type="text" name="year4" class="w-full px-2 py-1 rounded"></td>
+          <td class="p-2"><input type="text" name="sex4" class="w-full px-2 py-1 rounded"></td>
+          <td class="p-2"><input type="text" name="gestational_age4" class="w-full px-2 py-1 rounded"></td>
+          <td class="p-2"><input type="text" name="weight4" class="w-full px-2 py-1 rounded"></td>
+          <td class="p-2"><input type="text" name="delivery_place4" class="w-full px-2 py-1 rounded"></td>
+          <td class="p-2"><input type="text" name="delivery_type4" class="w-full px-2 py-1 rounded"></td>
+          <td class="p-2"><input type="text" name="notes4" class="w-full px-2 py-1 rounded"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+      <section class="bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-xl shadow-lg max-w-4xl mx-auto my-10">
+        <header>
+            <h1>Histoire médicale</h1>
+        </header>
+        <h4>Antécédents Médicaux</h4>
+        <form>
+            <label><input type="checkbox" name="kidney_disease"> Maladies rénales</label><br>
+            <label><input type="checkbox" name="heart_problems"> Problèmes cardiaques</label><br>
+            <label><input type="checkbox" name="high_blood_pressure"> Hypertension artérielle</label><br>
+            <label><input type="checkbox" name="diabetes"> Diabète</label><br>
+            <label><input type="checkbox" name="infection"> Infection</label><br>
+            <label><input type="checkbox" name="thyroid_disease"> Maladie de la Thyroïde</label><br>
+            <label><input type="checkbox" name="blood_transfusion"> Transfusion</label><br>
+            <label><input type="checkbox" name="surgery"> Chirurgie</label><br>
+            <label><input type="checkbox" name="herpes"> Herpès</label><br>
+            <label for="medical_notes">Infos supplémentaires:</label><br>
+            <textarea id="medical_notes" name="medical_notes" rows="4" cols="50"></textarea><br><br>
+
+        </form>
+        <h4>Antécédents Hérédo-Collatéraux</h4>
+        <form>
+            <label><input type="checkbox" name="family_history_high_blood_pressure"> Hypertension</label><br>
+            <label><input type="checkbox" name="family_history_diabetes"> Diabète</label><br>
+            <label><input type="checkbox" name="family_history_heart_disease"> Maladie cardiaque</label><br>
+            <label><input type="checkbox" name="twins"> Gémellaire</label><br>
+            <label><input type="checkbox" name="birth_defects"> Malformation</label><br>
+            <label><input type="checkbox" name="genetic_disease"> Maladie génétique</label><br>
+            <label><input type="checkbox" name="customdisease1"> <input type="text" name="customdisease1_description"
+                    placeholder="Description"></label><br>
+            <label><input type="checkbox" name="customdisease2"> <input type="text" name="customdisease2_description"
+                    placeholder="Description"></label><br>
+            <label><input type="checkbox" name="customdisease3"> <input type="text" name="customdisease3_description"
+                    placeholder="Description"></label><br>
+
+
+        </form>
+    </section>
+
+      <section class="bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-xl shadow-lg max-w-4xl mx-auto my-10">
+        <h3>Conseils Nutritionnels</h3>
+        <form>
+            <label><input type="checkbox" name="dairy_products"> Produits laitiers</label><br>
+            <label><input type="checkbox" name="bread_cereals"> Pain et céréales</label><br>
+            <label><input type="checkbox" name="fruits_vegetables"> Fruits et légumes</label><br>
+            <label><input type="checkbox" name="protein_sources"> Sources protéiniques</label><br>
+            <label><input type="checkbox" name="nutritioncustom"> <input type="text" name="nutritioncustom_description"
+                    placeholder="Description"></label><br>
+            <label><input type="checkbox" name="nutritioncustom1"> <input type="text"
+                    name="nutritioncustom1_description" placeholder="Description"></label><br>
+        </form>
+        <h3>Sujets de Counseling</h3>
+        <form>
+            <label><input type="checkbox" name="smoking"> Tabagisme</label><br>
+            <label><input type="checkbox" name="alcoholism"> Alcoolisme</label><br>
+            <label><input type="checkbox" name="drug_use"> Les stupéfiants</label><br>
+            <label><input type="checkbox" name="medication"> Les médicaments</label><br>
+            <label><input type="checkbox" name="work"> Travail</label><br>
+            <label><input type="checkbox" name="exercise"> Exercice</label><br>
+            <label><input type="checkbox" name="sexual_activity"> Rapport sexuel</label><br>
+            <label><input type="checkbox" name="pregnancy_complications"> Complications de la grossesse</label><br>
+            <label><input type="checkbox" name="dental_care"> Soins dentaires</label><br>
+            <label><input type="checkbox" name="breastfeeding"> Allaitement maternel</label><br>
+            <label><input type="checkbox" name="prenatal_class"> Classe prénatale</label><br>
+            <label><input type="checkbox" name="conseiling"> <input type="text" name="conseiling"
+                    placeholder=""></label><br>
+        </form>
+    </section>
+    <header>
+        <h1>Examen Physique Initial</h1>
+    </header>
+
+      <section class="bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-xl shadow-lg max-w-4xl mx-auto my-10">
+        <h2>Examen Physique</h2>
+        <form>
+            <div>
+                <label for="weight">Poids (lbs):</label>
+                <input type="number" step="0.1" min="44" max="440" id="weight" name="weight" required><br><br>
+
+                <label for="head_neck">Tête, cou, thyroïde:</label>
+                <input type="text" id="head_neck" name="head_neck"><br><br>
+
+                <label for="teeth">Dents:</label>
+                <input type="text" id="teeth" name="teeth"><br><br>
+
+                <label for="chest">Thorax:</label>
+                <input type="text" id="chest" name="chest"><br><br>
+
+                <label for="breasts">Seins:</label>
+                <input type="text" id="breasts" name="breasts"><br><br>
+
+                <label for="cardiovascular">Système Cardio-Vasc.:</label>
+                <input type="text" id="cardiovascular" name="cardiovascular"><br><br>
+
+                <label for="abdomen">Abdomen:</label>
+                <input type="text" id="abdomen" name="abdomen"><br><br>
+
+                <label for="pelvis">Bassin:</label>
+                <input type="text" id="pelvis" name="pelvis"><br><br>
+            </div>
+
+            <div>
+                <label for="height">Taille (cm):</label>
+                <input type="number" step="0.1" min="100" max="250" id="height" name="height" required><br><br>
+
+                <label for="vulva">Vulve:</label>
+                <input type="text" id="vulva" name="vulva"><br><br>
+
+                <label for="vagina">Vagin:</label>
+                <input type="text" id="vagina" name="vagina"><br><br>
+
+                <label for="cervix">Col:</label>
+                <input type="text" id="cervix" name="cervix"><br><br>
+
+                <label for="uterus">Utérus:</label>
+                <input type="text" id="uterus" name="uterus"><br><br>
+
+                <label for="anus">Anus:</label>
+                <input type="text" id="anus" name="anus"><br><br>
+
+                <label for="varicose">Varicosités:</label>
+                <input type="text" id="varicose" name="varicose"><br><br>
+            </div>
+
+            <div>
+                <h3>Observations</h3>
+                <textarea id="physical_observations" name="physical_observations" rows="5"
+                    style="width: 100%;"></textarea><br><br>
+
+                <h3>Risques identifiés: Allergie - Médication</h3>
+                <input type="text" id="allergies_medication" name="allergies_medication"><br><br>
+            </div>
+        </form>
+    </section>
+
+      <section class="bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-xl shadow-lg max-w-4xl mx-auto my-10">
+
+        <form>
+            <label for="immunization">Immunisation:</label>
+            <input type="text" id="immunization" name="immunization"><br>
+            <label for="rubella">Sérologie Rubéole:</label>
+            <input type="text" id="rubella" name="rubella"><br><br>
+
+            <label for="toxoplasmosis">Sérologie Toxoplasmique:</label>
+            <input type="text" id="toxoplasmosis" name="toxoplasmosis"><br><br>
+
+            <label for="hbs_ag">HBs Ag:</label>
+            <input type="text" id="hbs_ag" name="hbs_ag"><br><br>
+
+            <label for="syphilis">Syphillis:</label>
+            <input type="text" id="syphilis" name="syphilis"><br><br>
+
+            <label for="hemoglobin">Hb:</label>
+            <input type="text" id="hemoglobin" name="hemoglobin"><br><br>
+
+            <label for="blood_group">GS:</label>
+            <select id="blood_group" name="blood_group">
+                <option value="">Sélectionner</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+            </select><br><br>
+
+            <label for="hiv">HIV:</label>
+            <input type="text" id="hiv" name="hiv"><br><br>
+
+            <label for="notes">Remarque:</label>
+            <textarea id="notes" name="notes" rows="3" style="width: 100%;"></textarea><br><br>
+        </form>
+    </section>
+
+      <section class="bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-xl shadow-lg max-w-4xl mx-auto my-10">
+        <header>
+            <h1>Visites Subséquentes</h1>
+        </header>
+        <div class="overflow-x-scroll">
+            <table>
+                <tr>
+                    <th>Date</th>
+                    <th>Poids</th>
+                    <th>Âge gestationnel</th>
+                    <th>HU</th>
+                    <th>Pres/Post</th>
+                    <th>BDCF</th>
+                    <th>TA</th>
+                    <th>Urine Pr/Glu</th>
+                    <th>Risque</th>
+                    <th>Commentaire Lab/Med</th>
+                </tr>
+                <tr>
+                    <td><input type="date" name="visit_date1" required></td>
+                    <td><input type="number" step="0.1" min="44" max="440" name="visit_weight1" placeholder="lbs"></td>
+                    <td><input type="number" min="0" max="45" name="gestational_age1" placeholder="semaines"></td>
+                    <td><input type="number" step="0.1" min="0" max="50" name="fundal_height1" placeholder="cm"></td>
+                    <td><input type="text" name="presentation1"></td>
+                    <td><input type="number" min="60" max="200" name="fetal_heart_rate1" placeholder="bpm"></td>
+                    <td><input type="text" name="blood_pressure1" pattern="\d{2,3}\/\d{2,3}" placeholder="120/80"></td>
+                    <td><input type="text" name="urine_test1"></td>
+                    <td><input type="text" name="risk1"></td>
+                    <td><textarea name="visit_notes1" rows="3" style="width: 100%;"></textarea></td>
+                </tr>
+                <tr>
+                    <td><input type="date" name="visit_date2"></td>
+                    <td><input type="number" step="0.1" min="44" max="440" name="visit_weight2" placeholder="lbs"></td>
+                    <td><input type="number" min="0" max="45" name="gestational_age2" placeholder="semaines"></td>
+                    <td><input type="number" step="0.1" min="0" max="50" name="fundal_height2" placeholder="cm"></td>
+                    <td><input type="text" name="presentation2"></td>
+                    <td><input type="number" min="60" max="200" name="fetal_heart_rate2" placeholder="bpm"></td>
+                    <td><input type="text" name="blood_pressure2" pattern="\d{2,3}\/\d{2,3}" placeholder="120/80"></td>
+                    <td><input type="text" name="urine_test2"></td>
+                    <td><input type="text" name="risk2"></td>
+                    <td><textarea name="visit_notes2" rows="3" style="width: 100%;"></textarea></td>
+                </tr>
+                <tr>
+                    <td><input type="date" name="visit_date3"></td>
+                    <td><input type="number" step="0.1" min="44" max="440" name="visit_weight3" placeholder="lbs"></td>
+                    <td><input type="number" min="0" max="45" name="gestational_age3" placeholder="semaines"></td>
+                    <td><input type="number" step="0.1" min="0" max="50" name="fundal_height3" placeholder="cm"></td>
+                    <td><input type="text" name="presentation3"></td>
+                    <td><input type="number" min="60" max="200" name="fetal_heart_rate3" placeholder="bpm"></td>
+                    <td><input type="text" name="blood_pressure3" pattern="\d{2,3}\/\d{2,3}" placeholder="120/80"></td>
+                    <td><input type="text" name="urine_test3"></td>
+                    <td><input type="text" name="risk3"></td>
+                    <td><textarea name="visit_notes3" rows="3" style="width: 100%;"></textarea></td>
+                </tr>
+                <tr>
+                    <td><input type="date" name="visit_date4"></td>
+                    <td><input type="number" step="0.1" min="44" max="440" name="visit_weight4" placeholder="lbs"></td>
+                    <td><input type="number" min="0" max="45" name="gestational_age4" placeholder="semaines"></td>
+                    <td><input type="number" step="0.1" min="0" max="50" name="fundal_height4" placeholder="cm"></td>
+                    <td><input type="text" name="presentation4"></td>
+                    <td><input type="number" min="60" max="200" name="fetal_heart_rate4" placeholder="bpm"></td>
+                    <td><input type="text" name="blood_pressure4" pattern="\d{2,3}\/\d{2,3}" placeholder="120/80"></td>
+                    <td><input type="text" name="urine_test4"></td>
+                    <td><input type="text" name="risk4"></td>
+                    <td><textarea name="visit_notes4" rows="3" style="width: 100%;"></textarea></td>
+                </tr>
+                <tr>
+                    <td><input type="date" name="visit_date5"></td>
+                    <td><input type="number" step="0.1" min="44" max="440" name="visit_weight5" placeholder="lbs"></td>
+                    <td><input type="number" min="0" max="45" name="gestational_age5" placeholder="semaines"></td>
+                    <td><input type="number" step="0.1" min="0" max="50" name="fundal_height5" placeholder="cm"></td>
+                    <td><input type="text" name="presentation5"></td>
+                    <td><input type="number" min="60" max="200" name="fetal_heart_rate5" placeholder="bpm"></td>
+                    <td><input type="text" name="blood_pressure5" pattern="\d{2,3}\/\d{2,3}" placeholder="120/80"></td>
+                    <td><input type="text" name="urine_test5"></td>
+                    <td><input type="text" name="risk5"></td>
+                    <td><textarea name="visit_notes5" rows="3" style="width: 100%;"></textarea></td>
+                </tr>
+                <tr>
+                    <td><input type="date" name="visit_date6"></td>
+                    <td><input type="number" step="0.1" min="44" max="440" name="visit_weight6" placeholder="lbs"></td>
+                    <td><input type="number" min="0" max="45" name="gestational_age6" placeholder="semaines"></td>
+                    <td><input type="number" step="0.1" min="0" max="50" name="fundal_height6" placeholder="cm"></td>
+                    <td><input type="text" name="presentation6"></td>
+                    <td><input type="number" min="60" max="200" name="fetal_heart_rate6" placeholder="bpm"></td>
+                    <td><input type="text" name="blood_pressure6" pattern="\d{2,3}\/\d{2,3}" placeholder="120/80"></td>
+                    <td><input type="text" name="urine_test6"></td>
+                    <td><input type="text" name="risk6"></td>
+                    <td><textarea name="visit_notes6" rows="3" style="width: 100%;"></textarea></td>
+                </tr>
+                <tr>
+                    <td><input type="date" name="visit_date7"></td>
+                    <td><input type="number" step="0.1" min="44" max="440" name="visit_weight7" placeholder="lbs"></td>
+                    <td><input type="number" min="0" max="45" name="gestational_age7" placeholder="semaines"></td>
+                    <td><input type="number" step="0.1" min="0" max="50" name="fundal_height7" placeholder="cm"></td>
+                    <td><input type="text" name="presentation7"></td>
+                    <td><input type="number" min="60" max="200" name="fetal_heart_rate7" placeholder="bpm"></td>
+                    <td><input type="text" name="blood_pressure7" pattern="\d{2,3}\/\d{2,3}" placeholder="120/80"></td>
+                    <td><input type="text" name="urine_test7"></td>
+                    <td><input type="text" name="risk7"></td>
+                    <td><textarea name="visit_notes7" rows="3" style="width: 100%;"></textarea></td>
+                </tr>
+                <tr>
+                    <td><input type="date" name="visit_date8"></td>
+                    <td><input type="number" step="0.1" min="44" max="440" name="visit_weight8" placeholder="lbs"></td>
+                    <td><input type="number" min="0" max="45" name="gestational_age8" placeholder="semaines"></td>
+                    <td><input type="number" step="0.1" min="0" max="50" name="fundal_height8" placeholder="cm"></td>
+                    <td><input type="text" name="presentation8"></td>
+                    <td><input type="number" min="60" max="200" name="fetal_heart_rate8" placeholder="bpm"></td>
+                    <td><input type="text" name="blood_pressure8" pattern="\d{2,3}\/\d{2,3}" placeholder="120/80"></td>
+                    <td><input type="text" name="urine_test8"></td>
+                    <td><input type="text" name="risk8"></td>
+                    <td><textarea name="visit_notes8" rows="3" style="width: 100%;"></textarea></td>
+                </tr>
+                <tr>
+                    <td><input type="date" name="visit_date9"></td>
+                    <td><input type="number" step="0.1" min="44" max="440" name="visit_weight9" placeholder="lbs"></td>
+                    <td><input type="number" min="0" max="45" name="gestational_age9" placeholder="semaines"></td>
+                    <td><input type="number" step="0.1" min="0" max="50" name="fundal_height9" placeholder="cm"></td>
+                    <td><input type="text" name="presentation9"></td>
+                    <td><input type="number" min="60" max="200" name="fetal_heart_rate9" placeholder="bpm"></td>
+                    <td><input type="text" name="blood_pressure9" pattern="\d{2,3}\/\d{2,3}" placeholder="120/80"></td>
+                    <td><input type="text" name="urine_test9"></td>
+                    <td><input type="text" name="risk9"></td>
+                    <td><textarea name="visit_notes9" rows="3" style="width: 100%;"></textarea></td>
+                </tr>
+                <tr>
+                    <td><input type="date" name="visit_date10"></td>
+                    <td><input type="number" step="0.1" min="44" max="440" name="visit_weight10" placeholder="lbs"></td>
+                    <td><input type="number" min="0" max="45" name="gestational_age10" placeholder="semaines"></td>
+                    <td><input type="number" step="0.1" min="0" max="50" name="fundal_height10" placeholder="cm"></td>
+                    <td><input type="text" name="presentation10"></td>
+                    <td><input type="number" min="60" max="200" name="fetal_heart_rate10" placeholder="bpm"></td>
+                    <td><input type="text" name="blood_pressure10" pattern="\d{2,3}\/\d{2,3}" placeholder="120/80"></td>
+                    <td><input type="text" name="urine_test10"></td>
+                    <td><input type="text" name="risk10"></td>
+                    <td><textarea name="visit_notes10" rows="3" style="width: 100%;"></textarea></td>
+                </tr>
+                <tr>
+                    <td><input type="date" name="visit_date11"></td>
+                    <td><input type="number" step="0.1" min="44" max="440" name="visit_weight11" placeholder="lbs"></td>
+                    <td><input type="number" min="0" max="45" name="gestational_age11" placeholder="semaines"></td>
+                    <td><input type="number" step="0.1" min="0" max="50" name="fundal_height11" placeholder="cm"></td>
+                    <td><input type="text" name="presentation11"></td>
+                    <td><input type="number" min="60" max="200" name="fetal_heart_rate11" placeholder="bpm"></td>
+                    <td><input type="text" name="blood_pressure11" pattern="\d{2,3}\/\d{2,3}" placeholder="120/80"></td>
+                    <td><input type="text" name="urine_test11"></td>
+                    <td><input type="text" name="risk11"></td>
+                    <td><textarea name="visit_notes11" rows="3" style="width: 100%;"></textarea></td>
+                </tr>
+                <tr>
+                    <td><input type="date" name="visit_date12"></td>
+                    <td><input type="number" step="0.1" min="44" max="440" name="visit_weight12" placeholder="lbs"></td>
+                    <td><input type="number" min="0" max="45" name="gestational_age12" placeholder="semaines"></td>
+                    <td><input type="number" step="0.1" min="0" max="50" name="fundal_height12" placeholder="cm"></td>
+                    <td><input type="text" name="presentation12"></td>
+                    <td><input type="number" min="60" max="200" name="fetal_heart_rate12" placeholder="bpm"></td>
+                    <td><input type="text" name="blood_pressure12" pattern="\d{2,3}\/\d{2,3}" placeholder="120/80"></td>
+                    <td><input type="text" name="urine_test12"></td>
+                    <td><input type="text" name="risk12"></td>
+                    <td><textarea name="visit_notes12" rows="3" style="width: 100%;"></textarea></td>
+                </tr>
+            </table>
+        </div>
+    </section>
+    <label for="delivery_place">Acc:</label>
+    <input type="text" id="delivery_place" name="delivery_place"><br><br>
+      <section class="bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-xl shadow-lg max-w-4xl mx-auto my-10">
+        <h2>Examen Post-Natal</h2>
+        <form>
+            <h3>Mère</h3>
+            <label for="delivery_date">Date d'accouchement:</label>
+            <input type="date" id="delivery_date" name="delivery_date"><br><br>
+
+            <label for="mother_weight">Poids:</label>
+            <input type="text" id="mother_weight" name="mother_weight"><br><br>
+
+            <label for="mother_bp">TA:</label>
+            <input type="text" id="mother_bp" name="mother_bp"><br><br>
+
+            <label for="albuminuria">Albuminurie:</label>
+            <input type="text" id="albuminuria" name="albuminuria"><br><br>
+
+            <label for="lochia">Retour des couches:</label>
+            <input type="text" id="lochia" name="lochia"><br><br>
+
+            <label for="breastfeeding_status">Allaitement:</label>
+            <input type="text" id="breastfeeding_status" name="breastfeeding_status"><br><br>
+
+            <label for="dystocia">Dystocie:</label>
+            <input type="text" id="dystocia" name="dystocia"><br><br>
+
+            <h3>Enfant</h3>
+            <label for="birth_condition">État de l'enfant à la naissance:</label>
+            <textarea id="birth_condition" name="birth_condition" rows="3" style="width: 100%;"></textarea><br><br>
+
+            <label for="baby_sex">Sexe:</label>
+            <input type="text" id="baby_sex" name="baby_sex"><br><br>
+
+            <label for="apgar_score">Agpar:</label>
+            <input type="text" id="apgar_score" name="apgar_score"><br><br>
+
+            <label for="baby_observations">Observations:</label>
+            <textarea id="baby_observations" name="baby_observations" rows="3" style="width: 100%;"></textarea><br><br>
+        </form>
+    </section>
+</body>
+
+</html>

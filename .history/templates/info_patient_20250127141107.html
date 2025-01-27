@@ -1,0 +1,327 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="max-w-4xl mx-auto my-10 bg-white p-8 rounded-lg shadow">
+    <h2 class="text-xl font-semibold italic text-center mb-4">Formulaire de Surveillance de la Grossesse</h2>
+
+    <form id="formulaire">
+      <!-- Informations sur le patient -->
+      <fieldset class="mb-6 border border-gray-300 rounded p-4">
+        <legend class="text-lg font-medium">Informations sur la Patiente</legend>
+
+        <div class="grid grid-cols-2 gap-4 mt-4">
+          <div>
+            <label for="nom" class="block text-sm font-medium">Nom complet</label>
+            <input type="text" id="nom" name="nom" class="w-full border rounded px-3 py-2" required>
+          </div>
+
+          <div>
+            <label for="adresse" class="block text-sm font-medium">Adresse</label>
+            <input type="text" id="adresse" name="adresse" class="w-full border rounded px-3 py-2" required>
+          </div>
+
+          <div>
+            <label for="dateNaissance" class="block text-sm font-medium">Date de Naissance</label>
+            <input type="date" id="dateNaissance" name="dateNaissance" class="w-full border rounded px-3 py-2" onchange="calculerAge(this, 'age')" required>
+          </div>
+
+          <div>
+            <label for="age" class="block text-sm font-medium">Âge</label>
+            <input type="number" id="age" name="age" class="w-full border rounded px-3 py-2" readonly>
+          </div>
+
+          <div>
+            <label for="statut" class="block text-sm font-medium">Statut Matrimonial</label>
+            <select id="statut" name="statut" class="w-full border rounded px-3 py-2" onchange="gererStatutMatrimonial()" required>
+              <option value="">-- Sélectionnez --</option>
+              <option value="Célibataire">Célibataire</option>
+              <option value="Mariée">Mariée</option>
+              <option value="Divorcée">Divorcée</option>
+              <option value="Veuve">Veuve</option>
+              <option value="Concubine">Concubine</option>
+              <option value="En couple">En couple</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="occupation" class="block text-sm font-medium">Occupation</label>
+            <input type="text" id="occupation" name="occupation" class="w-full border rounded px-3 py-2">
+          </div>
+
+          <div>
+            <label for="numeroPersonnel" class="block text-sm font-medium">Numéro Personnel</label>
+            <input type="text" id="numeroPersonnel" name="numeroPersonnel" class="w-full border rounded px-3 py-2">
+          </div>
+
+          <div>
+            <label for="numeroEtablissement" class="block text-sm font-medium">Numéro Bureau</label>
+            <input type="text" id="numeroEtablissement" name="numeroEtablissement" class="w-full border rounded px-3 py-2">
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Informations sur le conjoint -->
+      <fieldset id="infoConjoint" class="mb-6 border border-gray-300 rounded p-4">
+        <legend class="text-lg font-medium">Informations sur le Conjoint</legend>
+
+        <div class="grid grid-cols-2 gap-4 mt-4">
+          <div>
+            <label for="nomConjoint" class="block text-sm font-medium">Nom et Prénom du Conjoint</label>
+            <input type="text" id="nomConjoint" name="nomConjoint" class="w-full border rounded px-3 py-2">
+          </div>
+
+          <div>
+            <label for="occupationConjoint" class="block text-sm font-medium">Occupation du Conjoint</label>
+            <input type="text" id="occupationConjoint" name="occupationConjoint" class="w-full border rounded px-3 py-2">
+          </div>
+
+          <div>
+            <label for="numeroTelConjoint" class="block text-sm font-medium">Numéro de Téléphone du Conjoint</label>
+            <input type="text" id="numeroTelConjoint" name="numeroTelConjoint" class="w-full border rounded px-3 py-2">
+          </div>
+
+          <div>
+            <label for="numeroEtablissementConjoint" class="block text-sm font-medium">Numéro Bureau</label>
+            <input type="text" id="numeroEtablissementConjoint" name="numeroEtablissementConjoint" class="w-full border rounded px-3 py-2">
+          </div>
+
+          <div>
+            <label for="dateNaissanceConjoint" class="block text-sm font-medium">Date de Naissance du Conjoint</label>
+            <input type="date" id="dateNaissanceConjoint" name="dateNaissanceConjoint" class="w-full border rounded px-3 py-2" onchange="calculerAge(this, 'ageConjoint')">
+          </div>
+
+          <div>
+            <label for="ageConjoint" class="block text-sm font-medium">Âge du Conjoint</label>
+            <input type="number" id="ageConjoint" name="ageConjoint" class="w-full border rounded px-3 py-2" readonly>
+          </div>
+        </div>
+      </fieldset>
+       <fieldset class="mb-6 border border-gray-300 rounded p-4">
+        <legend class="text-lg font-medium">Informations sur la Patiente</legend>
+
+        <div class="grid grid-cols-2 gap-4 mt-4">
+          <div>
+            <label for="nom" class="block text-sm font-medium">Nom complet</label>
+            <input type="text" id="nom" name="nom" class="w-full border rounded px-3 py-2" required>
+          </div>
+
+          <div>
+            <label for="adresse" class="block text-sm font-medium">Adresse</label>
+            <input type="text" id="adresse" name="adresse" class="w-full border rounded px-3 py-2" required>
+          </div>
+
+          <div>
+            <label for="dateNaissance" class="block text-sm font-medium">Date de Naissance</label>
+            <input type="date" id="dateNaissance" name="dateNaissance" class="w-full border rounded px-3 py-2" onchange="calculerAge(this.value, 'age')" required>
+          </div>
+
+          <div>
+            <label for="age" class="block text-sm font-medium">Âge</label>
+            <input type="number" id="age" name="age" class="w-full border rounded px-3 py-2" readonly>
+          </div>
+
+          <div>
+            <label for="statut" class="block text-sm font-medium">Statut Matrimonial</label>
+            <select id="statut" name="statut" class="w-full border rounded px-3 py-2" onchange="gererStatutMatrimonial(this.value)" required>
+              <option value="">-- Sélectionnez --</option>
+              <option value="Célibataire">Célibataire</option>
+              <option value="Mariée">Mariée</option>
+              <option value="Divorcée">Divorcée</option>
+              <option value="Veuve">Veuve</option>
+              <option value="Concubine">Concubine</option>
+              <option value="En couple">En couple</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="occupation" class="block text-sm font-medium">Occupation</label>
+            <input type="text" id="occupation" name="occupation" class="w-full border rounded px-3 py-2">
+          </div>
+
+          <div>
+            <label for="numeroPersonnel" class="block text-sm font-medium">Numéro Personnel</label>
+            <input type="text" id="numeroPersonnel" name="numeroPersonnel" class="w-full border rounded px-3 py-2">
+          </div>
+
+          <div>
+            <label for="numeroEtablissement" class="block text-sm font-medium">Numéro Bureau</label>
+            <input type="text" id="numeroEtablissement" name="numeroEtablissement" class="w-full border rounded px-3 py-2">
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Reésumé grosesse --!>
+      <fieldset>
+        <div class="mb-6 border border-gray-300 rounded p-4">
+          <h3 class="text-lg font-medium text-center mb-4">Résumé de la Grossesse</h3>
+          
+          <!-- Histoire Menstruelle -->
+          <div class="mb-4">
+            <h4 class="font-medium mb-2">Histoire Menstruelle (Antécédents menstruels)</h4>
+            <div class="grid grid-cols-2 gap-4">
+              <div class="flex items-center gap-4">
+                  <div class="w-1/2">
+                    <label for="ddr" class="block text-sm font-medium">DDR</label>
+                    <input type="date" id="ddr" name="ddr" class="w-full border rounded px-3 py-2" onchange="calculerDPA(this.value, 'dpa')">
+                  </div>
+                  <div class="w-1/2">
+                    <label for="dpa" class="block text-sm font-medium">DPA</label>
+                    <input type="text" id="dpa" name="dpa" class="w-full border rounded px-3 py-2" readonly>
+                  </div>
+                </div>
+                
+                <script>
+                  function calculerDPA(ddr, cibleId) {
+                    if (!ddr) return;
+                    const dpa = new Date(new Date(ddr).setDate(new Date(ddr).getDate() + 280));
+                    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                    document.getElementById(cibleId).value = `${dpa.toLocaleDateString('fr-FR', options)} (${Math.max(0, Math.floor((dpa - new Date()) / (1000 * 60 * 60 * 24 * 30.44)))} mois restants)`;
+                  }
+                </script>
+                
+      
+              <div>
+                <label for="cycle" class="block text-sm font-medium">Cycle</label>
+                <select id="cycle" name="cycle" class="w-full border rounded px-3 py-2">
+                  <option value="">-- Sélectionnez --</option>
+                  <option value="Régulier">Régulier</option>
+                  <option value="Irrégulier">Irrégulier</option>
+                </select>
+              </div>
+      
+              <div>
+                <label for="duree" class="block text-sm font-medium">Durée</label>
+                <input type="text" id="duree" name="duree" class="w-full border rounded px-3 py-2">
+              </div>
+      
+              <div>
+                <label for="g" class="block text-sm font-medium">G</label>
+                <input type="text" id="g" name="g" class="w-full border rounded px-3 py-2">
+              </div>
+      
+              <div>
+                <label for="a" class="block text-sm font-medium">A</label>
+                <input type="text" id="a" name="a" class="w-full border rounded px-3 py-2">
+              </div>
+      
+              <div>
+                <label for="t" class="block text-sm font-medium">T</label>
+                <input type="text" id="t" name="t" class="w-full border rounded px-3 py-2">
+              </div>
+      
+              <div>
+                <label for="e" class="block text-sm font-medium">E</label>
+                <input type="text" id="e" name="e" class="w-full border rounded px-3 py-2">
+              </div>
+      
+              <div>
+                <label for="p" class="block text-sm font-medium">P</label>
+                <input type="text" id="p" name="p" class="w-full border rounded px-3 py-2">
+              </div>
+      
+              <div>
+                <label for="muit" class="block text-sm font-medium">Muit</label>
+                <input type="text" id="muit" name="muit" class="w-full border rounded px-3 py-2">
+              </div>
+            </div>
+          </div>
+          <hr class="my-6 border-gray-400">
+          <!-- Contraception -->
+          <div class="mb-4">
+            <h4 class="font-medium mb-2">Contraception</h4>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label for="type" class="block text-sm font-medium">Type</label>
+                <input type="text" id="type" name="type" class="w-full border rounded px-3 py-2">
+              </div>
+      
+              <div>
+                <label for="commentaireType" class="block text-sm font-medium">Commentaire</label>
+                <input type="text" id="commentaireType" name="commentaireType" class="w-full border rounded px-3 py-2">
+              </div>
+      
+              <div>
+                <label for="duree" class="block text-sm font-medium">Durée</label>
+                <input type="text" id="dureeContraception" name="dureeContraception" class="w-full border rounded px-3 py-2">
+              </div>
+      
+              <div>
+                <label for="commentaireDuree" class="block text-sm font-medium">Commentaire</label>
+                <input type="text" id="commentaireDuree" name="commentaireDuree" class="w-full border rounded px-3 py-2">
+              </div>
+      
+              <div>
+                <label for="derniereUtilisation" class="block text-sm font-medium">Dernière Utilisation</label>
+                <input type="text" id="derniereUtilisation" name="derniereUtilisation" class="w-full border rounded px-3 py-2">
+              </div>
+      
+              <div>
+                <label for="commentaireDerniereUtilisation" class="block text-sm font-medium">Commentaire</label>
+                <input type="text" id="commentaireDerniereUtilisation" name="commentaireDerniereUtilisation" class="w-full border rounded px-3 py-2">
+              </div>
+            </div>
+          </div>
+          <hr class="my-6 border-gray-400">
+      </fieldset>
+      <div class="mt-6 flex justify-end">
+        <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+          Enregistrer
+        </button>
+      </div>
+      </form>
+
+<script>
+function gererStatutMatrimonial() {
+    const statutSelect = document.getElementById('statut');
+    const infoConjoint = document.getElementById('infoConjoint');
+    
+    if (statutSelect.value === 'Mariée') {
+        infoConjoint.style.display = 'block';
+    } else {
+        infoConjoint.style.display = 'none';
+    }
+}
+
+document.getElementById('formulaire').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    
+    try {
+        const response = await fetch('/save_patient', {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (!response.ok) {
+            throw new Error('Erreur lors de l\'enregistrement');
+        }
+        
+        const result = await response.json();
+        if (result.success) {
+            alert('Patient enregistré avec succès!');
+            // Redirect to patient details page
+            window.location.href = `/afficher_patient/${result.patient_id}`;
+        } else {
+            throw new Error(result.message);
+        }
+    } catch (error) {
+        alert('Erreur lors de l\'enregistrement: ' + error.message);
+    }
+});
+
+function calculerAge(dateNaissance, champAge) {
+    if (dateNaissance.value) {
+        const today = new Date();
+        const birthDate = new Date(dateNaissance.value);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        document.getElementById(champAge).value = age;
+    }
+}
+</script>
+{% endblock %}
