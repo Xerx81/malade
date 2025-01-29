@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto my-6 bg-white p-8 rounded-lg shadow">
+    <h2 class="text-2xl font-semibold text-center mb-6">Liste des Patientes</h2>
+
+    {% if patients %}
+    <div class="overflow-x-auto">
+        <table id="patientsTable" class="min-w-full bg-white">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="py-3 px-4 text-left">ID</th>
+                    <th class="py-3 px-4 text-left">Nom</th>
+
+                    <th class="py-3 px-4 text-left">Date de naissance</th>
+                    <th class="py-3 px-4 text-left">Âge</th>
+                    <th class="py-3 px-4 text-left">Numéro Personnel</th>
+                    <th class="py-3 px-4 text-left">Statut</th>
+                    <th class="py-3 px-4 text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for patient in patients %}
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="py-3 px-4">{{ patient.id }}</td>
+                    <td class="py-3 px-4">{{ patient.nom }}</td>
+                    <td class="py-3 px-4">{{ patient.date_naissance }}</td>
+
+                    <td class="py-3 px-4">{{ patient.age }}</td>
+                    <td class="py-3 px-4">{{ patient.numero_personnel }}</td>
+                    <td class="py-3 px-4">{{ patient.statut }}</td>
+                    <td class="py-3 px-4 text-center flex flex-row space-x-2 justify-center">
+                        <a href="{{ url_for('afficher_patient', patient_id=patient.id) }}" 
+                           class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 inline-block">
+                            Voir détails
+                        </a>
+                        <a href="/update/{{ patient.id }}"
+                           class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 inline-block">
+                            Modifier
+                        </a>
+                        <button onclick="deletePatient({{ patient.id }}, '{{ patient.nom }}')"
+                                class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 inline-block">
+                            Supprimer
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="text-center text-gray-600">Aucun patient enregistré.</p>
+    {% endif %}
+
+    <div class="mt-8 text-center">
+        <a href="{{ url_for('info_patient') }}" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+            Ajouter un Patient
+        </a>
+    </div>
+</div>
+
+
+<script>
+$(document).ready(function() {
+    $('#patientsTable').DataTable({
+        "language": {
+            "search": "Rechercher:",
+            "lengthMenu": "Afficher _MENU_ entrées",
+            "info": "Affichage _START_ à _END_ de _TOTAL_ entrées",
+            "paginate": {
+                "first": "Premier",
+                "last": "Dernier",
+                "next": "Suivant",
+                "previous": "Précédent"
+            }
+        }
+    });
+});
+</script>
+<script>
+function deletePatient(id, nom) {
+    if (confirm(`Êtes-vous sûr de vouloir supprimer le patient ${nom} ?`)) {
+        fetch(`/delete/${id}`, {
+            method: 'DELETE',
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert('Patient supprimé avec succès');
+                window.location.reload();
+            } else {
+                alert('Erreur lors de la suppression: ' + data.message);
+            }
+        })
+        .catch(error => {
+            alert('Erreur lors de la suppression du patient');
+            console.error('Error:', error);
+        });
+    }
+}
+</script>
+{% endblock %}

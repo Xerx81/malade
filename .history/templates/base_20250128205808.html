@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Patients</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <!-- Logo and Brand -->
+                <div class="flex items-center">
+                    <a href="{{ url_for('index') }}" class="flex items-center">
+                        <span class="text-2xl font-bold text-blue-600">Clinique du docteur </span>
+                    </a>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="hidden sm:flex sm:items-center sm:space-x-4">
+                    {% if 'user_id' in session %}
+                        <a href="{{ url_for('dashboard') }}" 
+                           class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">
+                            Dashboard
+                        </a>
+                        <a href="{{ url_for('liste_patients') }}" 
+                           class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">
+                            Liste Patients
+                        </a>
+                        <a href="{{ url_for('info_patient') }}" 
+                           class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">
+                            Nouveau Patient
+                        </a>
+                        
+                        <!-- User Menu -->
+                        <div class="ml-4 flex items-center space-x-3">
+                            <a href="{{ url_for('profile') }}" 
+                               class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow-sm border border-blue-600 hover:bg-blue-50 transition">
+                                Profile
+                            </a>
+                            <a href="{{ url_for('logout') }}" 
+                               class="bg-red-600 text-white px-4 py-2 rounded-lg shadow-sm hover:bg-red-700 transition">
+                                Déconnexion
+                            </a>
+                        </div>
+                    {% else %}
+                        <a href="{{ url_for('login') }}" 
+                           class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-sm hover:bg-blue-700 transition">
+                            Connexion
+                        </a>
+                        <a href="{{ url_for('register') }}" 
+                           class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow-sm border border-blue-600 hover:bg-blue-50 transition">
+                            S'inscrire
+                        </a>
+                    {% endif %}
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="flex items-center sm:hidden">
+                    <button type="button" onclick="toggleMobileMenu()" 
+                            class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="sm:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                {% if 'user_id' in session %}
+                    <a href="{{ url_for('dashboard') }}" 
+                       class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">
+                        Dashboard
+                    </a>
+                    <a href="{{ url_for('liste_patients') }}" 
+                       class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">
+                        Liste Patients
+                    </a>
+                    <a href="{{ url_for('info_patient') }}" 
+                       class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">
+                        Nouveau Patient
+                    </a>
+                    <a href="{{ url_for('profile') }}" 
+                       class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">
+                        Profile
+                    </a>
+                    <a href="{{ url_for('logout') }}" 
+                       class="block px-3 py-2 rounded-md text-base font-medium text-red-600 hover:text-red-900 hover:bg-red-50">
+                        Déconnexion
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" 
+                       class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">
+                        Connexion
+                    </a>
+                    <a href="{{ url_for('register') }}" 
+                       class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">
+                        S'inscrire
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+                {% for category, message in messages %}
+                    <div class="rounded-md p-4 mb-4 {% if category == 'error' %}bg-red-50 text-red-700{% else %}bg-green-50 text-green-700{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white shadow-lg mt-auto">
+        <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+            <p class="text-center text-gray-500 text-sm">
+                &copy; {{ now.year }} Clinique. Tous droits réservés.
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu -->
+    <script>
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>

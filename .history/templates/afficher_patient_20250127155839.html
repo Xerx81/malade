@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto my-10 bg-white p-8 rounded-lg shadow">
+    <h2 class="text-2xl font-semibold text-center mb-6">Informations de la patiente</h2>
+
+    <!-- Informations sur le patient -->
+    <div class="mb-8">
+        <h3 class="text-xl font-medium mb-4 text-gray-800">Informations Personnelles</h3>
+        <div class="grid grid-cols-2 gap-4">
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Nom:</span>
+                <span class="ml-2">{{ patient.nom }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Adresse:</span>
+                <span class="ml-2">{{ patient.adresse }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Date de Naissance:</span>
+                <span class="ml-2">{{ patient.date_naissance }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Âge:</span>
+                <span class="ml-2">{{ patient.age }} ans</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Statut Matrimonial:</span>
+                <span class="ml-2">{{ patient.statut }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Occupation:</span>
+                <span class="ml-2">{{ patient.occupation }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Numéro Personnel:</span>
+                <span class="ml-2">{{ patient.numero_personnel }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Numéro Établissement:</span>
+                <span class="ml-2">{{ patient.numero_etablissement }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">DDR:</span>
+                <span class="ml-2">{{ patient.ddr }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">DPA:</span>
+
+
+        </div>
+    </div>
+
+    <!-- Informations sur le conjoint -->
+    {% if patient.statut == 'Mariée' %}
+    <div class="mt-8">
+        <h3 class="text-xl font-medium mb-4 text-gray-800">Informations sur le Conjoint</h3>
+        <div class="grid grid-cols-2 gap-4">
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Nom du Conjoint:</span>
+                <span class="ml-2">{{ patient.nom_conjoint }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Occupation du Conjoint:</span>
+                <span class="ml-2">{{ patient.occupation_conjoint }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Numéro de Téléphone:</span>
+                <span class="ml-2">{{ patient.numero_tel_conjoint }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Numéro Établissement:</span>
+                <span class="ml-2">{{ patient.numero_etablissement_conjoint }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Date de Naissance:</span>
+                <span class="ml-2">{{ patient.date_naissance_conjoint }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Âge:</span>
+                <span class="ml-2">{{ patient.age_conjoint }} ans</span>
+            </div>
+
+
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="mt-8 text-center">
+        <a href="{{ url_for('info_patient') }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            Retour au Formulaire
+        </a>
+    </div>
+</div>
+{% endblock %}
