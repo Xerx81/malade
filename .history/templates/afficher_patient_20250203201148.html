@@ -158,7 +158,7 @@
 </div>
                
 
-                <div class="text-2xl font-medium text-center mb-4 mt-10">Histoire de la grossesse</div><br>
+                <div class="text-2xl font-medium text-center items-center justify-c mb-8 mt-10">Histoire de la grossesse</div><br>
                 
                     <div class="bg-gray-50 p-3 rounded">
                         <span class="font-medium">Saignement:</span>
@@ -181,161 +181,14 @@
                         <span class="ml-2">{{ patient.alcool }}</span>
                     </div>
                     <div class="bg-gray-50 p-3 rounded">
-                                            </div>
-                </div>
-
-                <div class="text-2xl font-medium text-center mb-4 mt-10">Informations Financières</div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-gray-50 p-3 rounded">
-                        <span class="font-medium">Montant payé:</span>
-                        <span class="ml-2">{{ patient.montant_paye }} FCFA</span>
+                        <span class="font-medium">Radiation:</span>
+                        <span class="ml-2">{{ patient.radiation }}</span>
                     </div>
-                    <div class="bg-gray-50 p-3 rounded">
-                        <span class="font-medium">Mode de paiement:</span>
-                        <span class="ml-2">{{ patient.mode_paiement }}</span>
-                    </div>
-                    <div class="bg-gray-50 p-3 rounded">
-                        <span class="font-medium">Date de paiement:</span>
-                        <span class="ml-2">{{ patient.date_paiement }}</span>
-                    </div>
-                    <div class="bg-gray-50 p-3 rounded">
-                        <span class="font-medium">Solde restant:</span>
-                        <span class="ml-2">{{ patient.solde_restant }} FCFA</span>
-                    </div>
-                    <div class="bg-gray-50 p-3 rounded">
-                        <span class="font-medium">Coût total des soins:</span>
-                        <span class="ml-2">{{ patient.cout_total }} FCFA</span>
-                    </div>
-                    <div class="bg-gray-50 p-3 rounded">
-                        <span class="font-medium">Prochain paiement dû:</span>
-                        <span class="ml-2">{{ patient.date_prochain_paiement }}</span>
-                    </div>
-                    <div class="bg-gray-50 p-3 rounded col-span-2">
-                        <span class="font-medium">Notes financières:</span>
-                        <span class="ml-2">{{ patient.notes_financieres }}</span>
-                    </div>
-                </div>
+              
+                <br>
             </div>
+
         </div>
-<div class="overflow-x-auto mt-4">
-  <table class="min-w-full table-auto border border-gray-300">
-    <thead>
-      <tr class="bg-gray-100">
-        <th class="border px-4 py-2">No.</th>
-        <th class="border px-4 py-2">Somme payée</th>
-        <th class="border px-4 py-2">Date de paiement</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="border px-4 py-2">1</td>
-        <td class="border px-4 py-2">{{ patient.somme_payee_1 }}</td>
-        <td class="border px-4 py-2">{{ patient.date_paiement_1 }}</td>
-      </tr>
-      <tr>
-        <td class="border px-4 py-2">2</td>
-        <td class="border px-4 py-2">{{ patient.somme_payee_2 }}</td>
-        <td class="border px-4 py-2">{{ patient.date_paiement_2 }}</td>
-      </tr>
-      <tr>
-        <td class="border px-4 py-2">3</td>
-        <td class="border px-4 py-2">{{ patient.somme_payee_3 }}</td>
-        <td class="border px-4 py-2">{{ patient.date_paiement_3 }}</td>
-      </tr>
-      <tr>
-        <td class="border px-4 py-2">4</td>
-        <td class="border px-4 py-2">{{ patient.somme_payee_4 }}</td>
-        <td class="border px-4 py-2">{{ patient.date_paiement_4 }}</td>
-      </tr>
-      <tr>
-        <td class="border px-4 py-2">5</td>
-        <td class="border px-4 py-2">{{ patient.somme_payee_5 }}</td>
-        <td class="border px-4 py-2">{{ patient.date_paiement_5 }}</td>
-      </tr>
-      <tr>
-        <td class="border px-4 py-2">6</td>
-        <td class="border px-4 py-2">{{ patient.somme_payee_6 }}</td>
-        <td class="border px-4 py-2">{{ patient.date_paiement_6 }}</td>
-      </tr>
-      <tr>
-        <td class="border px-4 py-2">7</td>
-        <td class="border px-4 py-2">{{ patient.somme_payee_7 }}</td>
-        <td class="border px-4 py-2">{{ patient.date_paiement_7 }}</td>
-      </tr>
-      <tr>
-        <td class="border px-4 py-2">8</td>
-        <td class="border px-4 py-2">{{ patient.somme_payee_8 }}</td>
-        <td class="border px-4 py-2">{{ patient.date_paiement_8 }}</td>
-      </tr>
-      <tr>
-        <td class="border px-4 py-2">9</td>
-        <td class="border px-4 py-2">{{ patient.somme_payee_9 }}</td>
-        <td class="border px-4 py-2">{{ patient.date_paiement_9 }}</td>
-      </tr>
-      <tr>
-        <td class="border px-4 py-2">10</td>
-        <td class="border px-4 py-2">{{ patient.somme_payee_10 }}</td>
-        <td class="border px-4 py-2">{{ patient.date_paiement_10 }}</td>
-      </tr>
-    </tbody>
-  </table>
-  </table>
-  <div class="mt-4 text-right">
-    <span class="font-medium">Somme totale payée:</span>
-    <span class="ml-2">{{ patient.somme_payee_1|default(0)|float + patient.somme_payee_2|default(0)|float + patient.somme_payee_3|default(0)|float + patient.somme_payee_4|default(0)|float + patient.somme_payee_5|default(0)|float + patient.somme_payee_6|default(0)|float + patient.somme_payee_7|default(0)|float + patient.somme_payee_8|default(0)|float + patient.somme_payee_9|default(0)|float + patient.somme_payee_10|default(0)|float }} HTG </span>
-  </div>
-<div class="mt-8">
-  <canvas id="paymentGraph" width="400" height="200"></canvas>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.0/dist/chartjs-adapter-moment.min.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    var ctx = document.getElementById('paymentGraph').getContext('2d');
-    var paymentData = [
-      {% for i in range(1, 11) %}
-        {
-          x: "{{ patient['date_paiement_' ~ i] }}",
-          y: {{ patient['somme_payee_' ~ i]|default(0) }}
-        },
-      {% endfor %}
-    ];
-
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        datasets: [{
-          label: 'Paiements',
-          data: paymentData,
-          borderColor: 'rgb(75, 192, 192)',
-          tension: 0.1
-        }]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          x: {
-            type: 'time',
-            time: {
-              unit: 'day',
-              parser: 'YYYY-MM-DD'
-            }
-          },
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
-    });
-  });
-</script>
-
-</div>
-
-</div>
-
         <div class="bg-white my-10 mx-14 p-8 rounded-lg shadow-lg border border-gray-100">
         <h4 class="font-medium text-2xl mb-8 items-center">Histoire Obstétrique</h4>
 

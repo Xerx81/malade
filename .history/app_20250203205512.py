@@ -37,11 +37,7 @@ PATIENT_FIELDS = [
     'syphilis', 'hb', 'gs', 'hiv', 'remarque', 'date', 'poids', 'age_gestationnel', 'hu', 'pres_post',
     'bdcf', 'ta', 'urine_pr_glu', 'risque', 'commentaire_lab_med', 'date_accouchement', 'poids_mere',
     'ta_mere', 'albuminurie', 'retour_couches', 'allaitement', 'dystocie', 'etat_enfant_naissance',
-    'sexe_enfant', 'apgar', 'observations_enfant', 'montant_paye', 'mode_paiement', 'date_paiement', 'solde_restant', 'cout_total', 'date_prochain_paiement', 'notes_financieres', 
-    'somme_payee_1', 'date_paiement_1', 'somme_payee_2', 'date_paiement_2', 'somme_payee_3', 'date_paiement_3', 
-    'somme_payee_4', 'date_paiement_4', 'somme_payee_5', 'date_paiement_5', 'somme_payee_6', 'date_paiement_6', 
-    'somme_payee_7', 'date_paiement_7', 'somme_payee_8', 'date_paiement_8', 'somme_payee_9', 'date_paiement_9', 
-    'somme_payee_10', 'date_paiement_10',
+    'sexe_enfant', 'apgar', 'observations_enfant', 'payment', 'montant_paye', 'mode_paiement', 'date_paiement', 'solde_restant', 'cout_total', 'date_prochain_paiement', 'notes_financieres'
 ]
 
 @app.context_processor
@@ -287,7 +283,7 @@ def dashboard():
     active_patients = c.fetchone()[0]
     
     # Fetch recent patients
-    c.execute('SELECT id, nom, date_naissance, age, statut, created_at FROM patients ORDER BY created_at DESC LIMIT 10')
+    c.execute('SELECT id, nom, dateaissance, age, statut, created_at FROM patients ORDER BY created_at DESC LIMIT 10')
     patients = c.fetchall()
     conn.close()
     
@@ -370,6 +366,49 @@ def afficher_patient(patient_id):
         return render_template('afficher_patient.html', patient=patient_info)
     else:
         return "Patient non trouvé", 404
+
+@app.route('/save_payment', methods=['POST'])
+def save_payment():
+    try:
+        # Retrieve the patient ID from the form
+        patient_id = request.form.get('patient_id')
+        
+        # Retrieve and convert payment fields
+        montant_paye = request.form.get('patient.montant_paye')
+        montant_paye = float(montant_paye) if montant_paye else 0.0
+        mode_paiement = request.form.get('patient.mode_paiement')
+        notes_financieres = request.form.get('patient.notes_financieres')
+        date_prochain_paiement_str = request.form.get('patient.date_prochain_paiement')
+        if date_prochain_paiement_str:
+            date_prochain_paiement = datetime.strptime(date_prochain_paiement_str, '%Y-%m-%d')
+        else:
+            date_prochain_paiement = None
+        
+        # Create a new Payment entry; date_paiement defaults to datetime.utcnow
+        payment = Payment(
+            patient_id=patient_id,
+            montant_paye=montant_paye,
+            mode_paiement=mode_paiement,
+            notes_financieres=notes_financieres,
+            date_prochain_paiement=date_prochain_paiement
+        )
+        db.session.add(payment)
+        db.session.commit()
+        
+        # Compute total payments made by the patient
+        total = db.session.query(db.func.sum(Payment.montant_paye)).filter(Payment.patient_id == patient_id).scalar() or 0.0
+
+        # Here you can update the patient's cout_total if needed
+        # For example, if Patient model had a 'cout_total' field, you could update it like this:
+        # patient = Patient.query.get(patient_id)
+        # patient.cout_total = total
+        # db.session.commit()
+        
+        flash('Paiement enregistré avec succès', 'success')
+        return redirect(url_for('afficher_patient', patient_id=patient_id))
+    except Exception as e:
+        flash('Erreur lors de l\'enregistrement du paiement', 'error')
+        return redirect(url_for('afficher_patient', patient_id=patient_id))
 
 if __name__ == '__main__':
     init_db()

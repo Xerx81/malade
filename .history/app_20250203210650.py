@@ -4,6 +4,7 @@ import os
 from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
+from models import db, Patient, Payment  # Add Payment to existing imports
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key-here'  # Change this to a secure secret key in production
@@ -37,11 +38,7 @@ PATIENT_FIELDS = [
     'syphilis', 'hb', 'gs', 'hiv', 'remarque', 'date', 'poids', 'age_gestationnel', 'hu', 'pres_post',
     'bdcf', 'ta', 'urine_pr_glu', 'risque', 'commentaire_lab_med', 'date_accouchement', 'poids_mere',
     'ta_mere', 'albuminurie', 'retour_couches', 'allaitement', 'dystocie', 'etat_enfant_naissance',
-    'sexe_enfant', 'apgar', 'observations_enfant', 'montant_paye', 'mode_paiement', 'date_paiement', 'solde_restant', 'cout_total', 'date_prochain_paiement', 'notes_financieres', 
-    'somme_payee_1', 'date_paiement_1', 'somme_payee_2', 'date_paiement_2', 'somme_payee_3', 'date_paiement_3', 
-    'somme_payee_4', 'date_paiement_4', 'somme_payee_5', 'date_paiement_5', 'somme_payee_6', 'date_paiement_6', 
-    'somme_payee_7', 'date_paiement_7', 'somme_payee_8', 'date_paiement_8', 'somme_payee_9', 'date_paiement_9', 
-    'somme_payee_10', 'date_paiement_10',
+    'sexe_enfant', 'apgar', 'observations_enfant', 'payment', 'montant_paye', 'mode_paiement', 'date_paiement', 'solde_restant', 'cout_total', 'date_prochain_paiement', 'notes_financieres'
 ]
 
 @app.context_processor
@@ -135,6 +132,33 @@ def save_patient():
         traceback.print_exc()
         flash("Erreur lors de l'ajout du patient.", 'error')
         return redirect(url_for('liste_patients'))
+
+@app.route('/add_payment', methods=['POST'])
+def add_payment():
+    if request.method == 'POST':
+        patient_id = request.form['patient_id']
+        amount = float(request.form['amount'])
+        
+        new_payment = Payment(
+            montant_paye=amount,
+            patient_id=patient_id
+        )
+        
+        db.session.add(new_payment)
+        db.session.commit()
+        
+        return redirect(url_for('patient_payments', patient_id=patient_id))
+
+@app.route('/payments/<int:patient_id>')
+def patient_payments(patient_id):
+    patient = Patient.query.get_or_404(patient_id)
+    payments = Payment.query.filter_by(patient_id=patient_id).order_by(Payment.date_paiement.desc()).all()
+    total = sum(p.montant_paye for p in payments)
+    
+    return render_template('payments.html', 
+                         patient=patient,
+                         payments=payments,
+                         total=total)
 
 @app.route('/liste_patients')
 def liste_patients():

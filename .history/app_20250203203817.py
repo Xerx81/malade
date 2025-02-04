@@ -37,11 +37,7 @@ PATIENT_FIELDS = [
     'syphilis', 'hb', 'gs', 'hiv', 'remarque', 'date', 'poids', 'age_gestationnel', 'hu', 'pres_post',
     'bdcf', 'ta', 'urine_pr_glu', 'risque', 'commentaire_lab_med', 'date_accouchement', 'poids_mere',
     'ta_mere', 'albuminurie', 'retour_couches', 'allaitement', 'dystocie', 'etat_enfant_naissance',
-    'sexe_enfant', 'apgar', 'observations_enfant', 'montant_paye', 'mode_paiement', 'date_paiement', 'solde_restant', 'cout_total', 'date_prochain_paiement', 'notes_financieres', 
-    'somme_payee_1', 'date_paiement_1', 'somme_payee_2', 'date_paiement_2', 'somme_payee_3', 'date_paiement_3', 
-    'somme_payee_4', 'date_paiement_4', 'somme_payee_5', 'date_paiement_5', 'somme_payee_6', 'date_paiement_6', 
-    'somme_payee_7', 'date_paiement_7', 'somme_payee_8', 'date_paiement_8', 'somme_payee_9', 'date_paiement_9', 
-    'somme_payee_10', 'date_paiement_10',
+    'sexe_enfant', 'apgar', 'observations_enfant', 'payment', 'montant_paye', 'mode_paiement', 'date_paiement', 'solde_restant', 'cout_total', 'date_prochain_paiement', 'notes_financieres'
 ]
 
 @app.context_processor
@@ -175,7 +171,52 @@ def delete_patient(id):
             'message': str(e)
         }), 500
 
+@app.route('/add_payment/<int:patient_id>', methods=['POST'])
+def add_payment(patient_id):
+    try:
+        # Get the new payment amount from the form submission
+        new_payment_str = request.form.get('new_payment')
+        if not new_payment_str:
+            flash("No payment amount provided.", "error")
+            return redirect(url_for('afficher_patient', patient_id=patient_id))
+        new_payment = float(new_payment_str)
 
+        # Optionally, you can also get additional fields like mode_paiement or notes_financieres:
+        mode_paiement = request.form.get('mode_paiement', '')
+        notes_financieres = request.form.get('notes_financieres', '')
+
+        # Open a database connection and retrieve the current montant_paye for this patient.
+        conn = sqlite3.connect('clinic.db')
+        c = conn.cursor()
+        c.execute('SELECT montant_paye FROM patients WHERE id = ?', (patient_id,))
+        row = c.fetchone()
+        if not row:
+            flash("Patient not found.", "error")
+            conn.close()
+            return redirect(url_for('dashboard'))
+        current_total_str = row[0]
+        # If montant_paye is empty or None, treat it as 0.0.
+        current_total = float(current_total_str) if current_total_str not in [None, ''] else 0.0
+
+        # Add the new payment amount to the current total.
+        new_total = current_total + new_payment
+
+        # Get the current date/time for the payment.
+        payment_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+        # Update the patient record with the new total and log the payment date.
+        c.execute(
+            'UPDATE patients SET montant_paye = ?, date_paiement = ?, mode_paiement = ?, notes_financieres = ? WHERE id = ?',
+            (str(new_total), payment_date, mode_paiement, notes_financieres, patient_id)
+        )
+        conn.commit()
+        conn.close()
+
+        flash("Payment added successfully!", "success")
+        return redirect(url_for('afficher_patient', patient_id=patient_id))
+    except Exception as e:
+        flash("Error adding payment: " + str(e), "error")
+        return redirect(url_for('afficher_patient', patient_id=patient_id))
 
 @app.route('/update/<int:patient_id>', methods=['GET'])
 def update_patient_form(patient_id):

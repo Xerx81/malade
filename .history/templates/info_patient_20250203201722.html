@@ -296,134 +296,21 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     <div class="bg-gray-50 p-3 rounded">
         <label for="montant_paye" class="font-medium">Montant payé:</label>
-        <input type="number" id="montant_paye" name="montant_paye" class="ml-2 border rounded px-2 py-1" step="0.01"> HTG
+        <input type="number" id="montant_paye" name="patient.montant_paye" class="ml-2 border rounded px-2 py-1" step="0.01"> FCFA
     </div>
     <div class="bg-gray-50 p-3 rounded">
         <label for="mode_paiement" class="font-medium">Mode de paiement:</label>
-        <input type="text" id="mode_paiement" name="mode_paiement" class="ml-2 border rounded px-2 py-1">
+        <input type="text" id="mode_paiement" name="patient.mode_paiement" class="ml-2 border rounded px-2 py-1">
     </div>
     <div class="bg-gray-50 p-3 rounded">
         <label for="date_paiement" class="font-medium">Date de paiement:</label>
-        <input type="date" id="date_paiement" name="date_paiement" class="ml-2 border rounded px-2 py-1">
+        <input type="date" id="date_paiement" name="patient.date_paiement" class="ml-2 border rounded px-2 py-1">
     </div>
     <div class="bg-gray-50 p-3 rounded">
-        <label for="cout_total" class="font-medium">Coût total des soins:</label>
-        <input type="number" id="cout_total" name="cout_total" class="ml-2 border rounded px-2 py-1" step="0.01"> HTG
+        <label for="solde_restant" class="font-medium">Solde restant:</label>
+        <input type="number" id="solde_restant" name="patient.solde_restant" class="ml-2 border rounded px-2 py-1" step="0.01"> FCFA
     </div>
     <div class="bg-gray-50 p-3 rounded">
-        <label for="date_prochain_paiement" class="font-medium">Prochain paiement dû:</label>
-        <input type="date" id="date_prochain_paiement" name="date_prochain_paiement" class="ml-2 border rounded px-2 py-1">
-    </div>
-    <div class="bg-gray-50 p-3 rounded col-span-2">
-        <label for="notes_financieres" class="font-medium">Notes financières:</label>
-        <textarea id="notes_financieres" name="notes_financieres" class="ml-2 border rounded px-2 py-1 w-full"></textarea>
-    </div>
-
-<div class="overflow-x-auto mt-4">
-  <table class="min-w-full table-auto border border-gray-300">
-    <thead>
-      <tr class="bg-gray-100">
-        <th class="border px-4 py-2">No.</th>
-        <th class="border px-4 py-2">Somme payée</th>
-        <th class="border px-4 py-2">Date de paiement</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="border px-4 py-2">1</td>
-        <td class="border px-4 py-2">
-          <input type="number" name="somme_payee_1" class="w-full border-none" step="0.01">
-        </td>
-        <td class="border px-4 py-2">
-          <input type="date" name="date_paiement_1" class="w-full border-none">
-        </td>
-      </tr>
-      <tr>
-        <td class="border px-4 py-2">2</td>
-        <td class="border px-4 py-2">
-          <input type="number" name="somme_payee_2" class="w-full border-none" step="0.01">
-        </td>
-        <td class="border px-4 py-2">
-          <input type="date" name="date_paiement_2" class="w-full border-none">
-        </td>
-      </tr>
-      <tr>
-        <td class="border px-4 py-2">3</td>
-        <td class="border px-4 py-2">
-          <input type="number" name="somme_payee_3" class="w-full border-none" step="0.01">
-        </td>
-        <td class="border px-4 py-2">
-          <input type="date" name="date_paiement_3" class="w-full border-none">
-        </td>
-      </tr>
-      <tr>
-        <td class="border px-4 py-2">4</td>
-        <td class="border px-4 py-2">
-          <input type="number" name="somme_payee_4" class="w-full border-none" step="0.01">
-        </td>
-        <td class="border px-4 py-2">
-          <input type="date" name="date_paiement_4" class="w-full border-none">
-        </td>
-      </tr>
-      <tr>
-        <td class="border px-4 py-2">5</td>
-        <td class="border px-4 py-2">
-          <input type="number" name="somme_payee_5" class="w-full border-none" step="0.01">
-        </td>
-        <td class="border px-4 py-2">
-          <input type="date" name="date_paiement_5" class="w-full border-none">
-        </td>
-      </tr>
-      <tr>
-        <td class="border px-4 py-2">6</td>
-        <td class="border px-4 py-2">
-          <input type="number" name="somme_payee_6" class="w-full border-none" step="0.01">
-        </td>
-        <td class="border px-4 py-2">
-          <input type="date" name="date_paiement_6" class="w-full border-none">
-        </td>
-      </tr>
-      <tr>
-        <td class="border px-4 py-2">7</td>
-        <td class="border px-4 py-2">
-          <input type="number" name="somme_payee_7" class="w-full border-none" step="0.01">
-        </td>
-        <td class="border px-4 py-2">
-          <input type="date" name="date_paiement_7" class="w-full border-none">
-        </td>
-      </tr>
-      <tr>
-        <td class="border px-4 py-2">8</td>
-        <td class="border px-4 py-2">
-          <input type="number" name="somme_payee_8" class="w-full border-none" step="0.01">
-        </td>
-        <td class="border px-4 py-2">
-          <input type="date" name="date_paiement_8" class="w-full border-none">
-        </td>
-      </tr>
-      <tr>
-        <td class="border px-4 py-2">9</td>
-        <td class="border px-4 py-2">
-          <input type="number" name="somme_payee_9" class="w-full border-none" step="0.01">
-        </td>
-        <td class="border px-4 py-2">
-          <input type="date" name="date_paiement_9" class="w-full border-none">
-        </td>
-      </tr>
-      <tr>
-        <td class="border px-4 py-2">10</td>
-        <td class="border px-4 py-2">
-          <input type="number" name="somme_payee_10" class="w-full border-none" step="0.01">
-        </td>
-        <td class="border px-4 py-2">
-          <input type="date" name="date_paiement_10" class="w-full border-none">
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-</div>
 
         <hr class="my-6 border-gray-400">
         <!-- Histoire Obstétrique -->

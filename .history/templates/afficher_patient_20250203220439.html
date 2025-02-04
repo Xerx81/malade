@@ -282,57 +282,7 @@
   </table>
   <div class="mt-4 text-right">
     <span class="font-medium">Somme totale payée:</span>
-    <span class="ml-2">{{ patient.somme_payee_1|default(0)|float + patient.somme_payee_2|default(0)|float + patient.somme_payee_3|default(0)|float + patient.somme_payee_4|default(0)|float + patient.somme_payee_5|default(0)|float + patient.somme_payee_6|default(0)|float + patient.somme_payee_7|default(0)|float + patient.somme_payee_8|default(0)|float + patient.somme_payee_9|default(0)|float + patient.somme_payee_10|default(0)|float }} HTG </span>
-  </div>
-<div class="mt-8">
-  <canvas id="paymentGraph" width="400" height="200"></canvas>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.0/dist/chartjs-adapter-moment.min.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    var ctx = document.getElementById('paymentGraph').getContext('2d');
-    var paymentData = [
-      {% for i in range(1, 11) %}
-        {
-          x: "{{ patient['date_paiement_' ~ i] }}",
-          y: {{ patient['somme_payee_' ~ i]|default(0) }}
-        },
-      {% endfor %}
-    ];
-
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        datasets: [{
-          label: 'Paiements',
-          data: paymentData,
-          borderColor: 'rgb(75, 192, 192)',
-          tension: 0.1
-        }]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          x: {
-            type: 'time',
-            time: {
-              unit: 'day',
-              parser: 'YYYY-MM-DD'
-            }
-          },
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
-    });
-  });
-</script>
-
-</div>
 
 </div>
 

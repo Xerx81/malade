@@ -37,11 +37,7 @@ PATIENT_FIELDS = [
     'syphilis', 'hb', 'gs', 'hiv', 'remarque', 'date', 'poids', 'age_gestationnel', 'hu', 'pres_post',
     'bdcf', 'ta', 'urine_pr_glu', 'risque', 'commentaire_lab_med', 'date_accouchement', 'poids_mere',
     'ta_mere', 'albuminurie', 'retour_couches', 'allaitement', 'dystocie', 'etat_enfant_naissance',
-    'sexe_enfant', 'apgar', 'observations_enfant', 'montant_paye', 'mode_paiement', 'date_paiement', 'solde_restant', 'cout_total', 'date_prochain_paiement', 'notes_financieres', 
-    'somme_payee_1', 'date_paiement_1', 'somme_payee_2', 'date_paiement_2', 'somme_payee_3', 'date_paiement_3', 
-    'somme_payee_4', 'date_paiement_4', 'somme_payee_5', 'date_paiement_5', 'somme_payee_6', 'date_paiement_6', 
-    'somme_payee_7', 'date_paiement_7', 'somme_payee_8', 'date_paiement_8', 'somme_payee_9', 'date_paiement_9', 
-    'somme_payee_10', 'date_paiement_10',
+    'sexe_enfant', 'apgar', 'observations_enfant', 'payment'm 
 ]
 
 @app.context_processor
@@ -61,13 +57,6 @@ def init_db():
         email TEXT UNIQUE NOT NULL,
         password TEXT NOT NULL
     )''')
-
-    numeric_fields = {'payment', 'montant_paye', 'solde_restant', 'cout_total'}
-    columns_definition = ',\n'.join([
-        f"{field} REAL" if field in numeric_fields else f"{field} TEXT"
-        for field in PATIENT_FIELDS
-    ])
-
     # Note that the patients table has an extra column "created_at" after "id"
     c.execute('''CREATE TABLE IF NOT EXISTS patients (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -174,8 +163,6 @@ def delete_patient(id):
             'status': 'failed',
             'message': str(e)
         }), 500
-
-
 
 @app.route('/update/<int:patient_id>', methods=['GET'])
 def update_patient_form(patient_id):
