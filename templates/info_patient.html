@@ -2,15 +2,27 @@
 
 {% block content %}
 
-
 <body class="bg-gray-100">
 
   <div class="max-w-4xl mx-auto my-10 bg-white p-8 rounded-lg shadow">
     <h2 class="text-xl font-semibold italic text-center mb-4">Formulaire de Surveillance de la Grossesse</h2>
 
+    <div class="sticky top-0 bg-white z-50 py-2 border-b mb-6">
+      <nav class="flex space-x-4 overflow-x-auto px-2">
+        <a href="#informations" class="text-sm px-3 py-1 hover:bg-gray-100 rounded">Infos Patiente</a>
+        <a href="#resume" class="text-sm px-3 py-1 hover:bg-gray-100 rounded">Résumé Grossesse</a>
+        <a href="#obstetrique" class="text-sm px-3 py-1 hover:bg-gray-100 rounded">Histoire Obstétrique</a>
+        <a href="#medicale" class="text-sm px-3 py-1 hover:bg-gray-100 rounded">Histoire Médicale</a>
+        <a href="#nutrition" class="text-sm px-3 py-1 hover:bg-gray-100 rounded">Nutrition</a>
+        <a href="#examen" class="text-sm px-3 py-1 hover:bg-gray-100 rounded">Examen Physique</a>
+        <a href="#immunisation" class="text-sm px-3 py-1 hover:bg-gray-100 rounded">Immunisation</a>
+        <a href="#visites" class="text-sm px-3 py-1 hover:bg-gray-100 rounded">Visites</a>
+      </nav>
+    </div>
+
     <form id="formulaire" onsubmit="event.preventDefault(); afficherMessageEtReinitialiser();">
       <!-- Informations sur le patient -->
-      <fieldset class="mb-6 border border-gray-300 rounded p-4">
+      <fieldset id="informations" class="mb-6 border border-gray-300 rounded p-4">
         <legend class="text-lg font-medium">Informations sur la Patiente</legend>
 
         <div class="grid grid-cols-2 gap-4 mt-4">
@@ -108,7 +120,7 @@
       </fieldset>
 
       <!-- Résumé de la Grossesse -->
-      <div class="mb-6 border border-gray-300 rounded p-4">
+      <div class="mb-6" id="resume">
         <h3 class="text-lg font-medium text-center mb-4">Résumé de la Grossesse</h3>
 
         <!-- Histoire Menstruelle -->
@@ -135,7 +147,6 @@
                 document.getElementById(cibleId).value = `${dpa.toLocaleDateString('fr-FR', options)} (${Math.max(0, Math.floor((dpa - new Date()) / (1000 * 60 * 60 * 24 * 30.44)))} mois restants)`;
               }
             </script>
-
 
             <div>
               <label for="cycle" class="block text-sm font-medium">Cycle</label>
@@ -177,8 +188,8 @@
             </div>
 
             <div>
-              <label for="muit" class="block text-sm font-medium">Muit</label>
-              <input type="text" id="muit" name="muit" class="w-full border rounded px-3 py-2">
+              <label for="muit" class="block text-sm font-medium">Mult</label>
+              <input type="text" id="muit" name="mult" class="w-full border rounded px-3 py-2">
             </div>
           </div>
         </div>
@@ -284,7 +295,7 @@
 
         <hr class="my-6 border-gray-400">
         <!-- Histoire Obstétrique -->
-        <div class="mb-6">
+        <div class="mb-6" id="obstetrique">
           <h4 class="font-medium mb-2">Histoire Obstétrique</h4>
           <div class="overflow-x-auto">
             <table class="min-w-full table-auto border border-gray-300">
@@ -297,7 +308,6 @@
                   <th class="border px-4 py-2">Poids</th>
                   <th class="border px-4 py-2">Lieu d'acc.</th>
                   <th class="border px-4 py-2">Type d'acc.</th>
-                  <th class="border px-4 py-2">Radiation</th>
                   <th class="border px-4 py-2">Remarques</th>
                 </tr>
               </thead>
@@ -311,8 +321,6 @@
                   <td class="border px-4 py-4"><input type="text" name="poids_1" class="w-full border-none"></td>
                   <td class="border px-4 py-4"><input type="text" name="lieu_acc_1" class="w-full border-none"></td>
                   <td class="border px-4 py-4"><input type="text" name="type_acc_1" class="w-full border-none"></td>
-                  <td class="border px-4 py-4"><input type="text" name="radiation_obstetrique_1"
-                      class="w-full border-none"></td>
                   <td class="border px-4 py-4"><input type="text" name="remarques_1" class="w-full border-none"></td>
                 </tr>
                 <tr>
@@ -323,8 +331,6 @@
                   <td class="border px-4 py-4"><input type="text" name="poids_2" class="w-full border-none"></td>
                   <td class="border px-4 py-4"><input type="text" name="lieu_acc_2" class="w-full border-none"></td>
                   <td class="border px-4 py-4"><input type="text" name="type_acc_2" class="w-full border-none"></td>
-                  <td class="border px-4 py-4"><input type="text" name="radiation_obstetrique_2"
-                      class="w-full border-none"></td>
                   <td class="border px-4 py-4"><input type="text" name="remarques_2" class="w-full border-none"></td>
                 </tr>
                 <tr>
@@ -335,8 +341,6 @@
                   <td class="border px-4 py-4"><input type="text" name="poids_3" class="w-full border-none"></td>
                   <td class="border px-4 py-4"><input type="text" name="lieu_acc_3" class="w-full border-none"></td>
                   <td class="border px-4 py-4"><input type="text" name="type_acc_3" class="w-full border-none"></td>
-                  <td class="border px-4 py-4"><input type="text" name="radiation_obstetrique_3"
-                      class="w-full border-none"></td>
                   <td class="border px-4 py-4"><input type="text" name="remarques_3" class="w-full border-none"></td>
                 </tr>
               </tbody>
@@ -344,7 +348,7 @@
           </div>
         </div>
         <!-- Histoire Médicale -->
-        <div class="mb-6 border border-gray-300 rounded p-4">
+        <div class="mb-6 border border-gray-300 rounded p-4" id="medicale">
           <h3 class="text-lg font-medium text-center mb-4">Histoire Médicale</h3>
 
           <!-- Antécédents Médicaux -->
@@ -591,7 +595,7 @@
 
           <hr style="border: 1px solid #ddd; margin: 20px 0;">
           <!-- Nutrition-Counseling -->
-          <div class="mb-6 border border-gray-300 rounded p-4">
+          <div class="mb-6 border border-gray-300 rounded p-4" id="nutrition">
             <h3 class="text-lg font-medium text-center mb-4">Nutrition-Counseling</h3>
 
             <!-- Conseils Nutritionnels -->
@@ -778,9 +782,9 @@
             </div>
           </div>
 
-          <!-- Examen Physique Initiale -->
-          <div class="mb-6 border border-gray-300 rounded p-6">
-            <h3 class="text-lg font-medium text-center mb-4">Examen Physique Initiale</h3>
+          <!-- Examen Physique Initial -->
+          <div class="mb-6 border border-gray-300 rounded p-6" id="examen">
+            <h3 class="text-lg font-medium text-center mb-4">Examen Physique Initial</h3>
 
             <!-- Tableau 1 -->
             <table class="table-auto w-full border border-gray-300 mb-4">
@@ -853,14 +857,20 @@
               <thead>
                 <tr class="bg-gray-200">
                   <th class="border px-4 py-2">Organes</th>
-                  <th class="border px-4 py-2">Taille et Commentaires</th>
+                  <th class="border px-4 py-2">Commentaires</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
+                  <td class="border px-4 py-2">Taille</td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="taille" class="w-full border rounded px-2 py-1">
+                  </td>
+                </tr>
+                <tr>
                   <td class="border px-4 py-2">Vulve</td>
                   <td class="border px-4 py-2">
-                    <input type="text" name="vulve" class="w-full border rounded px-2 py-1">
+                    <input type="text" name="taille" class="w-full border rounded px-2 py-1">
                   </td>
                 </tr>
                 <tr>
@@ -910,7 +920,7 @@
           </div>
 
           <!-- Immunisation et Tests -->
-          <div class="mb-6 border border-gray-300 rounded p-6">
+          <div class="mb-6 border border-gray-300 rounded p-6" id="immunisation">
             <h3 class="text-lg font-medium text-center mb-4">Immunisation et Tests</h3>
             <table class="table-auto w-full border border-gray-300">
               <thead>
@@ -923,10 +933,38 @@
                 <tr>
                   <td class="border px-4 py-2">Immunisation</td>
                   <td class="border px-4 py-2">
-                    <input type="text" name="immunisation" class="w-full border rounded px-2 py-1"
+                    <input type="text" name="toxoplasmose" class="w-full border rounded px-2 py-1"
                       placeholder="Résultat">
                   </td>
                 </tr>
+                <tr>
+                  <td class="border px-4 py-2">Herpès I</td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="herpes1" class="w-full border rounded px-2 py-1"
+                      placeholder="Résultat">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border px-4 py-2">Herpès II</td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="herpes2" class="w-full border rounded px-2 py-1"
+                      placeholder="Résultat">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border px-4 py-2">HPV</td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="hpv" class="w-full border rounded px-2 py-1"
+                      placeholder="Résultat">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border px-4 py-2">Électrophorèse de l'hémoglobine</td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="ehb" class="w-full border rounded px-2 py-1" placeholder="Résultat">
+                  </td>
+                </tr>
+
                 <tr>
                   <td class="border px-4 py-2">Sérologie Rubéole</td>
                   <td class="border px-4 py-2">
@@ -993,7 +1031,7 @@
           </div>
 
           <!-- Visites Subséquentes -->
-          <div class="mb-6 border border-gray-300 rounded p-6 overflow-x-auto">
+          <div class="mb-6 border border-gray-300 rounded p-6 overflow-x-auto" id="visites">
             <h3 class="text-lg font-medium text-center mb-4">Visites Subséquentes</h3>
             <table class="table-auto w-full border border-gray-300">
               <thead>

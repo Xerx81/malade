@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestion des Patients</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+  <!-- Date Range Picker CSS and JS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+  <script src="https://cdn.jsdelivr.net/npm/moment/moment.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.js"></script>
+  <style>
+    /* Custom styles */
+    .header-bg {
+      background-color: #1E40AF;
+    }
+    .header-text {
+      color: #FFFFFF;
+    }
+    .footer-bg {
+      background-color: #1E40AF;
+    }
+    .footer-text {
+      color: #FFFFFF;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <!-- Navigation Bar -->
+  <nav class="header-bg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16 items-center">
+        <!-- Logo and Brand -->
+        <div class="flex items-center">
+          <a href="{{ url_for('index') }}" class="flex items-center">
+            <span class="text-2xl font-bold header-text">Clinique du Dr Lauré ADRIEN</span>
+          </a>
+        </div>
+        <!-- Navigation Links -->
+        <div class="hidden sm:flex sm:items-center sm:space-x-4">
+          {% if 'user_id' in session %}
+          <a href="{{ url_for('dashboard') }}"
+            class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 transition">
+            Tableau de bord
+          </a>
+          <a href="{{ url_for('liste_patients') }}"
+            class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 transition">
+            Liste Patients
+          </a>
+          <a href="{{ url_for('info_patient') }}"
+            class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 transition">
+            Nouveau Patient
+          </a>
+          <!-- User Menu -->
+          <div class="ml-4 flex items-center space-x-3">
+            <a href="{{ url_for('profile') }}"
+              class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow-sm border border-blue-600 hover:bg-blue-50 transition">
+              Profil
+            </a>
+            <a href="{{ url_for('logout') }}"
+              class="bg-red-600 text-white px-4 py-2 rounded-lg shadow-sm hover:bg-red-700 transition">
+              Déconnexion
+            </a>
+          </div>
+          {% else %}
+          <a href="{{ url_for('login') }}"
+            class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-sm hover:bg-blue-700 transition">
+            Connexion
+          </a>
+          <a href="{{ url_for('register') }}"
+            class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow-sm border border-blue-600 hover:bg-blue-50 transition">
+            S'inscrire
+          </a>
+          {% endif %}
+        </div>
+        <!-- Mobile Menu Button -->
+        <div class="flex items-center sm:hidden">
+          <button type="button" onclick="toggleMobileMenu()"
+            class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 transition">
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Mobile Menu -->
+    <div class="sm:hidden hidden" id="mobile-menu">
+      <div class="px-2 pt-2 pb-3 space-y-1">
+        {% if 'user_id' in session %}
+        <a href="{{ url_for('dashboard') }}"
+          class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 transition">
+          Tableau de bord
+        </a>
+        <a href="{{ url_for('liste_patients') }}"
+          class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 transition">
+          Liste Patients
+        </a>
+        <a href="{{ url_for('info_patient') }}"
+          class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 transition">
+          Nouveau Patient
+        </a>
+        <a href="{{ url_for('profile') }}"
+          class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 transition">
+          Profil
+        </a>
+        <a href="{{ url_for('logout') }}"
+          class="block px-3 py-2 rounded-md text-base font-medium text-red-600 hover:text-red-900 hover:bg-red-700 transition">
+          Déconnexion
+        </a>
+        {% else %}
+        <a href="{{ url_for('login') }}"
+          class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 transition">
+          Connexion
+        </a>
+        <a href="{{ url_for('register') }}"
+          class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 transition">
+          S'inscrire
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+  <!-- Flash Messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+    {% for category, message in messages %}
+    <div
+      class="rounded-md p-4 mb-4 {% if category == 'error' %}bg-red-50 text-red-700 border-l-4 border-red-400{% else %}bg-green-50 text-green-700 border-l-4 border-green-400{% endif %}">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          {% if category == 'error' %}
+          <svg class="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 0L5 10.586 3.293 8.707a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4a1 1 0 000-1.414z" clip-rule="evenodd" />
+          </svg>
+          {% else %}
+          <svg class="h-5 w-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.293 8.707a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+          </svg>
+          {% endif %}
+        </div>
+        <div class="ml-3">
+          <p class="text-sm font-medium">{{ message }}</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% endwith %}
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    {% block content %}{% endblock %}
+  </main>
+  <!-- Back to Top Button -->
+  <button id="backToTop"
+    class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300 hover:bg-blue-700 focus:outline-none"
+    onclick="scrollToTop()" aria-label="Retour en haut">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+    </svg>
+  </button>
+  <!-- Footer -->
+  <footer class="footer-bg">
+    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+      <p class="text-center text-sm footer-text">
+        &copy; {{ now.year }} Clinique du Dr Lauré ADRIEN. Tous droits réservés.
+      </p>
+    </div>
+  </footer>
+  <!-- JavaScript for Mobile Menu -->
+  <script>
+    function toggleMobileMenu() {
+      const mobileMenu = document.getElementById('mobile-menu');
+      mobileMenu.classList.toggle('hidden');
+    }
+    // Back to top functionality
+    const backToTopButton = document.getElementById('backToTop');
+    // Show button when user scrolls down 200px
+    window.onscroll = function () {
+      if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        backToTopButton.classList.remove('opacity-0');
+        backToTopButton.classList.add('opacity-100');
+      } else {
+        backToTopButton.classList.remove('opacity-100');
+        backToTopButton.classList.add('opacity-0');
+      }
+    };
+    // Smooth scroll to top
+    function scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+  </script>
+</body>
+</html>

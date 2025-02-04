@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto my-6 bg-white p-8 rounded-lg shadow">
+    <h2 class="text-2xl font-semibold text-center mb-6">Liste des Patientes</h2>
+
+    {% if patients %}
+    <div class="mb-4 flex justify-between items-center">
+        <div class="flex items-center space-x-4">
+            <div class="relative">
+                <input type="text" id="daterange" placeholder="Sélectionner la période" 
+                       class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+            <button onclick="resetDateFilter()" 
+                    class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                Réinitialiser
+            </button>
+        </div>
+        <button onclick="generatePDF()" 
+                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            Télécharger PDF
+        </button>
+    </div>
+    <div class="overflow-x-auto">
+        <table id="patientsTable" class="min-w-full bg-white">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="py-3 px-4 text-left">ID</th>
+                    <th class="py-3 px-4 text-left">Nom</th>
+                    <th class="py-3 px-4 text-left">Date de naissance</th>
+                    <th class="py-3 px-4 text-left">Âge</th>
+                    <th class="py-3 px-4 text-left">Numéro Personnel</th>
+                    <th class="py-3 px-4 text-left">Statut</th>
+                    <th class="py-3 px-4 text-left">Date d'inscription</th>
+                    <th class="py-3 px-4 text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for patient in patients %}
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="py-3 px-4">{{ patient.id }}</td>
+                    <td class="py-3 px-4">{{ patient.nom }}</td>
+                    <td class="py-3 px-4">{{ patient.date_naissance }}</td>
+                    <td class="py-3 px-4">{{ patient.age }}</td>
+                    <td class="py-3 px-4">{{ patient.numero_personnel }}</td>
+                    <td class="py-3 px-4">{{ patient.statut }}</td>
+                    <td class="py-3 px-4">{{ patient.created_at }}</td>
+                    <td class="py-3 px-4 text-center flex flex-row space-x-2 justify-center items-center">
+                        <a href="{{ url_for('afficher_patient', patient_id=patient.id) }}" 
+                           class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 inline-block">
+                            Voir détails
+                        </a>
+                        <a href="/update/{{ patient.id }}"
+                           class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 inline-block">
+                            Modifier
+                        </a>
+                        <button onclick="deletePatient({{ patient.id }}, '{{ patient.nom }}')"
+                                class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 inline-block">
+                            Supprimer
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="text-center text-gray-600">Aucun patient enregistré.</p>
+    {% endif %}
+
+    <div class="mt-8 text-center">
+        <a href="{{ url_for('info_patient') }}" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+            Ajouter un Patient
+        </a>
+    </div>
+</div>
+
+<script>
+    window.jsPDF = window.jspdf.jsPDF;
+
+    // Initialize DataTables with date range filtering
+    $(document).ready(function() {
+        // Custom date range filter function
+        $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+            var startDate = $('#daterange').data('daterangepicker').startDate;
+            var endDate = $('#daterange').data('daterangepicker').endDate;
+            var dateStr = data[6]; // Index of the created_at column
+
+            if (!startDate || !endDate) return true;
+
+            var date = moment(dateStr, 'YYYY-MM-DD');
+            return date.isBetween(startDate, endDate, 'day', '[]');
+        });
+
+        // Initialize DataTable
+        var table = $('#patientsTable').DataTable({
+            "language": {
+                "url": "https://cdn.datatables.net/plug-ins/1.10.24/i18n/French.json"
+            },
+            "order": [[6, "desc"]] // Sort by created_at column by default
+        }, {
+            "processing": false
+        });
+        $('#patientsTable').DataTable().destroy();
+
+        // Initialize Date Range Picker
+        $('#daterange').daterangepicker({
+            autoUpdateInput: false,
+            locale: {
+                format: 'DD/MM/YYYY',
+                applyLabel: 'Appliquer',
+                cancelLabel: 'Annuler',
+                fromLabel: 'Du',
+                toLabel: 'Au',
+                customRangeLabel: 'Période personnalisée',
+                daysOfWeek: ['Di', 'Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa'],
+                monthNames: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
+            }
+        });
+
+        // Handle date range selection
+        $('#daterange').on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+            table.draw();
+        });
+
+        // Handle date range clear
+        $('#daterange').on('cancel.daterangepicker', function(ev, picker) {
+            $(this).val('');
+            table.draw();
+        });
+    });
+
+    // Function to reset date filter
+    function resetDateFilter() {
+        $('#daterange').val('');
+        var table = $('#patientsTable').DataTable();
+        table.draw();
+    }
+
+    function generatePDF() {
+        // Create new PDF document
+        const doc = new jsPDF();
+        
+        // Define page width
+        const pageWidth = doc.internal.pageSize.width;
+        const marginLeft = 15;
+        const marginRight = 15;
+        
+        // Add header with styling
+        doc.setFontSize(16);
+        doc.text('Clinique du Dr Lauré ADRIEN - Dossier Patiente', pageWidth / 2, 20, { align: 'center' });
+        
+        doc.setFontSize(10);
+        doc.text('Adresse : 5, Rue Rivière en face du Rectorat de l\'UEH', pageWidth / 2, 30, { align: 'center' });
+        doc.text('Email: ladrien_2001@yahoo.fr', pageWidth / 2, 35, { align: 'center' });
+        doc.text('Téléphone: +509 4930 4242', pageWidth / 2, 40, { align: 'center' });
+        
+        // Separator line
+        doc.setLineWidth(0.5);
+        doc.line(marginLeft, 45, pageWidth - marginRight, 45);
+        
+        // Report title and date
+        doc.setFontSize(14);
+        doc.text('Formulaire du dossier de la patiente', pageWidth / 2, 55, { align: 'center' });
+        
+        doc.setFontSize(10);
+        const currentDate = new Date().toLocaleDateString('fr-FR', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        doc.text(`Généré le : ${currentDate}`, pageWidth / 2, 62, { align: 'center' });
+        
+        // Prepare data for the table
+        const tableColumn = [
+            "ID", 
+            "Nom", 
+            "Date de naissance", 
+            "Âge", 
+            "Numéro Personnel",
+            "Statut",
+            "Date d'inscription"
+        ];
+        
+        const tableRows = [];
+        {% for patient in patients %}
+        tableRows.push([
+            "{{ patient.id }}", 
+            "{{ patient.nom }}", 
+            "{{ patient.date_naissance }}", 
+            "{{ patient.age }}", 
+            "{{ patient.numero_personnel }}",
+            "{{ patient.statut }}",
+            "{{ patient.created_at }}"
+        ]);
+        {% endfor %}
+        
+        // Generate the table
+        doc.autoTable({
+            head: [tableColumn],
+            body: tableRows,
+            startY: 70,
+            styles: {
+                fontSize: 10,
+                cellPadding: 3
+            },
+            headStyles: {
+                fillColor: [51, 122, 183],
+                textColor: [255, 255, 255],
+                fontSize: 11,
+                fontStyle: 'bold'
+            },
+            alternateRowStyles: {
+                fillColor: [245, 245, 245]
+            },
+            margin: { top: 70 }
+        });
+        
+        // Add footer
+        const pageCount = doc.internal.getNumberOfPages();
+        for (let i = 1; i <= pageCount; i++) {
+            doc.setPage(i);
+            doc.setFontSize(10);
+            doc.setTextColor(128);
+            doc.text(
+                `Page ${i} sur ${pageCount}`,
+                doc.internal.pageSize.width / 2,
+                doc.internal.pageSize.height - 10,
+                { align: 'center' }
+            );
+            
+            // Add timestamp
+            const timestamp = new Date().toLocaleString();
+            doc.text(
+                `Généré le ${timestamp}`,
+                doc.internal.pageSize.width - 15,
+                doc.internal.pageSize.height - 10,
+                { align: 'right' }
+            );
+            
+            // Add confidentiality notice
+            doc.setFontSize(8);
+            doc.text(
+                'CONFIDENTIEL - Document médical',
+                15,
+                doc.internal.pageSize.height - 10,
+                { align: 'left' }
+            );
+        }
+        
+        // Save the PDF
+        doc.save('Liste_des_Patientes.pdf');
+    }
+
+    function deletePatient(id, nom) {
+        if (confirm(`Êtes-vous sûr de vouloir supprimer le patient ${nom} ?`)) {
+            fetch(`/delete/${id}`, {
+                method: 'DELETE',
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('Patient supprimé avec succès');
+                    window.location.reload();
+                } else {
+                    alert('Erreur lors de la suppression: ' + data.message);
+                }
+            })
+            .catch(error => {
+                alert('Erreur lors de la suppression du patient');
+                console.error('Error:', error);
+            });
+        }
+    }
+</script>
+{% endblock %}

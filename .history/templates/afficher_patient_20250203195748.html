@@ -1,0 +1,1075 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="max-w-6xl mx-auto my-6 bg-white p-8 rounded-lg shadow-lg border border-gray-100">
+ 
+    <h2 class="text-2xl font-semibold text-center mb-6">Informations de la patiente</h2>
+    <div class="mt-8">
+      <button id="generatePDF" class="bg-green-500 text-white px-4 py-2 m-4 rounded hover:bg-green-600" onclick="generatePDF()">
+          Télécharger en PDF
+      </button>
+  </div>
+    <!-- Informations sur le patient -->
+    <div id="patient-data">
+    <div class="mb-8 space-y-4">
+        <h3 class="text-xl font-medium mb-4 text-gray-800">Informations Personnelles</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+           
+            <div class="bg-gray-50 p-3 rounded">
+              <span class="font-medium">Nom:</span>
+              <span class="ml-2">{{ patient.nom }}</span>
+          </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Adresse:</span>
+                <span class="ml-2">{{ patient.adresse }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Date de Naissance:</span>
+                <span class="ml-2">{{ patient.dateNaissance }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Âge:</span>
+                <span class="ml-2">{{ patient.age }} ans</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Statut Matrimonial:</span>
+                <span class="ml-2">{{ patient.statut }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Occupation:</span>
+                <span class="ml-2">{{ patient.occupation }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Numéro Personnel:</span>
+                <span class="ml-2">{{ patient.numeroPersonnel }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Numéro Établissement:</span>
+                <span class="ml-2">{{ patient.numeroEtablissement }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Date d'inscription:</span>
+                <span class="ml-2">{{ patient.created_at }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Informations sur le conjoint -->
+    {% if patient.statut == 'Mariée' %}
+    <div class="mt-8">
+        <h3 class="text-xl font-medium mb-4 text-gray-800">Informations sur le Conjoint</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Nom du Conjoint:</span>
+                <span class="ml-2">{{ patient.nomConjoint }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Occupation du Conjoint:</span>
+                <span class="ml-2">{{ patient.occupationConjoint }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Numéro de Téléphone:</span>
+                <span class="ml-2">{{ patient.numeroTelConjoint }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Numéro Établissement:</span>
+                <span class="ml-2">{{ patient.numeroEtablissementConjoint }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Date de Naissance:</span>
+                <span class="ml-2">{{ patient.dateNaissanceConjoint }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Âge:</span>
+                <span class="ml-2">{{ patient.ageConjoint }} ans</span>
+            </div></div>
+            {% endif %}
+            <div>
+              
+                <div class="text-2xl font-medium text-center mb-4 mt-16 mb-10">Résumé de la Grossesse</div>
+
+                <!-- Histoire Menstruelle -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <h4 class="font-medium text-xl mb-2">Histoire Menstruelle (Antécédents menstruels)</h4>
+
+                <div class="bg-gray-50 p-3 rounded">
+                    <span class="font-medium">DDR:</span>
+                    <span class="ml-2">{{ patient.ddr }}</span>
+                </div>
+                <div class="bg-gray-50 p-3 rounded">
+                    <span class="font-medium">DPA:</span>
+                    <span class="ml-2">{{ patient.dpa }}</span>
+                </div>
+                <div class="bg-gray-50 p-3 rounded">
+                    <span class="font-medium">Cycle:</span>
+                    <span class="ml-2">{{ patient.cycle }}</span>
+                </div>
+                <div class="bg-gray-50 p-3 rounded">
+                    <span class="font-medium">Durée:</span>
+                    <span class="ml-2">{{ patient.duree }}</span>
+                </div>
+                <div class="bg-gray-50 p-3 rounded">
+                    <span class="font-medium">G:</span>
+                    <span class="ml-2">{{ patient.g }}</span>
+                </div>
+                <div class="bg-gray-50 p-3 rounded">
+                    <span class="font-medium">A:</span>
+                    <span class="ml-2">{{ patient.a }}</span>
+                </div>
+                <div class="bg-gray-50 p-3 rounded">
+                    <span class="font-medium">T:</span>
+                    <span class="ml-2">{{ patient.t }}</span>
+                </div>
+                <div class="bg-gray-50 p-3 rounded">
+                    <span class="font-medium">E:</span>
+                    <span class="ml-2">{{ patient.e }}</span>
+                </div>
+                <div class="bg-gray-50 p-3 rounded">
+                    <span class="font-medium">P:</span>
+                    <span class="ml-2">{{ patient.p }}</span>
+                </div>
+                <div class="bg-gray-50 p-3 rounded">
+                    <span class="font-medium">MULT:</span>
+                    <span class="ml-2">{{ patient.mult }}</span>
+                </div>
+                <div class="bg-gray-50 p-3 rounded">
+                    <span class="font-medium">Type de contraception:</span>
+                    <span class="ml-2">{{ patient.type }}</span>
+                </div>
+                <div class="bg-gray-50 p-3 rounded">
+                    <span class="font-medium">Commentaire type:</span>
+                    <span class="ml-2">{{ patient.commentaireType }}</span>
+                </div>
+                <div class="bg-gray-50 p-3 rounded">
+                    <span class="font-medium">Durée contraception:</span>
+                    <span class="ml-2">{{ patient.dureeContraception }}</span>
+                </div>
+                <div class="bg-gray-50 p-3 rounded">
+                    <span class="font-medium">Commentaire durée:</span>
+                    <span class="ml-2">{{ patient.commentaireDuree }}</span>
+                </div>
+                <div class="bg-gray-50 p-3 rounded">
+                    <span class="font-medium">Dernière utilisation:</span>
+                    <span class="ml-2">{{ patient.derniereUtilisation }}</span>
+                </div>
+                <div class="bg-gray-50 p-3 rounded">
+                    <span class="font-medium">Commentaire dernière utilisation:</span>
+                    <span class="ml-2">{{ patient.commentaireDerniereUtilisation }}</span>
+</div>
+
+                <div class="text-2xl font-medium text-center mb-8 mt-10">Histoire de la grossesse</div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-gray-50 p-3 rounded">
+                        <span class="font-medium">Saignement:</span>
+                        <span class="ml-2">{{ patient.saignement }}</span>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded">
+                        <span class="font-medium">Vomissement:</span>
+                        <span class="ml-2">{{ patient.vomissement }}</span>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded">
+                        <span class="font-medium">Fièvre:</span>
+                        <span class="ml-2">{{ patient.fievre }}</span>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded">
+                        <span class="font-medium">Tabac:</span>
+                        <span class="ml-2">{{ patient.tabac }}</span>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded">
+                        <span class="font-medium">Alcool:</span>
+                        <span class="ml-2">{{ patient.alcool }}</span>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded">
+                        <span class="font-medium">Radiation:</span>
+                        <span class="ml-2">{{ patient.radiation }}</span>
+                    </div>
+                </div>
+                <br>
+            </div>
+
+        </div>
+        <div class="bg-white my-10 mx-14 p-8 rounded-lg shadow-lg border border-gray-100">
+        <h4 class="font-medium text-2xl mb-8 items-center">Histoire Obstétrique</h4>
+
+        <div class="flex justify-center">
+            <div class="w-full max-w-4xl">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full table-auto border border-gray-300">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="border px-4 py-2">No.</th>
+                                <th class="border px-4 py-2">Année</th>
+                                <th class="border px-4 py-2">Sexe</th>
+                                <th class="border px-4 py-2">Âge gest.</th>
+                                <th class="border px-4 py-2">Poids</th>
+                                <th class="border px-4 py-2">Lieu d'acc.</th>
+                                <th class="border px-4 py-2">Type d'acc.</th>
+                              <!--  <th class="border px-4 py-2">Radiation</th>-->
+                                <th class="border px-4 py-2">Remarques</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Rangées dynamiques -->
+                            <tr>
+                                <td class="border px-4 py-4">{{ patient.no_1 }}</td>
+                                <td class="border px-4 py-4">{{ patient.annee_1 }}</td>
+                                <td class="border px-4 py-4">{{ patient.sexe_1 }}</td>
+                                <td class="border px-4 py-4">{{ patient.age_gest_1 }}</td>
+                                <td class="border px-4 py-4">{{ patient.poids_1 }}</td>
+                                <td class="border px-4 py-4">{{ patient.lieu_acc_1 }}</td>
+                                <td class="border px-4 py-4">{{ patient.type_acc_1 }}</td>
+                             <!--    <td class="border px-4 py-4">{{ patient.radiation_obstetrique_1 }}</td>-->
+                                <td class="border px-4 py-4">{{ patient.remarques_1 }}</td>
+                            </tr>
+                            <tr>
+                                <td class="border px-4 py-4">{{ patient.no_2 }}</td>
+                                <td class="border px-4 py-4">{{ patient.annee_2 }}</td>
+                                <td class="border px-4 py-4">{{ patient.sexe_2 }}</td>
+                                <td class="border px-4 py-4">{{ patient.age_gest_2 }}</td>
+                                <td class="border px-4 py-4">{{ patient.poids_2 }}</td>
+                                <td class="border px-4 py-4">{{ patient.lieu_acc_2 }}</td>
+                                <td class="border px-4 py-4">{{ patient.type_acc_2 }}</td>
+                             <!--    <td class="border px-4 py-4">{{ patient.radiation_obstetrique_2 }}</td>-->
+                                <td class="border px-4 py-4">{{ patient.remarques_2 }}</td>
+                            </tr>
+                            <tr>
+                                <td class="border px-4 py-4">{{ patient.no_3 }}</td>
+                                <td class="border px-4 py-4">{{ patient.annee_3 }}</td>
+                                <td class="border px-4 py-4">{{ patient.sexe_3 }}</td>
+                                <td class="border px-4 py-4">{{ patient.age_gest_3 }}</td>
+                                <td class="border px-4 py-4">{{ patient.poids_3 }}</td>
+                                <td class="border px-4 py-4">{{ patient.lieu_acc_3 }}</td>
+                                <td class="border px-4 py-4">{{ patient.type_acc_3 }}</td>
+                             <!--    <td class="border px-4 py-4">{{ patient.radiation_obstetrique_3 }}</td>-->
+                                <td class="border px-4 py-4">{{ patient.remarques_3 }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+      </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white my-10 mx-14 p-8 rounded-lg shadow-lg border border-gray-100">
+            <h2 class="text-2xl font-semibold mb-6">Histoire Médicale</h2><br>
+            
+
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Maladies rénales:</span>
+                <span class="ml-2">{{ patient.maladies_renales }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Problèmes cardiaques:</span>
+                <span class="ml-2">{{ patient.problemes_cardiaques }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Hypertension artérielle:</span>
+                <span class="ml-2">{{ patient.hypertension_arterielle }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Diabète:</span>
+                <span class="ml-2">{{ patient.diabete }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Infection:</span>
+                <span class="ml-2">{{ patient.infection }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Maladie de la thyroide:</span>
+                <span class="ml-2">{{ patient.maladie_thyroide }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Transfusion:</span>
+                <span class="ml-2">{{ patient.transfusion }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Chirurgie:</span>
+                <span class="ml-2">{{ patient.chirurgie }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Herpes:</span>
+                <span class="ml-2">{{ patient.herpes }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Antécédent d'hypertension dans la famille:</span>
+                <span class="ml-2">{{ patient.antecedent_hypertension_fam }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Remarques sur l'hypertension dans la famille:</span>
+                <span class="ml-2">{{ patient.remarques_hypertension_fam }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Antécédent de diabète dans la famille:</span>
+                <span class="ml-2">{{ patient.antecedent_diabete_fam }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Remarques sur le diabète dans la famille:</span>
+                <span class="ml-2">{{ patient.remarques_diabete_fam }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Antécédent de maladie cardiaque dans la famille:</span>
+                <span class="ml-2">{{ patient.antecedent_maladie_cardiaque_fam }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Remarques sur la maladie cardiaque dans la famille:</span>
+                <span class="ml-2">{{ patient.remarques_maladie_cardiaque_fam }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Antécédent de gemellaire dans la famille:</span>
+                <span class="ml-2">{{ patient.antecedent_gemellaire_fam }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Remarques sur le gemellaire dans la famille:</span>
+                <span class="ml-2">{{ patient.remarques_gemellaire_fam }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Antécédent de malformation dans la famille:</span>
+                <span class="ml-2">{{ patient.antecedent_malformation_fam }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Remarques sur la malformation dans la famille:</span>
+                <span class="ml-2">{{ patient.remarques_malformation_fam }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Antécédent de maladie génétique dans la famille:</span>
+                <span class="ml-2">{{ patient.antecedent_maladie_genetique_fam }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Remarques sur la maladie génétique dans la famille:</span>
+                <span class="ml-2">{{ patient.remarques_maladie_genetique_fam }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Consommation de produits laitiers:</span>
+                <span class="ml-2">{{ patient.produitsLaitiers }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Consommation de pain et céréales:</span>
+                <span class="ml-2">{{ patient.painCereales }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Consommation de fruits et légumes:</span>
+                <span class="ml-2">{{ patient.fruitsLegumes }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Consommation de sources de protéines:</span>
+                <span class="ml-2">{{ patient.sourcesProteiniques }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Tabagisme:</span>
+                <span class="ml-2">{{ patient.tabagisme }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Alcoolisme:</span>
+                <span class="ml-2">{{ patient.alcoolisme }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Stupéfiants:</span>
+                <span class="ml-2">{{ patient.stupefiants }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Médicaments:</span>
+                <span class="ml-2">{{ patient.medicaments }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Travail:</span>
+                <span class="ml-2">{{ patient.travail }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Exercice:</span>
+                <span class="ml-2">{{ patient.exercice }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Rapport sexuel:</span>
+                <span class="ml-2">{{ patient.rapportSexuel }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Complications grossesse:</span>
+                <span class="ml-2">{{ patient.complicationsGrossesse }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Soins dentaires:</span>
+                <span class="ml-2">{{ patient.soinsDentaires }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Allaitement maternel:</span>
+                <span class="ml-2">{{ patient.allaitementMaternel }}</span>
+            </div>
+            <div class="bg-gray-50 p-3 rounded">
+                <span class="font-medium">Classe prénatale:</span>
+                <span class="ml-2">{{ patient.classePrenatale }}</span>
+            </div>
+            <div class="mb-6 border border-gray-300 rounded p-6">
+                <h3 class="text-lg font-medium text-center mb-4">Examen Physique Initiale</h3>
+              
+                <!-- Tableau 1 -->
+                <table class="table-auto w-full border border-gray-300 mb-4">
+                  <thead>
+                    <tr class="bg-gray-200">
+                      <th class="border px-4 py-2">Organes</th>
+                      <th class="border px-4 py-2">Poids et Commentaires</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="border px-4 py-2">Tête, cou, thyroïde</td>
+                      <td class="border px-4 py-2">
+                        <input type="text" name="tete_cou_thyroide" value="{{ patient.tete_cou_thyroide }}" class="w-full border rounded px-2 py-1">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="border px-4 py-2">Dents</td>
+                      <td class="border px-4 py-2">
+                        <input type="text" name="dents" value="{{ patient.dents }}" class="w-full border rounded px-2 py-1">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="border px-4 py-2">Thorax</td>
+                      <td class="border px-4 py-2">
+                        <input type="text" name="thorax" value="{{ patient.thorax }}" class="w-full border rounded px-2 py-1">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="border px-4 py-2">Seins</td>
+                      <td class="border px-4 py-2">
+                        <input type="text" name="seins" value="{{ patient.seins }}" class="w-full border rounded px-2 py-1">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="border px-4 py-2">Système Cardio-Vasculaire</td>
+                      <td class="border px-4 py-2">
+                        <input type="text" name="systeme_cardiovasculaire" value="{{ patient.systeme_cardiovasculaire }}" class="w-full border rounded px-2 py-1">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="border px-4 py-2">Abdomen</td>
+                      <td class="border px-4 py-2">
+                        <input type="text" name="abdomen" value="{{ patient.abdomen }}" class="w-full border rounded px-2 py-1">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              
+                <!-- Tableau 2 -->
+                <table class="table-auto w-full border border-gray-300 mb-4">
+                  <thead>
+                    <tr class="bg-gray-200">
+                      <th class="border px-4 py-2">Structure osseuse</th>
+                      <th class="border px-4 py-2">Observation et commentaire</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="border px-4 py-2">Bassin</td>
+                      <td class="border px-4 py-2">
+                        <input type="text" name="bassin" value="{{ patient.bassin }}" class="w-full border rounded px-2 py-1">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              
+                <!-- Tableau 4 -->
+                <table class="table-auto w-full border border-gray-300 mb-4">
+                  <thead>
+                    <tr class="bg-gray-200">
+                      <th class="border px-4 py-2">Organes</th>
+                      <th class="border px-4 py-2">Taille et Commentaires</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="border px-4 py-2">Vulve</td>
+                      <td class="border px-4 py-2">
+                        <input type="text" name="vulve" value="{{ patient.vulve }}" class="w-full border rounded px-2 py-1">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="border px-4 py-2">Vagin</td>
+                      <td class="border px-4 py-2">
+                        <input type="text" name="vagin" value="{{ patient.vagin }}" class="w-full border rounded px-2 py-1">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="border px-4 py-2">Col</td>
+                      <td class="border px-4 py-2">
+                        <input type="text" name="col" value="{{ patient.col }}" class="w-full border rounded px-2 py-1">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="border px-4 py-2">Utérus</td>
+                      <td class="border px-4 py-2">
+                        <input type="text" name="uterus" value="{{ patient.uterus }}" class="w-full border rounded px-2 py-1">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="border px-4 py-2">Anus</td>
+                      <td class="border px-4 py-2">
+                        <input type="text" name="anus" value="{{ patient.anus }}" class="w-full border rounded px-2 py-1">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="border px-4 py-2">Varicosités</td>
+                      <td class="border px-4 py-2">
+                        <input type="text" name="varicosites" value="{{ patient.varicosites }}" class="w-full border rounded px-2 py-1">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              
+                <!-- Observations -->
+                <div class="mb-4">
+                  <h4 class="font-medium mb-2">Observations</h4>
+                  <textarea name="observations" class="w-full border rounded px-3 py-2 h-24">{{ patient.observations }}</textarea>
+                </div>
+              
+                <!-- Risques identifiés -->
+                <div>
+                  <h4 class="font-medium mb-2">Risques identifiés : Allergie - Médication</h4>
+                  <textarea name="risques_identifies" class="w-full border rounded px-3 py-2 h-16">{{ patient.risques_identifies }}</textarea>
+                </div>
+              </div>
+              
+              <!-- Immunisation et Tests -->
+              <div class="mb-6 border border-gray-300 rounded p-6">
+                <h3 class="text-lg font-medium text-center mb-4">Immunisation et Tests</h3>
+                <table class="table-auto w-full border border-gray-300">
+                  <thead>
+                    <tr class="bg-gray-200">
+                      <th class="border px-4 py-2">Test</th>
+                      <th class="border px-4 py-2">Résultat</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                    <td class="border px-4 py-2">Sérologie Toxoplasmose</td>
+                      <td class="border px-4 py-2">
+                        <input type="text" name="toxoplasmose" value="{{ patient.toxoplasmose }}" class="w-full border rounded px-2 py-1" placeholder="Résultat">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="border px-4 py-2">Herpès I</td>
+                        <td class="border px-4 py-2">
+                          <input type="text" name="herpes1" value="{{ patient.herpes1 }}" class="w-full border rounded px-2 py-1" placeholder="Résultat">
+                        </td>
+                      </tr>
+                    <tr>
+                      <td class="border px-4 py-2">Herpès II</td>
+                        <td class="border px-4 py-2">
+                          <input type="text" name="herpes2" value="{{ patient.herpes2 }}" class="w-full border rounded px-2 py-1" placeholder="Résultat">
+                        </td>
+                      </tr>
+                    <tr>
+                      <td class="border px-4 py-2">HPV</td>
+                        <td class="border px-4 py-2">
+                          <input type="text" name="hpv" value="{{ patient.hpv }}" class="w-full border rounded px-2 py-1" placeholder="Résultat">
+                        </td>
+                      </tr>
+                    <tr>
+                      <td class="border px-4 py-2">Électrophorèse de l'hémoglobine</td>
+                        <td class="border px-4 py-2">
+                          <input type="text" name="ehb" value="{{ patient.ehb }}" class="w-full border rounded px-2 py-1" placeholder="Résultat">
+                        </td>
+                      </tr>
+
+                    <tr>
+                      <td class="border px-4 py-2">Sérologie Rubéole</td>
+                      <td class="border px-4 py-2">
+                        <input type="text" name="serologie_rubeole" value="{{ patient.serologie_rubeole }}" class="w-full border rounded px-2 py-1" placeholder="Résultat">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="border px-4 py-2">HBs Ag</td>
+                      <td class="border px-4 py-2">
+                        <input type="text" name="hbs_ag" value="{{ patient.hbs_ag }}" class="w-full border rounded px-2 py-1" placeholder="Résultat">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="border px-4 py-2">Syphilis</td>
+                      <td class="border px-4 py-2">
+                        <select id="syphilis" name="syphilis" class="w-full border rounded px-2 py-1">
+                          <option value="" disabled selected>Sélectionner</option>
+                          <option value="Oui" {% if patient.syphilis == "Oui" %}selected{% endif %}>Oui</option>
+                          <option value="Non" {% if patient.syphilis == "Non" %}selected{% endif %}>Non</option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="border px-4 py-2">Hb</td>
+                      <td class="border px-4 py-2">
+                        <input type="text" name="hb" value="{{ patient.hb }}" class="w-full border rounded px-2 py-1" placeholder="Résultat">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="border px-4 py-2">GS</td>
+                      <td class="border px-4 py-2">
+                        <select id="gs" name="gs" class="w-full border rounded px-2 py-1">
+                          <option value="" disabled selected>Sélectionner</option>
+                          <option value="A+" {% if patient.gs == "A+" %}selected{% endif %}>A+</option>
+                          <option value="A-" {% if patient.gs == "A-" %}selected{% endif %}>A-</option>
+                          <option value="B+" {% if patient.gs == "B+" %}selected{% endif %}>B+</option>
+                          <option value="B-" {% if patient.gs == "B-" %}selected{% endif %}>B-</option>
+                          <option value="AB+" {% if patient.gs == "AB+" %}selected{% endif %}>AB+</option>
+                          <option value="AB-" {% if patient.gs == "AB-" %}selected{% endif %}>AB-</option>
+                          <option value="O+" {% if patient.gs == "O+" %}selected{% endif %}>O+</option>
+                          <option value="O-" {% if patient.gs == "O-" %}selected{% endif %}>O-</option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="border px-4 py-2">HIV</td>
+                      <td class="border px-4 py-2">
+                        <select id="hiv" name="hiv" class="w-full border rounded px-2 py-1">
+                          <option value="" disabled selected>Sélectionner</option>
+                          <option value="Oui" {% if patient.hiv == "Oui" %}selected{% endif %}>Oui</option>
+                          <option value="Non" {% if patient.hiv == "Non" %}selected{% endif %}>Non</option>
+                        </select>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              
+                <!-- Remarque -->
+                <div class="mt-6">
+                  <h4 class="font-medium mb-2">Remarque</h4>
+                  <textarea name="remarque" class="w-full border rounded px-3 py-2 h-24">{{ patient.remarque }}</textarea>
+                </div>
+                <div class="mt-6">
+                  <h4 class="font-medium mb-2">Date</h4>
+                  <input type="date" name="date" class="w-full border rounded px-3 py-2" value="{{ patient.date }}">
+                </div>
+                
+                <div class="mt-6">
+                  <h4 class="font-medium mb-2">Poids</h4>
+                  <input type="text" name="poids" class="w-full border rounded px-3 py-2" value="{{ patient.poids }}">
+                </div>
+                
+                <div class="mt-6">
+                  <h4 class="font-medium mb-2">Âge Gestationnel</h4>
+                  <input type="text" name="age_gestationnel" class="w-full border rounded px-3 py-2" value="{{ patient.age_gestationnel }}">
+                </div>
+                
+                <div class="mt-6">
+                  <h4 class="font-medium mb-2">Hu</h4>
+                  <input type="text" name="hu" class="w-full border rounded px-3 py-2" value="{{ patient.hu }}">
+                </div>
+                
+                <div class="mt-6">
+                  <h4 class="font-medium mb-2">Pression Post Accouchement</h4>
+                  <input type="text" name="pres_post" class="w-full border rounded px-3 py-2" value="{{ patient.pres_post }}">
+                </div>
+                
+                <div class="mt-6">
+                  <h4 class="font-medium mb-2">BDCF</h4>
+                  <input type="text" name="bdcf" class="w-full border rounded px-3 py-2" value="{{ patient.bdcf }}">
+                </div>
+                
+                <div class="mt-6">
+                  <h4 class="font-medium mb-2">TA</h4>
+                  <input type="text" name="ta" class="w-full border rounded px-3 py-2" value="{{ patient.ta }}">
+                </div>
+                
+                <div class="mt-6">
+                  <h4 class="font-medium mb-2">Urine Pr Glu</h4>
+                  <input type="text" name="urine_pr_glu" class="w-full border rounded px-3 py-2" value="{{ patient.urine_pr_glu }}">
+                </div>
+                
+                <div class="mt-6">
+                  <h4 class="font-medium mb-2">Risque</h4>
+                  <input type="text" name="risque" class="w-full border rounded px-3 py-2" value="{{ patient.risque }}">
+                </div>
+                
+                <div class="mt-6">
+                  <h4 class="font-medium mb-2">Commentaire Lab Med</h4>
+                  <textarea name="commentaire_lab_med" class="w-full border rounded px-3 py-2 h-24">{{ patient.commentaire_lab_med }}</textarea>
+                </div>
+                
+                <div class="mt-6">
+                  <h4 class="font-medium mb-2">Date Accouchement</h4>
+                  <input type="date" name="date_accouchement" class="w-full border rounded px-3 py-2" value="{{ patient.date_accouchement }}">
+                </div>
+                
+                <div class="mt-6">
+                  <h4 class="font-medium mb-2">Poids Mère</h4>
+                  <input type="text" name="poids" class="w-full border rounded px-3 py-2" value="{{ patient.poids_mere }}">
+                </div>
+                
+                <div class="mt-6">
+                  <h4 class="font-medium mb-2">TA Mère</h4>
+                  <input type="text" name="ta_mere" class="w-full border rounded px-3 py-2" value="{{ patient.ta_mere }}">
+                </div>
+                
+                <div class="mt-6">
+                  <h4 class="font-medium mb-2">Albuminurie</h4>
+                  <input type="text" name="albuminurie" class="w-full border rounded px-3 py-2" value="{{ patient.albuminurie }}">
+                </div>
+                
+                <div class="mt-6">
+                  <h4 class="font-medium mb-2">Retour Couches</h4>
+                  <input type="text" name="retour_couches" class="w-full border rounded px-3 py-2" value="{{ patient.retour_couches }}">
+                </div>
+                
+                <div class="mt-6">
+                  <h4 class="font-medium mb-2">Allaitement</h4>
+                  <input type="text" name="allaitement" class="w-full border rounded px-3 py-2" value="{{ patient.allaitement }}">
+                </div>
+                
+                <div class="mt-6">
+                  <h4 class="font-medium mb-2">Dystocie</h4>
+                  <input type="text" name="dystocie" class="w-full border rounded px-3 py-2" value="{{ patient.dystocie }}">
+                </div>
+                
+                <div class="mt-6">
+                  <h4 class="font-medium mb-2">État Enfant à la Naissance</h4>
+                  <input type="text" name="etat_enfant_naissance" class="w-full border rounded px-3 py-2" value="{{ patient.etat_enfant_naissance }}">
+                </div>
+                
+                <div class="mt-6">
+                  <h4 class="font-medium mb-2">Sexe Enfant</h4>
+                  <input type="text" name="sexe_enfant" class="w-full border rounded px-3 py-2" value="{{ patient.sexe_enfant }}">
+                </div>
+                
+                <div class="mt-6">
+                  <h4 class="font-medium mb-2">Apgar</h4>
+                  <input type="text" name="apgar" class="w-full border rounded px-3 py-2" value="{{ patient.apgar }}">
+                </div>
+                
+                <div class="mt-6">
+                  <h4 class="font-medium mb-2">Observations Enfant</h4>
+                  <textarea name="observations_enfant" class="w-full border rounded px-3 py-2 h-24">{{ patient.observations_enfant }}</textarea>
+                </div>
+                
+
+              </div>
+        </div>
+    </div>
+  </div>
+
+    <div class="mt-8 text-center">
+        <a href="{{ url_for('info_patient') }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            Retour au Formulaire
+        </a>
+    </div>
+</div>
+<script>
+    function generatePDF() {
+        const { jsPDF } = window.jspdf;
+        
+        // PDF Configuration
+        const doc = new jsPDF();
+        const pageWidth = doc.internal.pageSize.width;
+        const pageHeight = doc.internal.pageSize.height;
+        const marginLeft = 20;
+        const marginRight = 20;
+        
+        // Add a background color to the header
+        doc.setFillColor(240, 248, 255); // Light blue background
+        doc.rect(0, 0, pageWidth, 50, 'F');
+        
+        // Add a logo or decorative element (you can replace this with an actual logo)
+        doc.setDrawColor(70, 130, 180); // Steel blue
+        doc.setLineWidth(2);
+        doc.circle(30, 25, 10);
+        
+        // Header with improved styling
+        doc.setTextColor(0, 51, 102); // Dark blue text
+        doc.setFontSize(20);
+        doc.setFont(undefined, 'bold');
+        doc.text('Clinique du Dr Lauré ADRIEN', pageWidth / 2, 20, { align: 'center' });
+        
+        doc.setFontSize(16);
+        doc.setFont(undefined, 'normal');
+        doc.text('Dossier Patiente', pageWidth / 2, 30, { align: 'center' });
+        
+        // Contact information with icons (using custom drawing)
+        doc.setFontSize(10);
+        doc.setTextColor(60, 60, 60); // Dark gray
+        doc.text('5, Rue Rivière en face du Rectorat de l\'UEH', pageWidth / 2, 40, { align: 'center' });
+        doc.text('ladrien_2001@yahoo.fr.com', marginLeft, 45);
+        doc.text('+509 4930 4242', pageWidth - marginRight - 40, 45);
+
+        // Decorative border
+        doc.setDrawColor(70, 130, 180);
+        doc.setLineWidth(0.5);
+        doc.roundedRect(marginLeft - 5, 55, pageWidth - (2 * marginLeft) + 10, pageHeight - 70, 3, 3);
+
+        // Helper function to add styled sections
+        function addSection(title, content) {
+            // Check if we need a new page
+            if (yPosition > pageHeight - 30) {
+                doc.addPage();
+                yPosition = 30;
+                // Add header to new page
+                doc.setFillColor(240, 248, 255);
+                doc.rect(0, 0, pageWidth, 20, 'F');
+                doc.setTextColor(0, 51, 102);
+                doc.setFontSize(12);
+                doc.text('Dossier Patiente - Suite', pageWidth / 2, 15, { align: 'center' });
+            }
+
+            // Section title with background
+            const headerHeight = 10; // Adjusted height
+            doc.setTextColor(0, 51, 102);
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'bold');
+            doc.text(title, marginLeft, yPosition);
+            yPosition += 7;
+            
+            // Content with alternating backgrounds
+            doc.setFontSize(10);
+            doc.setFont(undefined, 'normal');
+            let isEven = false;
+            Object.entries(content).forEach(([key, value]) => {
+                if (yPosition > pageHeight - 30) {
+                    doc.addPage();
+                    yPosition = 30;
+                    // Add header to new page
+                    doc.setFillColor(240, 248, 255);
+                    doc.rect(0, 0, pageWidth, 20, 'F');
+                    doc.setTextColor(0, 51, 102);
+                    doc.setFontSize(12);
+                    doc.text('Dossier Patiente - Suite', pageWidth / 2, 15, { align: 'center' });
+                }
+                
+                // Alternate row backgrounds
+                if (isEven) {
+                    doc.setFillColor(248, 250, 252);
+                    doc.rect(marginLeft - 2, yPosition - 5, pageWidth - (2 * marginLeft) + 4, 7, 'F');
+                }
+                
+                doc.setTextColor(60, 60, 60);
+                doc.setFont(undefined, 'bold');
+                // Place key on the left
+                doc.text(key + ':', marginLeft + 5, yPosition);
+                doc.setFont(undefined, 'normal');
+                // Place value on the right, aligned to the right margin
+                const valueWidth = doc.getStringUnitWidth(value || '-') * doc.internal.getFontSize() / doc.internal.scaleFactor;
+                doc.text(value || '-', pageWidth - marginRight - valueWidth - 5, yPosition);
+                
+                yPosition += 7;
+                isEven = !isEven;
+            });
+            yPosition += 5; // Add space between sections
+        }
+
+        // Modified table function with better styling
+        function addObstetriqueTable() {
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'bold');
+            doc.setTextColor(0, 51, 102);
+            doc.text('Histoire Obstétrique', marginLeft, yPosition);
+            yPosition += 14;
+
+            const headers = ['Année', 'Sexe', 'Âge gest.', 'Poids'];
+            const data = [
+                ['{{ patient.annee_1 }}', '{{ patient.sexe_1 }}', '{{ patient.age_gest_1 }}', '{{ patient.poids_1 }}'],
+                ['{{ patient.annee_2 }}', '{{ patient.sexe_2 }}', '{{ patient.age_gest_2 }}', '{{ patient.poids_2 }}'],
+                ['{{ patient.annee_3 }}', '{{ patient.sexe_3 }}', '{{ patient.age_gest_3 }}', '{{ patient.poids_3 }}']
+            ];
+
+            const cellWidth = 45;
+            const cellHeight = 10;
+            const startX = marginLeft;
+            let currentY = yPosition;
+
+            // Gradient header
+            doc.setFillColor(70, 130, 180);
+            headers.forEach((header, i) => {
+                doc.setFillColor(230, 240, 250);
+                doc.rect(startX + (i * cellWidth), currentY, cellWidth, cellHeight, 'FD');
+                doc.setTextColor(0, 51, 102);
+                doc.setFont(undefined, 'bold');
+                doc.text(header, startX + (i * cellWidth) + 2, currentY + 7);
+            });
+            
+            currentY += cellHeight;
+
+            // Zebra striping for data rows
+            data.forEach((row, rowIndex) => {
+                const isEven = rowIndex % 2 === 0;
+                row.forEach((cell, i) => {
+                    if (isEven) {
+                        doc.setFillColor(248, 250, 252);
+                    } else {
+                        doc.setFillColor(255, 255, 255);
+                    }
+                    doc.rect(startX + (i * cellWidth), currentY, cellWidth, cellHeight, 'FD');
+                    doc.setTextColor(60, 60, 60);
+                    doc.setFont(undefined, 'normal');
+                    doc.text(cell || '-', startX + (i * cellWidth) + 2, currentY + 7);
+                });
+                currentY += cellHeight;
+            });
+
+            yPosition = currentY + 7;
+        }
+
+        // Footer with page numbers
+        const totalPages = doc.internal.getNumberOfPages();
+        for (let i = 1; i <= totalPages; i++) {
+            doc.setPage(i);
+            doc.setFontSize(8);
+            doc.setTextColor(128, 128, 128);
+            doc.text(`Page ${i} of ${totalPages}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
+            doc.text('Clinique du Dr Lauré ADRIEN - Document Confidentiel', pageWidth / 2, pageHeight - 5, { align: 'center' });
+        }
+
+        // Get patient data
+        const patientInfo = {
+            'Nom': '{{ patient.nom }}',
+            'Date de naissance': '{{ patient.date_naissance }}',
+            'Âge': '{{ patient.age }}',
+            'Adresse': '{{ patient.adresse }}',
+            'Statut Matrimonial': '{{ patient.statut }}',
+            'Occupation': '{{ patient.occupation }}',
+            'Numéro Personnel': '{{ patient.numero_personnel }}',
+            'Numéro Établissement': '{{ patient.numero_etablissement }}',
+            'Date d\'inscription': '{{ patient.created_at }}'
+        };
+        const conjointInfo = {
+            'Nom': '{{ patient.nom_conjoint }}',
+            'Occupation': '{{ patient.occupation_conjoint }}',
+            'Numéro de Téléphone': '{{ patient.numero_tel_conjoint }}',
+            'Numéro Établissement': '{{ patient.numero_etablissement_conjoint }}',
+            'Date de Naissance': '{{ patient.date_naissance_conjoint }}',
+            'Âge': '{{ patient.age_conjoint }}'
+        };
+
+        const grossesseInfo = {
+    'DDR': '{{ patient.ddr }}',
+    'DPA': '{{ patient.dpa }}',
+    'Cycle': '{{ patient.cycle }}',
+    'Durée': '{{ patient.duree }}',
+    'G': '{{ patient.g }}',
+    'A': '{{ patient.a }}',
+    'T': '{{ patient.t }}',
+    'E': '{{ patient.e }}',
+    'P': '{{ patient.p }}',
+    'MUIT': '{{ patient.muit }}',
+    'Contraception': '{{ patient.type_contraception }}',
+    'Commentaire type': '{{ patient.commentaire_type }}',
+    'Commentaire durée': '{{ patient.commentaire_duree }}',
+    'Dernière utilisation': '{{ patient.derniere_utilisation }}',
+    'Commentaire dernière utilisation': '{{ patient.commentaire_derniere_utilisation }}'
+};
+
+
+        const histoireGrossesse = {
+            'Saignement': '{{ patient.saignement }}',
+            'Vomissement': '{{ patient.vomissement }}',
+            'Fièvre': '{{ patient.fievre }}',
+            'Tabac': '{{ patient.tabac }}',
+            'Alcool': '{{ patient.alcool }}',
+            'Radiation': '{{ patient.radiation }}'
+        };
+
+        let yPosition = 60;
+        // Add sections
+        addSection('Informations Personnelles', patientInfo);
+        addSection('Informations du Conjoint', conjointInfo);
+        addSection('Histoire de la Grossesse', grossesseInfo);
+        addSection('Histoire Grossesse', histoireGrossesse);
+        addObstetriqueTable(); // Use the new table function
+
+        const medicalHistory = {
+            'Maladies rénales': '{{ patient.maladies_renales }}',
+            'Problèmes cardiaques': '{{ patient.problemes_cardiaques }}',
+            'Hypertension artérielle': '{{ patient.hypertension_arterielle }}',
+            'Diabète': '{{ patient.diabete }}',
+            'Infection': '{{ patient.infection }}',
+            'Maladie de la thyroide': '{{ patient.maladie_thyroide }}',
+            'Transfusion': '{{ patient.transfusion }}',
+            'Chirurgie': '{{ patient.chirurgie }}',
+            'Herpes': '{{ patient.herpes }}',
+            'Antécédent d\'hypertension dans la famille': '{{ patient.antecedent_hypertension_fam }}',
+    'Remarques sur l\'hypertension dans la famille': '{{ patient.remarques_hypertension_fam }}',
+    'Antécédent de diabète dans la famille': '{{ patient.antecedent_diabete_fam }}',
+    'Remarques sur le diabète dans la famille': '{{ patient.remarques_diabete_fam }}',
+    'Antécédent de maladie cardiaque dans la famille': '{{ patient.antecedent_maladie_cardiaque_fam }}',
+    'Remarques sur la maladie cardiaque dans la famille': '{{ patient.remarques_maladie_cardiaque_fam }}',
+    'Antécédent de gemellaire dans la famille': '{{ patient.antecedent_gemellaire_fam }}',
+    'Remarques sur le gemellaire dans la famille': '{{ patient.remarques_gemellaire_fam }}',
+    'Antécédent de malformation dans la famille': '{{ patient.antecedent_malformation_fam }}',
+    'Remarques sur la malformation dans la famille': '{{ patient.remarques_malformation_fam }}',
+    'Antécédent de maladie génétique dans la famille': '{{ patient.antecedent_maladie_genetique_fam }}',
+    'Remarques sur la maladie génétique dans la famille': '{{ patient.remarques_maladie_genetique_fam }}',
+    'Consommation de produits laitiers': '{{ patient.produitsLaitiers }}',
+    'Consommation de pain et céréales': '{{ patient.painCereales }}',
+    'Consommation de fruits et légumes': '{{ patient.fruitsLegumes }}',
+    'Consommation de sources de protéines': '{{ patient.sourcesProteiniques }}',
+    'Tabagisme': '{{ patient.tabagisme }}',
+    'Alcoolisme': '{{ patient.alcoolisme }}',
+    'Stupéfiants': '{{ patient.stupefiants }}',
+    'Médicaments': '{{ patient.medicaments }}',
+    'Travail': '{{ patient.travail }}',
+    'Exercice': '{{ patient.exercice }}',
+    'Rapport sexuel': '{{ patient.rapportSexuel }}',
+    'Complications grossesse': '{{ patient.complicationsGrossesse }}',
+    'Soins dentaires': '{{ patient.soinsDentaires }}',
+    'Allaitement maternel': '{{ patient.allaitementMaternel }}',
+    'Classe prénatale': '{{ patient.classePrenatale }}'
+        };
+
+        const physicalExamInfo = {
+    'Tête, cou, thyroïde': '{{ patient.tete_cou_thyroide }}',
+    'Dents': '{{ patient.dents }}',
+    'Thorax': '{{ patient.thorax }}',
+    'Seins': '{{ patient.seins }}',
+    'Système Cardio-Vasculaire': '{{ patient.systeme_cardiovasculaire }}',
+    'Abdomen': '{{ patient.abdomen }}',
+    'Bassin': '{{ patient.bassin }}',
+    'Vulve': '{{ patient.vulve }}',
+    'Vagin': '{{ patient.vagin }}',
+    'Col': '{{ patient.col }}',
+    'Utérus': '{{ patient.uterus }}',
+    'Anus': '{{ patient.anus }}',
+    'Varicosités': '{{ patient.varicosites }}',
+    'Observations': '{{ patient.observations }}',
+    'Risques identifiés': '{{ patient.risques_identifies }}',
+};
+
+const immunizationTestsInfo = {
+    'Immunisation': '{{ patient.immunisation }}',
+    'Sérologie Rubéole': '{{ patient.serologie_rubeole }}',
+    'HBs Ag': '{{ patient.hbs_ag }}',
+    'Syphilis': '{{ patient.syphilis }}',
+    'Hb': '{{ patient.hb }}',
+    'GS': '{{ patient.gs }}',
+    'HIV': '{{ patient.hiv }}',
+};
+
+const patientDetails = {
+    'Remarque': '{{ patient.remarque }}',
+    'Date': '{{ patient.date }}',
+    'Poids': '{{ patient.poids }}',
+    'Âge Gestationnel': '{{ patient.age_gestationnel }}',
+    'Hu': '{{ patient.hu }}',
+    'Pression Post Accouchement': '{{ patient.pres_post }}',
+    'BDCF': '{{ patient.bdcf }}',
+    'TA': '{{ patient.ta }}',
+    'Urine Pr Glu': '{{ patient.urine_pr_glu }}',
+    'Risque': '{{ patient.risque }}',
+    'Commentaire Lab Med': '{{ patient.commentaire_lab_med }}',
+    'Date Accouchement': '{{ patient.date_accouchement }}',
+    'Poids Mère': '{{ patient.poids_mere }}',
+    'TA Mère': '{{ patient.ta_mere }}',
+    'Albuminurie': '{{ patient.albuminurie }}',
+    'Retour Couches': '{{ patient.retour_couches }}',
+    'Allaitement': '{{ patient.allaitement }}',
+    'Dystocie': '{{ patient.dystocie }}',
+    'État Enfant à la Naissance': '{{ patient.etat_enfant_naissance }}',
+    'Sexe Enfant': '{{ patient.sexe_enfant }}',
+    'Apgar': '{{ patient.apgar }}',
+    'Observations Enfant': '{{ patient.observations_enfant }}',
+};
+
+
+        // Add sections
+        addSection('Histoire Médicale', medicalHistory);
+        addSection('Examen Physique Initiale', physicalExamInfo);
+        addSection('Immunisation et Tests', immunizationTestsInfo);
+        addSection('Informations du Patient', patientDetails);
+
+        // Save the PDF
+        doc.save('Dossier_{{ patient.nom }}.pdf');
+    }
+</script>
+{% endblock %}
