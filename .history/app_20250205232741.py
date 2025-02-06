@@ -296,8 +296,9 @@ def dashboard():
     'nom': p[1],
     'dateNaissance': p[2],
     'age': p[3],
-    'statut': p[4],
-    'created_at': p[5]
+    'numeroPersonnel': p[4],
+    'statut': p[5],
+    'created_at': p[6]
     } for p in patients]
     
     return render_template('dashboard.html',
