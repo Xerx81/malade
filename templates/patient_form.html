@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <title>{{ patient.id and "Modifier Patient" or "Ajouter un Patient" }}</title>
+    </head>
+    <body>
+        <h1>{{ patient.id and "Modifier Patient" or "Ajouter un Patient" }}</h1>
+        <form method="POST" action="{{ url_for('patient') }}">
+
+            {% if patient.id %}
+                <input type="hidden" name="patient_id" value="{{ patient.id }}">    
+            {% endif %}
+
+            <div>
+                <label for="nom">Nom:</label>
+                <input type="text" id="nom" name="nom" value="{{ patient.nom or '' }}" required>
+            </div>
+
+            <div>
+                <label for="dateNaissance">Date de Naissance:</label>
+                <input type="date" id="dateNaissance" name="dateNaissance" value="{{ patient.dateNaissance or '' }}" required>
+            </div>
+
+            <div>
+                <label for="age">Âge:</label>
+                <input type="number" id="age" name="age" value="{{ patient.age or '' }}" required>
+            </div>
+
+            <div>
+                <label for="numeroPersonnel">Numéro Personnel:</label>
+                <input type="text" id="numeroPersonnel" name="numeroPersonnel" value="{{ patient.numeroPersonnel or '' }}" required>
+            </div>
+
+            <div>
+                <label for="statut">Statut:</label>
+                <select id="statut" name="statut">
+                    <option value="Actif" {% if patient.statut=='Actif' %} selected {% endif %}>Actif</option>
+                    <option value="Inactif" {% if patient.statut=='Inactif' %} selected {% endif %}>Inactif</option>
+                </select>
+            </div>
+
+            <button type="submit">{{ patient.id and "Mettre à jour" or "Ajouter" }}</button>
+        </form>
+    </body>
+</html>
