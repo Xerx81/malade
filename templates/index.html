@@ -1100,7 +1100,7 @@
             </script>
 
             <!-- Bouton pour ajouter une ligne -->
-            <button onclick="ajouterLigne()"
+            <button type="button" onclick="ajouterLigne()"
               class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700">
               Ajouter une ligne
             </button>
@@ -1195,7 +1195,7 @@
     function afficherMessageEtReinitialiser() {
       const formElement = document.getElementById('formulaire');
       var data = new FormData(formElement);
-      fetch('/save_patient', {
+      fetch('/info_patient', {
         method: 'post',
         body: data
       }).then(response => {
@@ -1232,7 +1232,7 @@
       document.getElementById(cibleId).value = `${dpa.toLocaleDateString('fr-FR', options)} (${moisRestants} mois)`;
     }
     function ajouterLigne() {
-      const tableBody = document.querySelector("tbody");
+      const tableBody = document.querySelector("table-body");
       const row = document.createElement("tr");
       row.innerHTML = `
       <td class="border px-4 py-2"><input type="date" class="w-full border rounded px-3 py-2"></td>

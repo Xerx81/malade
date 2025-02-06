@@ -86,9 +86,9 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-@app.route('/info_patient')
-def info_patient():
-    return render_template('info_patient.html')
+# @app.route('/info_patient')
+# def info_patient():
+#     return render_template('info_patient.html')
 
 def generate_insert_sql(table_name, fields):
     columns = ', '.join(fields)
@@ -102,39 +102,84 @@ def generate_update_sql(table_name, fields):
 def get_form_data(form_data, fields):
     return [form_data.get(field) for field in fields]
 
-@app.route('/save_patient', methods=['POST'])
-def save_patient():
-    try:
+
+@app.route('/info_patient', methods=['GET', 'POST'])
+@login_required
+def info_patient():
+    conn = sqlite3.connect('clinic.db')
+    c = conn.cursor()
+
+    if request.method == 'POST':
         data = request.form
-        if not data:
-            return jsonify({'success': False, 'message': 'No data received'}), 400
+        patient_id = data.get('patient_id')  # Hidden field in the form
 
-        conn = sqlite3.connect('clinic.db')
-        c = conn.cursor()
+        if patient_id:
+            # Update existing patient
+            try:
+                # Build UPDATE SQL for the PATIENT_FIELDS only (leaving created_at unchanged)
+                update_sql = generate_update_sql('patients', PATIENT_FIELDS)
+                values = get_form_data(data, PATIENT_FIELDS) + [patient_id]
 
-        # Generate SQL dynamically without including created_at
-        insert_sql = generate_insert_sql('patients', PATIENT_FIELDS)
-        values = get_form_data(data, PATIENT_FIELDS)
+                # Debugging
+                print("\n=== Values for Update ===")
+                print(f"Number of values: {len(values)}")
+                print("Values:", values)
 
-        # Debugging
-        print("\n=== Values to Insert ===")
-        print(f"Number of values: {len(values)}")
-        print("Values:", values)
+                c.execute(update_sql, values)
 
-        c.execute(insert_sql, values)
-        patient_id = c.lastrowid
+                flash('Patient updated successfully!', 'success')
+
+            except Exception as e:
+                print(f"Error updating patient: {str(e)}")
+                import traceback
+                traceback.print_exc()
+                conn.rollback()  # Rollback changes if an error occurs
+                flash("Error updating patient. Please try again!", 'error')
+
+        else:
+            # Insert new patient
+            try:
+                # Generate SQL dynamically without including created_at
+                insert_sql = generate_insert_sql('patients', PATIENT_FIELDS)
+                values = get_form_data(data, PATIENT_FIELDS)
+
+                # Debugging
+                print("\n=== Values to Insert ===")
+                print(f"Number of values: {len(values)}")
+                print("Values:", values)
+
+                c.execute(insert_sql, values)
+                patient_id = c.lastrowid
+
+                flash('Patient added successfully!', 'success')
+
+            except Exception as e:
+                print("Error:", str(e))
+                import traceback
+                traceback.print_exc()
+                conn.rollback()  # Rollback changes if an error occurs
+                flash("Error adding patient. Please try again!", 'error')
+
         conn.commit()
         conn.close()
-
-        flash('Patient ajouté avec succès!', 'success')
         return redirect(url_for('liste_patients'))
 
-    except Exception as e:
-        print("Error:", str(e))
-        import traceback
-        traceback.print_exc()
-        flash("Erreur lors de l'ajout du patient.", 'error')
-        return redirect(url_for('liste_patients'))
+    else:
+        # GET request: Check if we are editing an existing patient
+        patient_id = request.args.get('patient_id')
+        patient_data = {}
+
+        if patient_id:
+            c.execute("SELECT * FROM patients WHERE id=?", (patient_id,))
+            patient = c.fetchone()
+            if patient:
+                patient_data = dict(zip(['id', 'created_at'] + PATIENT_FIELDS, patient))
+            else:
+                flash('Patient not found', 'error')
+
+        conn.close()
+        return render_template('info_patient.html', patient=patient_data)
+
 
 @app.route('/liste_patients')
 def liste_patients():
@@ -175,56 +220,6 @@ def delete_patient(id):
             'message': str(e)
         }), 500
 
-
-
-@app.route('/update/<int:patient_id>', methods=['GET'])
-def update_patient_form(patient_id):
-    conn = sqlite3.connect('clinic.db')
-    c = conn.cursor()
-    c.execute('SELECT * FROM patients WHERE id = ?', (patient_id,))
-    patient = c.fetchone()
-    conn.close()
-    if patient:
-        # The table columns are: id, created_at, then PATIENT_FIELDS.
-        patient_info = dict(zip(['id', 'created_at'] + PATIENT_FIELDS, patient))
-        return render_template('update_patient.html', patient=patient_info)
-    else:
-        return "Patient non trouvé", 404
-
-@app.route('/update_patient', methods=['POST'])
-def update_patient():
-    try:
-        data = request.form
-        if not data:
-            return jsonify({'success': False, 'message': 'No data received'}), 400
-
-        patient_id = data.get('patient_id')
-        if not patient_id:
-            return jsonify({'success': False, 'message': 'Patient ID is required'}), 400
-
-        conn = sqlite3.connect('clinic.db')
-        c = conn.cursor()
-
-        # Build UPDATE SQL for the PATIENT_FIELDS only (leaving created_at unchanged)
-        update_sql = generate_update_sql('patients', PATIENT_FIELDS)
-        values = get_form_data(data, PATIENT_FIELDS) + [patient_id]
-
-        # Debugging
-        print("\n=== Values for Update ===")
-        print(f"Number of values: {len(values)}")
-        print("Values:", values)
-
-        c.execute(update_sql, values)
-        conn.commit()
-        conn.close()
-
-        return jsonify({'success': True, 'message': 'Patient record updated successfully'}), 200
-
-    except Exception as e:
-        print(f"Error updating patient: {str(e)}")
-        import traceback
-        traceback.print_exc()
-        return jsonify({'success': False, 'message': str(e)}), 500
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
