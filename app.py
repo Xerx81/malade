@@ -115,16 +115,50 @@ def patient():
 
         if patient_id:
             # Update existing patient
-            update_sql = generate_update_sql('patients', PATIENT_FIELDS)
-            values = get_form_data(data, PATIENT_FIELDS) + [patient_id]
-            c.execute(update_sql, values)
-            flash('Patient updated successfully!', 'success')
+            try:
+                # Build UPDATE SQL for the PATIENT_FIELDS only (leaving created_at unchanged)
+                update_sql = generate_update_sql('patients', PATIENT_FIELDS)
+                values = get_form_data(data, PATIENT_FIELDS) + [patient_id]
+
+                # Debugging
+                print("\n=== Values for Update ===")
+                print(f"Number of values: {len(values)}")
+                print("Values:", values)
+
+                c.execute(update_sql, values)
+
+                flash('Patient updated successfully!', 'success')
+
+            except Exception as e:
+                print(f"Error updating patient: {str(e)}")
+                import traceback
+                traceback.print_exc()
+                conn.rollback()  # Rollback changes if an error occurs
+                flash("Error updating patient. Please try again!", 'error')
+
         else:
             # Insert new patient
-            insert_sql = generate_insert_sql('patients', PATIENT_FIELDS)
-            values = get_form_data(data, PATIENT_FIELDS)
-            c.execute(insert_sql, values)
-            flash('Patient added successfully!', 'success')
+            try:
+                # Generate SQL dynamically without including created_at
+                insert_sql = generate_insert_sql('patients', PATIENT_FIELDS)
+                values = get_form_data(data, PATIENT_FIELDS)
+
+                # Debugging
+                print("\n=== Values to Insert ===")
+                print(f"Number of values: {len(values)}")
+                print("Values:", values)
+
+                c.execute(insert_sql, values)
+                patient_id = c.lastrowid
+
+                flash('Patient added successfully!', 'success')
+
+            except Exception as e:
+                print("Error:", str(e))
+                import traceback
+                traceback.print_exc()
+                conn.rollback()  # Rollback changes if an error occurs
+                flash("Error adding patient. Please try again!", 'error')
 
         conn.commit()
         conn.close()
@@ -136,10 +170,10 @@ def patient():
         patient_data = {}
 
         if patient_id:
-            c.execute("SELECT id, nom, dateNaissance, age, numeroPersonnel, statut FROM patients WHERE id=?", (patient_id,))
+            c.execute("SELECT * FROM patients WHERE id=?", (patient_id,))
             patient = c.fetchone()
             if patient:
-                patient_data = dict(zip(["id", "nom", "dateNaissance", "age", "numeroPersonnel", "statut"], patient))
+                patient_data = dict(zip(['id', 'created_at'] + PATIENT_FIELDS, patient))
             else:
                 flash('Patient not found', 'error')
 

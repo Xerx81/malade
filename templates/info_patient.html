@@ -1365,7 +1365,7 @@
     function afficherMessageEtReinitialiser() {
       const formElement = document.getElementById('formulaire');
       var data = new FormData(formElement);
-      fetch('/save_patient', {
+      fetch('/patient', {
         method: 'post',
         body: data
       }).then(response => {
