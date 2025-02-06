@@ -86,9 +86,9 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-@app.route('/info_patient')
-def info_patient():
-    return render_template('info_patient.html')
+# @app.route('/info_patient')
+# def info_patient():
+#     return render_template('info_patient.html')
 
 def generate_insert_sql(table_name, fields):
     columns = ', '.join(fields)
@@ -103,9 +103,9 @@ def get_form_data(form_data, fields):
     return [form_data.get(field) for field in fields]
 
 
-@app.route('/patient', methods=['GET', 'POST'])
+@app.route('/info_patient', methods=['GET', 'POST'])
 @login_required
-def patient():
+def info_patient():
     conn = sqlite3.connect('clinic.db')
     c = conn.cursor()
 
@@ -178,7 +178,7 @@ def patient():
                 flash('Patient not found', 'error')
 
         conn.close()
-        return render_template('patient_form.html', patient=patient_data)
+        return render_template('info_patient.html', patient=patient_data)
 
 
 @app.route('/liste_patients')
