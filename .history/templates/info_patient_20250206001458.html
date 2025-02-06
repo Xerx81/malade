@@ -2,11 +2,23 @@
 
 {% block content %}
 
-
 <body class="bg-gray-100">
 
   <div class="max-w-4xl mx-auto my-10 bg-white p-8 rounded-lg shadow">
     <h2 class="text-xl font-semibold italic text-center mb-4">Formulaire de Surveillance de la Grossesse</h2>
+
+    <div class="sticky top-0 bg-white z-50 py-2 border-b mb-6">
+      <nav class="flex space-x-4 overflow-x-auto px-2">
+        <a href="#informations" class="text-sm px-3 py-1 hover:bg-gray-100 rounded">Infos Patiente</a>
+        <a href="#resume" class="text-sm px-3 py-1 hover:bg-gray-100 rounded">Résumé Grossesse</a>
+        <a href="#obstetrique" class="text-sm px-3 py-1 hover:bg-gray-100 rounded">Histoire Obstétrique</a>
+        <a href="#medicale" class="text-sm px-3 py-1 hover:bg-gray-100 rounded">Histoire Médicale</a>
+        <a href="#nutrition" class="text-sm px-3 py-1 hover:bg-gray-100 rounded">Nutrition</a>
+        <a href="#examen" class="text-sm px-3 py-1 hover:bg-gray-100 rounded">Examen Physique</a>
+        <a href="#immunisation" class="text-sm px-3 py-1 hover:bg-gray-100 rounded">Immunisation</a>
+        <a href="#visites" class="text-sm px-3 py-1 hover:bg-gray-100 rounded">Visites</a>
+      </nav>
+    </div>
 
     <form id="formulaire" onsubmit="event.preventDefault(); afficherMessageEtReinitialiser();">
       <!-- Informations sur le patient -->
@@ -16,23 +28,23 @@
         <div class="grid grid-cols-2 gap-4 mt-4">
           <div>
             <label for="nom" class="block text-sm font-medium">Nom complet</label>
-            <input type="text" id="nom" name="nom" value="{{ patient.nom }}" class="w-full border rounded px-3 py-2" required>
+            <input type="text" id="nom" name="nom" class="w-full border rounded px-3 py-2" required>
           </div>
 
           <div>
             <label for="adresse" class="block text-sm font-medium">Adresse</label>
-            <input type="text" id="adresse" name="adresse" value="{{ patient.adresse }}" class="w-full border rounded px-3 py-2" required>
+            <input type="text" id="adresse" name="adresse" class="w-full border rounded px-3 py-2" required>
           </div>
 
           <div>
             <label for="dateNaissance" class="block text-sm font-medium">Date de Naissance</label>
-            <input type="date" id="dateNaissance" name="dateNaissance" value="{{ patient.dateNaissance }}" class="w-full border rounded px-3 py-2"
+            <input type="date" id="dateNaissance" name="dateNaissance" class="w-full border rounded px-3 py-2"
               onchange="calculerAge(this.value, 'age')" required>
           </div>
 
           <div>
             <label for="age" class="block text-sm font-medium">Âge</label>
-            <input type="number" id="age" name="age" value="{{ patient.age }}" class="w-full border rounded px-3 py-2" readonly>
+            <input type="number" id="age" name="age" class="w-full border rounded px-3 py-2" readonly>
           </div>
 
           <div>
@@ -51,17 +63,17 @@
 
           <div>
             <label for="occupation" class="block text-sm font-medium">Occupation</label>
-            <input type="text" id="occupation" name="occupation" value="{{ patient.occupation }}" class="w-full border rounded px-3 py-2">
+            <input type="text" id="occupation" name="occupation" class="w-full border rounded px-3 py-2">
           </div>
 
           <div>
             <label for="numeroPersonnel" class="block text-sm font-medium">Numéro Personnel</label>
-            <input type="text" id="numeroPersonnel" name="numeroPersonnel" value="{{ patient.numeroPersonnel }}" class="w-full border rounded px-3 py-2">
+            <input type="text" id="numeroPersonnel" name="numeroPersonnel" class="w-full border rounded px-3 py-2">
           </div>
 
           <div>
             <label for="numeroEtablissement" class="block text-sm font-medium">Numéro Bureau</label>
-            <input type="text" id="numeroEtablissement" value="{{ patient.numeroEtablissement }}" name="numeroEtablissement"
+            <input type="text" id="numeroEtablissement" name="numeroEtablissement"
               class="w-full border rounded px-3 py-2">
           </div>
         </div>
@@ -74,32 +86,35 @@
         <div class="grid grid-cols-2 gap-4 mt-4">
           <div>
             <label for="nomConjoint" class="block text-sm font-medium">Nom et Prénom du Conjoint</label>
-            <input type="text" id="nomConjoint" name="nomConjoint" value="{{ patient.nomConjoint }}" class="w-full border rounded px-3 py-2">
+            <input type="text" id="nomConjoint" name="nomConjoint" class="w-full border rounded px-3 py-2">
           </div>
 
           <div>
             <label for="occupationConjoint" class="block text-sm font-medium">Occupation du Conjoint</label>
-            <input type="text" id="occupationConjoint" name="occupationConjoint" value="{{ patient.occupationConjoint }}" class="w-full border rounded px-3 py-2">
+            <input type="text" id="occupationConjoint" name="occupationConjoint"
+              class="w-full border rounded px-3 py-2">
           </div>
 
           <div>
             <label for="numeroTelConjoint" class="block text-sm font-medium">Numéro de Téléphone du Conjoint</label>
-            <input type="text" id="numeroTelConjoint" name="numeroTelConjoint" value="{{ patient.numeroTelConjoint }}" class="w-full border rounded px-3 py-2">
+            <input type="text" id="numeroTelConjoint" name="numeroTelConjoint" class="w-full border rounded px-3 py-2">
           </div>
 
           <div>
             <label for="numeroEtablissementConjoint" class="block text-sm font-medium">Numéro Bureau</label>
-            <input type="text" id="numeroEtablissementConjoint" name="numeroEtablissementConjoint" value="{{ patient.numeroEtablissementConjoint }}" class="w-full border rounded px-3 py-2">
+            <input type="text" id="numeroEtablissementConjoint" name="numeroEtablissementConjoint"
+              class="w-full border rounded px-3 py-2">
           </div>
 
           <div>
             <label for="dateNaissanceConjoint" class="block text-sm font-medium">Date de Naissance du Conjoint</label>
-            <input type="date" id="dateNaissanceConjoint" name="dateNaissanceConjoint" value="{{ patient.dateNaissanceConjoint }}" class="w-full border rounded px-3 py-2" onchange="calculerAge(this.value, 'ageConjoint')">
+            <input type="date" id="dateNaissanceConjoint" name="dateNaissanceConjoint"
+              class="w-full border rounded px-3 py-2" onchange="calculerAge(this.value, 'ageConjoint')">
           </div>
 
           <div>
             <label for="ageConjoint" class="block text-sm font-medium">Âge du Conjoint</label>
-            <input type="number" id="ageConjoint" name="ageConjoint" value="{{ patient.ageConjoint }}" class="w-full border rounded px-3 py-2" readonly>
+            <input type="number" id="ageConjoint" name="ageConjoint" class="w-full border rounded px-3 py-2" readonly>
           </div>
         </div>
       </fieldset>
@@ -115,12 +130,12 @@
             <div class="flex items-center gap-4">
               <div class="w-1/2">
                 <label for="ddr" class="block text-sm font-medium">DDR</label>
-                <input type="date" id="ddr" name="ddr" value="{{ patient.ddr }}" class="w-full border rounded px-3 py-2"
+                <input type="date" id="ddr" name="ddr" class="w-full border rounded px-3 py-2"
                   onchange="calculerDPA(this.value, 'dpa')">
               </div>
               <div class="w-1/2">
                 <label for="dpa" class="block text-sm font-medium">DPA</label>
-                <input type="text" id="dpa" name="dpa" value="{{ patient.dpa }}" class="w-full border rounded px-3 py-2" readonly>
+                <input type="text" id="dpa" name="dpa" class="w-full border rounded px-3 py-2" readonly>
               </div>
             </div>
 
@@ -144,37 +159,37 @@
 
             <div>
               <label for="duree" class="block text-sm font-medium">Durée</label>
-              <input type="text" id="duree" name="duree" value="{{ patient.duree }}" class="w-full border rounded px-3 py-2">
+              <input type="text" id="duree" name="duree" class="w-full border rounded px-3 py-2">
             </div>
 
             <div>
               <label for="g" class="block text-sm font-medium">G</label>
-              <input type="text" id="g" name="g" value="{{ patient.g }}" class="w-full border rounded px-3 py-2">
+              <input type="text" id="g" name="g" class="w-full border rounded px-3 py-2">
             </div>
 
             <div>
               <label for="a" class="block text-sm font-medium">A</label>
-              <input type="text" id="a" name="a" value="{{ patient.a }}" class="w-full border rounded px-3 py-2">
+              <input type="text" id="a" name="a" class="w-full border rounded px-3 py-2">
             </div>
 
             <div>
               <label for="t" class="block text-sm font-medium">T</label>
-              <input type="text" id="t" name="t" value="{{ patient.t }}" class="w-full border rounded px-3 py-2">
+              <input type="text" id="t" name="t" class="w-full border rounded px-3 py-2">
             </div>
 
             <div>
               <label for="e" class="block text-sm font-medium">E</label>
-              <input type="text" id="e" name="e" value="{{ patient.e }}" class="w-full border rounded px-3 py-2">
+              <input type="text" id="e" name="e" class="w-full border rounded px-3 py-2">
             </div>
 
             <div>
               <label for="p" class="block text-sm font-medium">P</label>
-              <input type="text" id="p" name="p" value="{{ patient.p }}" class="w-full border rounded px-3 py-2">
+              <input type="text" id="p" name="p" class="w-full border rounded px-3 py-2">
             </div>
 
             <div>
               <label for="muit" class="block text-sm font-medium">Mult</label>
-              <input type="text" id="muit" name="mult" value="{{ patient.mult }}" class="w-full border rounded px-3 py-2">
+              <input type="text" id="muit" name="mult" class="w-full border rounded px-3 py-2">
             </div>
           </div>
         </div>
@@ -185,32 +200,35 @@
           <div class="grid grid-cols-2 gap-4">
             <div>
               <label for="type" class="block text-sm font-medium">Type</label>
-              <input type="text" id="type" name="type" value="{{ patient.type }}" class="w-full border rounded px-3 py-2">
+              <input type="text" id="type" name="type" class="w-full border rounded px-3 py-2">
             </div>
 
             <div>
               <label for="commentaireType" class="block text-sm font-medium">Commentaire</label>
-              <input type="text" id="commentaireType" name="commentaireType" value="{{ patient.commentaireType }}" class="w-full border rounded px-3 py-2">
+              <input type="text" id="commentaireType" name="commentaireType" class="w-full border rounded px-3 py-2">
             </div>
 
             <div>
               <label for="duree" class="block text-sm font-medium">Durée</label>
-              <input type="text" id="dureeContraception" name="dureeContraception" value="{{ patient.dureeContraception }}" class="w-full border rounded px-3 py-2">
+              <input type="text" id="dureeContraception" name="dureeContraception"
+                class="w-full border rounded px-3 py-2">
             </div>
 
             <div>
               <label for="commentaireDuree" class="block text-sm font-medium">Commentaire</label>
-              <input type="text" id="commentaireDuree" name="commentaireDuree" value="{{ patient.commentaireDuree }}" class="w-full border rounded px-3 py-2">
+              <input type="text" id="commentaireDuree" name="commentaireDuree" class="w-full border rounded px-3 py-2">
             </div>
 
             <div>
               <label for="derniereUtilisation" class="block text-sm font-medium">Dernière Utilisation</label>
-              <input type="text" id="derniereUtilisation" name="derniereUtilisation" value="{{ patient.derniereUtilisation }}" class="w-full border rounded px-3 py-2">
+              <input type="text" id="derniereUtilisation" name="derniereUtilisation"
+                class="w-full border rounded px-3 py-2">
             </div>
 
             <div>
               <label for="commentaireDerniereUtilisation" class="block text-sm font-medium">Commentaire</label>
-              <input type="text" id="commentaireDerniereUtilisation" name="commentaireDerniereUtilisation" value="{{ patient.commentaireDerniereUtilisation }}" class="w-full border rounded px-3 py-2">
+              <input type="text" id="commentaireDerniereUtilisation" name="commentaireDerniereUtilisation"
+                class="w-full border rounded px-3 py-2">
             </div>
           </div>
         </div>
@@ -221,7 +239,7 @@
           <div class="grid grid-cols-2 gap-4">
             <div>
               <label for="saignement" class="block text-sm font-medium">Saignement</label>
-              <select id="saignement" name="saignement" value="{{ patient.saignement }}" class="w-full border rounded px-3 py-2">
+              <select id="saignement" name="saignement" class="w-full border rounded px-3 py-2">
                 <option value="" disabled selected>Sélectionner</option>
                 <option value="Oui">Oui</option>
                 <option value="Non">Non</option>
@@ -230,7 +248,7 @@
 
             <div>
               <label for="vomissement" class="block text-sm font-medium">Vomissement</label>
-              <select id="vomissement" name="vomissement" value="{{ patient.vomissement }}" class="w-full border rounded px-3 py-2">
+              <select id="vomissement" name="vomissement" class="w-full border rounded px-3 py-2">
                 <option value="" disabled selected>Sélectionner</option>
                 <option value="Oui">Oui</option>
                 <option value="Non">Non</option>
@@ -239,7 +257,7 @@
 
             <div>
               <label for="fievre" class="block text-sm font-medium">Fièvre</label>
-              <select id="fievre" name="fievre" value="{{ patient.fievre }}" class="w-full border rounded px-3 py-2">
+              <select id="fievre" name="fievre" class="w-full border rounded px-3 py-2">
                 <option value="" disabled selected>Sélectionner</option>
                 <option value="Oui">Oui</option>
                 <option value="Non">Non</option>
@@ -248,7 +266,7 @@
 
             <div>
               <label for="tabac" class="block text-sm font-medium">Tabac</label>
-              <select id="tabac" name="tabac" value="{{ patient.tabac }}" class="w-full border rounded px-3 py-2">
+              <select id="tabac" name="tabac" class="w-full border rounded px-3 py-2">
                 <option value="" disabled selected>Sélectionner</option>
                 <option value="Oui">Oui</option>
                 <option value="Non">Non</option>
@@ -257,7 +275,7 @@
 
             <div>
               <label for="alcool" class="block text-sm font-medium">Alcool</label>
-              <select id="alcool" name="alcool" value="{{ patient.alcool }}" class="w-full border rounded px-3 py-2">
+              <select id="alcool" name="alcool" class="w-full border rounded px-3 py-2">
                 <option value="" disabled selected>Sélectionner</option>
                 <option value="Oui">Oui</option>
                 <option value="Non">Non</option>
@@ -266,7 +284,7 @@
 
             <div>
               <label for="radiation" class="block text-sm font-medium">Radiation</label>
-              <select id="radiation" name="radiation" value="{{ patient.radiation }}" class="w-full border rounded px-3 py-2">  
+              <select id="radiation" name="radiation" class="w-full border rounded px-3 py-2">
                 <option value="" disabled selected>Sélectionner</option>
                 <option value="Oui">Oui</option>
                 <option value="Non">Non</option>
@@ -278,27 +296,27 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     <div class="bg-gray-50 p-3 rounded">
         <label for="montant_paye" class="font-medium">Montant payé:</label>
-        <input type="number" id="montant_paye" name="montant_paye" value="{{ patient.montant_paye }}" class="ml-2 border rounded px-2 py-1" step="0.01"> HTG
+        <input type="number" id="montant_paye" name="montant_paye" class="ml-2 border rounded px-2 py-1" step="0.01"> HTG
     </div>
     <div class="bg-gray-50 p-3 rounded">
         <label for="mode_paiement" class="font-medium">Mode de paiement:</label>
-        <input type="text" id="mode_paiement" name="mode_paiement" value="{{ patient.mode_paiement }}" class="ml-2 border rounded px-2 py-1">
+        <input type="text" id="mode_paiement" name="mode_paiement" class="ml-2 border rounded px-2 py-1">
     </div>
     <div class="bg-gray-50 p-3 rounded">
         <label for="date_paiement" class="font-medium">Date de paiement:</label>
-        <input type="date" id="date_paiement" name="date_paiement" value="{{ patient.date_paiement }}" class="ml-2 border rounded px-2 py-1">
+        <input type="date" id="date_paiement" name="date_paiement" class="ml-2 border rounded px-2 py-1">
     </div>
     <div class="bg-gray-50 p-3 rounded">
         <label for="cout_total" class="font-medium">Coût total des soins:</label>
-        <input type="number" id="cout_total" name="cout_total" value="{{ patient.cout_total }}" class="ml-2 border rounded px-2 py-1" step="0.01"> HTG
+        <input type="number" id="cout_total" name="cout_total" class="ml-2 border rounded px-2 py-1" step="0.01"> HTG
     </div>
     <div class="bg-gray-50 p-3 rounded">
         <label for="date_prochain_paiement" class="font-medium">Prochain paiement dû:</label>
-        <input type="date" id="date_prochain_paiement" name="date_prochain_paiement" value="{{ patient.date_prochain_paiement }}" class="ml-2 border rounded px-2 py-1">
+        <input type="date" id="date_prochain_paiement" name="date_prochain_paiement" class="ml-2 border rounded px-2 py-1">
     </div>
     <div class="bg-gray-50 p-3 rounded col-span-2">
         <label for="notes_financieres" class="font-medium">Notes financières:</label>
-        <textarea id="notes_financieres" name="notes_financieres" value="{{ patient.notes_financieres }}"  class="ml-2 border rounded px-2 py-1 w-full">{{ patient.notes_financieres }}</textarea>
+        <textarea id="notes_financieres" name="notes_financieres" class="ml-2 border rounded px-2 py-1 w-full"></textarea>
     </div>
 
 <div class="overflow-x-auto mt-4">
@@ -314,10 +332,10 @@
       <tr>
         <td class="border px-4 py-2">1</td>
         <td class="border px-4 py-2">
-          <input type="number" name="somme_payee_1" value="{{ patient.somme_payee_1 }}" class="w-full border-none" step="0.01">
+          <input type="number" name="somme_payee_1" class="w-full border-none" step="0.01">
         </td>
         <td class="border px-4 py-2">
-          <input type="date" name="date_paiement_1"  class="w-full border-none">
+          <input type="date" name="date_paiement_1" class="w-full border-none">
         </td>
       </tr>
       <tr>
@@ -1323,13 +1341,13 @@
           </div>
 
           <!-- Bouton de soumission -->
-          <button type="submit" 
-            class="bg-blue-600 text-white px-6 py-2 rounded-md shadow hover:bg-blue-700">Modifier</button>
+          <button type="submit" id="formulaire" action="/submit_form" method="POST"
+            class="bg-blue-600 text-white px-6 py-2 rounded-md shadow hover:bg-blue-700">Enregistrer</button>
     </form>
 
     <!-- Message de confirmation -->
     <div id="message" class="hidden mt-4 p-4 bg-green-100 text-green-800 rounded-md">
-      <span class="font-medium">Succès :</span> Details updated successfully
+      <span class="font-medium">Succès :</span> Le formulaire a été enregistré avec succès !
     </div>
   </div>
   <script>
@@ -1347,7 +1365,7 @@
     function afficherMessageEtReinitialiser() {
       const formElement = document.getElementById('formulaire');
       var data = new FormData(formElement);
-      fetch('/update_patient', {
+      fetch('/save_patient', {
         method: 'post',
         body: data
       }).then(response => {
@@ -1356,6 +1374,8 @@
           message.classList.remove("hidden");
           setTimeout(() => {
             message.classList.add("hidden");
+            document.getElementById("formulaire").reset();
+            document.getElementById("infoConjoint").classList.add("hidden");
           }, 3000);
         } else {
           alert("Failed to save the patient data");

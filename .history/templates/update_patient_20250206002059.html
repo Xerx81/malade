@@ -298,7 +298,7 @@
     </div>
     <div class="bg-gray-50 p-3 rounded col-span-2">
         <label for="notes_financieres" class="font-medium">Notes financières:</label>
-        <textarea id="notes_financieres" name="notes_financieres" value="{{ patient.notes_financieres }}"  class="ml-2 border rounded px-2 py-1 w-full">{{ patient.notes_financieres }}</textarea>
+        <textarea id="notes_financieres" name="notes_financieres" val  class="ml-2 border rounded px-2 py-1 w-full">{{ patient.notes_financieres }}</textarea>
     </div>
 
 <div class="overflow-x-auto mt-4">
@@ -314,10 +314,10 @@
       <tr>
         <td class="border px-4 py-2">1</td>
         <td class="border px-4 py-2">
-          <input type="number" name="somme_payee_1" value="{{ patient.somme_payee_1 }}" class="w-full border-none" step="0.01">
+          <input type="number" name="somme_payee_1" class="w-full border-none" step="0.01">
         </td>
         <td class="border px-4 py-2">
-          <input type="date" name="date_paiement_1"  class="w-full border-none">
+          <input type="date" name="date_paiement_1" class="w-full border-none">
         </td>
       </tr>
       <tr>

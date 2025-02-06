@@ -174,7 +174,7 @@
 
             <div>
               <label for="muit" class="block text-sm font-medium">Mult</label>
-              <input type="text" id="muit" name="mult" value="{{ patient.mult }}" class="w-full border rounded px-3 py-2">
+              <input type="text" id="muit" name="mult" class="w-full border rounded px-3 py-2">
             </div>
           </div>
         </div>
@@ -185,32 +185,35 @@
           <div class="grid grid-cols-2 gap-4">
             <div>
               <label for="type" class="block text-sm font-medium">Type</label>
-              <input type="text" id="type" name="type" value="{{ patient.type }}" class="w-full border rounded px-3 py-2">
+              <input type="text" id="type" name="type" class="w-full border rounded px-3 py-2">
             </div>
 
             <div>
               <label for="commentaireType" class="block text-sm font-medium">Commentaire</label>
-              <input type="text" id="commentaireType" name="commentaireType" value="{{ patient.commentaireType }}" class="w-full border rounded px-3 py-2">
+              <input type="text" id="commentaireType" name="commentaireType" class="w-full border rounded px-3 py-2">
             </div>
 
             <div>
               <label for="duree" class="block text-sm font-medium">Durée</label>
-              <input type="text" id="dureeContraception" name="dureeContraception" value="{{ patient.dureeContraception }}" class="w-full border rounded px-3 py-2">
+              <input type="text" id="dureeContraception" name="dureeContraception"
+                class="w-full border rounded px-3 py-2">
             </div>
 
             <div>
               <label for="commentaireDuree" class="block text-sm font-medium">Commentaire</label>
-              <input type="text" id="commentaireDuree" name="commentaireDuree" value="{{ patient.commentaireDuree }}" class="w-full border rounded px-3 py-2">
+              <input type="text" id="commentaireDuree" name="commentaireDuree" class="w-full border rounded px-3 py-2">
             </div>
 
             <div>
               <label for="derniereUtilisation" class="block text-sm font-medium">Dernière Utilisation</label>
-              <input type="text" id="derniereUtilisation" name="derniereUtilisation" value="{{ patient.derniereUtilisation }}" class="w-full border rounded px-3 py-2">
+              <input type="text" id="derniereUtilisation" name="derniereUtilisation"
+                class="w-full border rounded px-3 py-2">
             </div>
 
             <div>
               <label for="commentaireDerniereUtilisation" class="block text-sm font-medium">Commentaire</label>
-              <input type="text" id="commentaireDerniereUtilisation" name="commentaireDerniereUtilisation" value="{{ patient.commentaireDerniereUtilisation }}" class="w-full border rounded px-3 py-2">
+              <input type="text" id="commentaireDerniereUtilisation" name="commentaireDerniereUtilisation"
+                class="w-full border rounded px-3 py-2">
             </div>
           </div>
         </div>
@@ -221,7 +224,7 @@
           <div class="grid grid-cols-2 gap-4">
             <div>
               <label for="saignement" class="block text-sm font-medium">Saignement</label>
-              <select id="saignement" name="saignement" value="{{ patient.saignement }}" class="w-full border rounded px-3 py-2">
+              <select id="saignement" name="saignement" class="w-full border rounded px-3 py-2">
                 <option value="" disabled selected>Sélectionner</option>
                 <option value="Oui">Oui</option>
                 <option value="Non">Non</option>
@@ -230,7 +233,7 @@
 
             <div>
               <label for="vomissement" class="block text-sm font-medium">Vomissement</label>
-              <select id="vomissement" name="vomissement" value="{{ patient.vomissement }}" class="w-full border rounded px-3 py-2">
+              <select id="vomissement" name="vomissement" class="w-full border rounded px-3 py-2">
                 <option value="" disabled selected>Sélectionner</option>
                 <option value="Oui">Oui</option>
                 <option value="Non">Non</option>
@@ -239,7 +242,7 @@
 
             <div>
               <label for="fievre" class="block text-sm font-medium">Fièvre</label>
-              <select id="fievre" name="fievre" value="{{ patient.fievre }}" class="w-full border rounded px-3 py-2">
+              <select id="fievre" name="fievre" class="w-full border rounded px-3 py-2">
                 <option value="" disabled selected>Sélectionner</option>
                 <option value="Oui">Oui</option>
                 <option value="Non">Non</option>
@@ -248,7 +251,7 @@
 
             <div>
               <label for="tabac" class="block text-sm font-medium">Tabac</label>
-              <select id="tabac" name="tabac" value="{{ patient.tabac }}" class="w-full border rounded px-3 py-2">
+              <select id="tabac" name="tabac" class="w-full border rounded px-3 py-2">
                 <option value="" disabled selected>Sélectionner</option>
                 <option value="Oui">Oui</option>
                 <option value="Non">Non</option>
@@ -257,7 +260,7 @@
 
             <div>
               <label for="alcool" class="block text-sm font-medium">Alcool</label>
-              <select id="alcool" name="alcool" value="{{ patient.alcool }}" class="w-full border rounded px-3 py-2">
+              <select id="alcool" name="alcool" class="w-full border rounded px-3 py-2">
                 <option value="" disabled selected>Sélectionner</option>
                 <option value="Oui">Oui</option>
                 <option value="Non">Non</option>
@@ -266,7 +269,7 @@
 
             <div>
               <label for="radiation" class="block text-sm font-medium">Radiation</label>
-              <select id="radiation" name="radiation" value="{{ patient.radiation }}" class="w-full border rounded px-3 py-2">  
+              <select id="radiation" name="radiation" class="w-full border rounded px-3 py-2">
                 <option value="" disabled selected>Sélectionner</option>
                 <option value="Oui">Oui</option>
                 <option value="Non">Non</option>
@@ -278,27 +281,27 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     <div class="bg-gray-50 p-3 rounded">
         <label for="montant_paye" class="font-medium">Montant payé:</label>
-        <input type="number" id="montant_paye" name="montant_paye" value="{{ patient.montant_paye }}" class="ml-2 border rounded px-2 py-1" step="0.01"> HTG
+        <input type="number" id="montant_paye" name="montant_paye" class="ml-2 border rounded px-2 py-1" step="0.01"> HTG
     </div>
     <div class="bg-gray-50 p-3 rounded">
         <label for="mode_paiement" class="font-medium">Mode de paiement:</label>
-        <input type="text" id="mode_paiement" name="mode_paiement" value="{{ patient.mode_paiement }}" class="ml-2 border rounded px-2 py-1">
+        <input type="text" id="mode_paiement" name="mode_paiement" class="ml-2 border rounded px-2 py-1">
     </div>
     <div class="bg-gray-50 p-3 rounded">
         <label for="date_paiement" class="font-medium">Date de paiement:</label>
-        <input type="date" id="date_paiement" name="date_paiement" value="{{ patient.date_paiement }}" class="ml-2 border rounded px-2 py-1">
+        <input type="date" id="date_paiement" name="date_paiement" class="ml-2 border rounded px-2 py-1">
     </div>
     <div class="bg-gray-50 p-3 rounded">
         <label for="cout_total" class="font-medium">Coût total des soins:</label>
-        <input type="number" id="cout_total" name="cout_total" value="{{ patient.cout_total }}" class="ml-2 border rounded px-2 py-1" step="0.01"> HTG
+        <input type="number" id="cout_total" name="cout_total" class="ml-2 border rounded px-2 py-1" step="0.01"> HTG
     </div>
     <div class="bg-gray-50 p-3 rounded">
         <label for="date_prochain_paiement" class="font-medium">Prochain paiement dû:</label>
-        <input type="date" id="date_prochain_paiement" name="date_prochain_paiement" value="{{ patient.date_prochain_paiement }}" class="ml-2 border rounded px-2 py-1">
+        <input type="date" id="date_prochain_paiement" name="date_prochain_paiement" class="ml-2 border rounded px-2 py-1">
     </div>
     <div class="bg-gray-50 p-3 rounded col-span-2">
         <label for="notes_financieres" class="font-medium">Notes financières:</label>
-        <textarea id="notes_financieres" name="notes_financieres" value="{{ patient.notes_financieres }}"  class="ml-2 border rounded px-2 py-1 w-full">{{ patient.notes_financieres }}</textarea>
+        <textarea id="notes_financieres" name="notes_financieres" class="ml-2 border rounded px-2 py-1 w-full"></textarea>
     </div>
 
 <div class="overflow-x-auto mt-4">
@@ -314,10 +317,10 @@
       <tr>
         <td class="border px-4 py-2">1</td>
         <td class="border px-4 py-2">
-          <input type="number" name="somme_payee_1" value="{{ patient.somme_payee_1 }}" class="w-full border-none" step="0.01">
+          <input type="number" name="somme_payee_1" class="w-full border-none" step="0.01">
         </td>
         <td class="border px-4 py-2">
-          <input type="date" name="date_paiement_1"  class="w-full border-none">
+          <input type="date" name="date_paiement_1" class="w-full border-none">
         </td>
       </tr>
       <tr>
