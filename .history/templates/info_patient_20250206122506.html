@@ -1,0 +1,1434 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<body class="bg-gray-100">
+
+  <div class="max-w-4xl mx-auto my-10 bg-white p-8 rounded-lg shadow">
+    <h2 class="text-xl font-semibold italic text-center mb-4">Formulaire de Surveillance de la Grossesse</h2>
+
+    <div class="sticky top-0 bg-white z-50 py-2 border-b mb-6">
+      <nav class="flex space-x-4 overflow-x-auto px-2">
+        <a href="#informations" class="text-sm px-3 py-1 hover:bg-gray-100 rounded">Infos Patiente</a>
+        <a href="#resume" class="text-sm px-3 py-1 hover:bg-gray-100 rounded">Résumé Grossesse</a>
+        <a href="#obstetrique" class="text-sm px-3 py-1 hover:bg-gray-100 rounded">Histoire Obstétrique</a>
+        <a href="#medicale" class="text-sm px-3 py-1 hover:bg-gray-100 rounded">Histoire Médicale</a>
+        <a href="#nutrition" class="text-sm px-3 py-1 hover:bg-gray-100 rounded">Nutrition</a>
+        <a href="#examen" class="text-sm px-3 py-1 hover:bg-gray-100 rounded">Examen Physique</a>
+        <a href="#immunisation" class="text-sm px-3 py-1 hover:bg-gray-100 rounded">Immunisation</a>
+        <a href="#visites" class="text-sm px-3 py-1 hover:bg-gray-100 rounded">Visites</a>
+      </nav>
+    </div>
+
+
+    <form id="formulaire" onsubmit="event.preventDefault(); afficherMessageEtReinitialiser();">
+      <!-- Informations sur le patient -->
+      {% if patient.id %}
+        <input type="hidden" name="patient_id" value="{{ patient.id }}">
+      {% endif %}
+
+      <fieldset id="informations" class="mb-6 border border-gray-300 rounded p-4">
+        <legend class="text-lg font-medium">Informations sur la Patiente</legend>
+
+        <div class="grid grid-cols-2 gap-4 mt-4">
+          <div>
+            <label for="nom" class="block text-sm font-medium">Nom complet</label>
+            <input type="text" id="nom" name="nom" value="{{ patient.nom }}" class="w-full border rounded px-3 py-2" required>
+          </div>
+
+          <div>
+            <label for="adresse" class="block text-sm font-medium">Adresse</label>
+            <input type="text" id="adresse" name="adresse" value="{{ patient.adresse }}" class="w-full border rounded px-3 py-2" required>
+          </div>
+
+          <div>
+            <label for="dateNaissance" class="block text-sm font-medium">Date de Naissance</label>
+            <input type="date" id="dateNaissance" name="dateNaissance" value="{{ patient.dateNaissance }}" class="w-full border rounded px-3 py-2"
+              onchange="calculerAge(this.value, 'age')" required>
+          </div>
+
+          <div>
+            <label for="age" class="block text-sm font-medium">Âge</label>
+            <input type="number" id="age" name="age" value="{{ patient.age }}" class="w-full border rounded px-3 py-2" readonly>
+          </div>
+
+          <div>
+            <label for="statut" class="block text-sm font-medium">Statut Matrimonial</label>
+            <select id="statut" name="statut" class="w-full border rounded px-3 py-2"
+              onchange="gererStatutMatrimonial(this.value)" required>
+              <option value="">-- Sélectionnez --</option>
+              <option value="Célibataire">Célibataire</option>
+              <option value="Mariée">Mariée</option>
+              <option value="Divorcée">Divorcée</option>
+              <option value="Veuve">Veuve</option>
+              <option value="Concubine">Concubine</option>
+              <option value="En couple">En couple</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="occupation" class="block text-sm font-medium">Occupation</label>
+            <input type="text" id="occupation" name="occupation" value="{{ patient.occupation }}" class="w-full border rounded px-3 py-2">
+          </div>
+
+          <div>
+            <label for="numeroPersonnel" class="block text-sm font-medium">Numéro Personnel</label>
+            <input type="text" id="numeroPersonnel" name="numeroPersonnel" value="{{ patient.numeroPersonnel }}" class="w-full border rounded px-3 py-2">
+          </div>
+
+          <div>
+            <label for="numeroEtablissement" class="block text-sm font-medium">Numéro Bureau</label>
+            <input type="text" id="numeroEtablissement" value="{{ patient.numeroEtablissement }}" name="numeroEtablissement"
+              class="w-full border rounded px-3 py-2">
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Informations sur le conjoint -->
+      <fieldset id="infoConjoint" class="mb-6 border border-gray-300 rounded p-4 hidden">
+        <legend class="text-lg font-medium">Informations sur le Conjoint</legend>
+
+        <div class="grid grid-cols-2 gap-4 mt-4">
+          <div>
+            <label for="nomConjoint" class="block text-sm font-medium">Nom et Prénom du Conjoint</label>
+            <input type="text" id="nomConjoint" name="nomConjoint" value="{{ patient.nomConjoint }}" class="w-full border rounded px-3 py-2">
+          </div>
+
+          <div>
+            <label for="occupationConjoint" class="block text-sm font-medium">Occupation du Conjoint</label>
+            <input type="text" id="occupationConjoint" name="occupationConjoint" value="{{ patient.occupationConjoint }}" class="w-full border rounded px-3 py-2">
+          </div>
+
+          <div>
+            <label for="numeroTelConjoint" class="block text-sm font-medium">Numéro de Téléphone du Conjoint</label>
+            <input type="text" id="numeroTelConjoint" name="numeroTelConjoint" value="{{ patient.numeroTelConjoint }}" class="w-full border rounded px-3 py-2">
+          </div>
+
+          <div>
+            <label for="numeroEtablissementConjoint" class="block text-sm font-medium">Numéro Bureau</label>
+            <input type="text" id="numeroEtablissementConjoint" name="numeroEtablissementConjoint" value="{{ patient.numeroEtablissementConjoint }}" class="w-full border rounded px-3 py-2">
+          </div>
+
+          <div>
+            <label for="dateNaissanceConjoint" class="block text-sm font-medium">Date de Naissance du Conjoint</label>
+            <input type="date" id="dateNaissanceConjoint" name="dateNaissanceConjoint" value="{{ patient.dateNaissanceConjoint }}" class="w-full border rounded px-3 py-2" onchange="calculerAge(this.value, 'ageConjoint')">
+          </div>
+
+          <div>
+            <label for="ageConjoint" class="block text-sm font-medium">Âge du Conjoint</label>
+            <input type="number" id="ageConjoint" name="ageConjoint" value="{{ patient.ageConjoint }}" class="w-full border rounded px-3 py-2" readonly>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Résumé de la Grossesse -->
+      <div class="mb-6" id="resume">
+        <h3 class="text-lg font-medium text-center mb-4">Résumé de la Grossesse</h3>
+
+        <!-- Histoire Menstruelle -->
+        <div class="mb-4">
+          <h4 class="font-medium mb-2">Histoire Menstruelle (Antécédents menstruels)</h4>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="flex items-center gap-4">
+              <div class="w-1/2">
+                <label for="ddr" class="block text-sm font-medium">DDR</label>
+                <input type="date" id="ddr" name="ddr" value="{{ patient.ddr }}" class="w-full border rounded px-3 py-2"
+                  onchange="calculerDPA(this.value, 'dpa')">
+              </div>
+              <div class="w-1/2">
+                <label for="dpa" class="block text-sm font-medium">DPA</label>
+                <input type="text" id="dpa" name="dpa" value="{{ patient.dpa }}" class="w-full border rounded px-3 py-2" readonly>
+              </div>
+            </div>
+
+            <script>
+              function calculerDPA(ddr, cibleId) {
+                if (!ddr) return;
+                const dpa = new Date(new Date(ddr).setDate(new Date(ddr).getDate() + 280));
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                document.getElementById(cibleId).value = `${dpa.toLocaleDateString('fr-FR', options)} (${Math.max(0, Math.floor((dpa - new Date()) / (1000 * 60 * 60 * 24 * 30.44)))} mois restants)`;
+              }
+            </script>
+
+            <div>
+              <label for="cycle" class="block text-sm font-medium">Cycle</label>
+              <select id="cycle" name="cycle" class="w-full border rounded px-3 py-2">
+                <option value="">-- Sélectionnez --</option>
+                <option value="Régulier">Régulier</option>
+                <option value="Irrégulier">Irrégulier</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="duree" class="block text-sm font-medium">Durée</label>
+              <input type="text" id="duree" name="duree" value="{{ patient.duree }}" class="w-full border rounded px-3 py-2">
+            </div>
+
+            <div>
+              <label for="g" class="block text-sm font-medium">G</label>
+              <input type="text" id="g" name="g" value="{{ patient.g }}" class="w-full border rounded px-3 py-2">
+            </div>
+
+            <div>
+              <label for="a" class="block text-sm font-medium">A</label>
+              <input type="text" id="a" name="a" value="{{ patient.a }}" class="w-full border rounded px-3 py-2">
+            </div>
+
+            <div>
+              <label for="t" class="block text-sm font-medium">T</label>
+              <input type="text" id="t" name="t" value="{{ patient.t }}" class="w-full border rounded px-3 py-2">
+            </div>
+
+            <div>
+              <label for="e" class="block text-sm font-medium">E</label>
+              <input type="text" id="e" name="e" value="{{ patient.e }}" class="w-full border rounded px-3 py-2">
+            </div>
+
+            <div>
+              <label for="p" class="block text-sm font-medium">P</label>
+              <input type="text" id="p" name="p" value="{{ patient.p }}" class="w-full border rounded px-3 py-2">
+            </div>
+
+            <div>
+              <label for="muit" class="block text-sm font-medium">Mult</label>
+              <input type="text" id="muit" name="mult" value="{{ patient.mult }}" class="w-full border rounded px-3 py-2">
+            </div>
+          </div>
+        </div>
+        <hr class="my-6 border-gray-400">
+        <!-- Contraception -->
+        <div class="mb-4">
+          <h4 class="font-medium mb-2">Contraception</h4>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="type" class="block text-sm font-medium">Type</label>
+              <input type="text" id="type" name="type" value="{{ patient.type }}" class="w-full border rounded px-3 py-2">
+            </div>
+
+            <div>
+              <label for="commentaireType" class="block text-sm font-medium">Commentaire</label>
+              <input type="text" id="commentaireType" name="commentaireType" value="{{ patient.commentaireType }}" class="w-full border rounded px-3 py-2">
+            </div>
+
+            <div>
+              <label for="duree" class="block text-sm font-medium">Durée</label>
+              <input type="text" id="dureeContraception" name="dureeContraception" value="{{ patient.dureeContraception }}" class="w-full border rounded px-3 py-2">
+            </div>
+
+            <div>
+              <label for="commentaireDuree" class="block text-sm font-medium">Commentaire</label>
+              <input type="text" id="commentaireDuree" name="commentaireDuree" value="{{ patient.commentaireDuree }}" class="w-full border rounded px-3 py-2">
+            </div>
+
+            <div>
+              <label for="derniereUtilisation" class="block text-sm font-medium">Dernière Utilisation</label>
+              <input type="text" id="derniereUtilisation" name="derniereUtilisation" value="{{ patient.derniereUtilisation }}" class="w-full border rounded px-3 py-2">
+            </div>
+
+            <div>
+              <label for="commentaireDerniereUtilisation" class="block text-sm font-medium">Commentaire</label>
+              <input type="text" id="commentaireDerniereUtilisation" name="commentaireDerniereUtilisation" value="{{ patient.commentaireDerniereUtilisation }}" class="w-full border rounded px-3 py-2">
+            </div>
+          </div>
+        </div>
+        <hr class="my-6 border-gray-400">
+        <!-- Histoire de la Grossesse -->
+        <div>
+          <h4 class="font-medium mb-2">Histoire de la Grossesse (Antécédents de grossesse)</h4>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="saignement" class="block text-sm font-medium">Saignement</label>
+              <select id="saignement" name="saignement" value="{{ patient.saignement }}" class="w-full border rounded px-3 py-2">
+                <option value="" disabled selected>Sélectionner</option>
+                <option value="Oui">Oui</option>
+                <option value="Non">Non</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="vomissement" class="block text-sm font-medium">Vomissement</label>
+              <select id="vomissement" name="vomissement" value="{{ patient.vomissement }}" class="w-full border rounded px-3 py-2">
+                <option value="" disabled selected>Sélectionner</option>
+                <option value="Oui">Oui</option>
+                <option value="Non">Non</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="fievre" class="block text-sm font-medium">Fièvre</label>
+              <select id="fievre" name="fievre" value="{{ patient.fievre }}" class="w-full border rounded px-3 py-2">
+                <option value="" disabled selected>Sélectionner</option>
+                <option value="Oui">Oui</option>
+                <option value="Non">Non</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="tabac" class="block text-sm font-medium">Tabac</label>
+              <select id="tabac" name="tabac" value="{{ patient.tabac }}" class="w-full border rounded px-3 py-2">
+                <option value="" disabled selected>Sélectionner</option>
+                <option value="Oui">Oui</option>
+                <option value="Non">Non</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="alcool" class="block text-sm font-medium">Alcool</label>
+              <select id="alcool" name="alcool" value="{{ patient.alcool }}" class="w-full border rounded px-3 py-2">
+                <option value="" disabled selected>Sélectionner</option>
+                <option value="Oui">Oui</option>
+                <option value="Non">Non</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="radiation" class="block text-sm font-medium">Radiation</label>
+              <select id="radiation" name="radiation" value="{{ patient.radiation }}" class="w-full border rounded px-3 py-2">  
+                <option value="" disabled selected>Sélectionner</option>
+                <option value="Oui">Oui</option>
+                <option value="Non">Non</option>
+              </select>
+            </div>
+          </div>
+        </div>
+<div class="text-2xl font-medium text-center mb-4 mt-10">Informations Financières</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="bg-gray-50 p-3 rounded">
+        <label for="montant_paye" class="font-medium">Montant payé:</label>
+        <input type="number" id="montant_paye" name="montant_paye" value="{{ patient.montant_paye }}" class="ml-2 border rounded px-2 py-1" step="0.01"> HTG
+    </div>
+    <div class="bg-gray-50 p-3 rounded">
+        <label for="mode_paiement" class="font-medium">Mode de paiement:</label>
+        <input type="text" id="mode_paiement" name="mode_paiement" value="{{ patient.mode_paiement }}" class="ml-2 border rounded px-2 py-1">
+    </div>
+    <div class="bg-gray-50 p-3 rounded">
+        <label for="date_paiement" class="font-medium">Date de paiement:</label>
+        <input type="date" id="date_paiement" name="date_paiement" value="{{ patient.date_paiement }}" class="ml-2 border rounded px-2 py-1">
+    </div>
+    <div class="bg-gray-50 p-3 rounded">
+        <label for="cout_total" class="font-medium">Coût total des soins:</label>
+        <input type="number" id="cout_total" name="cout_total" value="{{ patient.cout_total }}" class="ml-2 border rounded px-2 py-1" step="0.01"> HTG
+    </div>
+    <div class="bg-gray-50 p-3 rounded">
+        <label for="date_prochain_paiement" class="font-medium">Prochain paiement dû:</label>
+        <input type="date" id="date_prochain_paiement" name="date_prochain_paiement" value="{{ patient.date_prochain_paiement }}" class="ml-2 border rounded px-2 py-1">
+    </div>
+    <div class="bg-gray-50 p-3 rounded col-span-2">
+        <label for="notes_financieres" class="font-medium">Notes financières:</label>
+        <textarea id="notes_financieres" name="notes_financieres" value="{{ patient.notes_financieres }}"  class="ml-2 border rounded px-2 py-1 w-full">{{ patient.notes_financieres }}</textarea>
+    </div>
+
+<div class="overflow-x-auto mt-4">
+  <table class="min-w-full table-auto border border-gray-300">
+    <thead>
+      <tr class="bg-gray-100">
+        <th class="border px-4 py-2">No.</th>
+        <th class="border px-4 py-2">Somme payée</th>
+        <th class="border px-4 py-2">Date de paiement</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="border px-4 py-2">1</td>
+        <td class="border px-4 py-2">
+          <input type="number" name="somme_payee_1" value="{{ patient.somme_payee_1 }}" class="w-full border-none" step="0.01">
+        </td>
+        <td class="border px-4 py-2">
+          <input type="date" name="date_paiement_1" value="{{ patient.date_paiement_1 }}" class="w-full border-none">
+        </td>
+      </tr>
+      <tr>
+        <td class="border px-4 py-2">2</td>
+        <td class="border px-4 py-2">
+          <input type="number" name="somme_payee_2" value="{{ patient.somme_payee_2 }}" class="w-full border-none" step="0.01">
+        </td>
+        <td class="border px-4 py-2">
+          <input type="date" name="date_paiement_2" value="{{ patient.date_paiement_2 }}" class="w-full border-none">
+        </td>
+      </tr>
+      <tr>
+        <td class="border px-4 py-2">3</td>
+        <td class="border px-4 py-2">
+          <input type="number" name="somme_payee_3" value="{{ patient.somme_payee_3 }}" class="w-full border-none" step="0.01">
+        </td>
+        <td class="border px-4 py-2">
+          <input type="date" name="date_paiement_3" value="{{ patient.date_paiement_3 }}" class="w-full border-none">
+        </td>
+      </tr>
+      <tr>
+        <td class="border px-4 py-2">4</td>
+        <td class="border px-4 py-2">
+          <input type="number" name="somme_payee_4" value="{{ patient.somme_payee_4 }}" class="w-full border-none" step="0.01">
+        </td>
+        <td class="border px-4 py-2">
+          <input type="date" name="date_paiement_4" value="{{ patient.date_paiement_4 }}" class="w-full border-none">
+        </td>
+      </tr>
+      <tr>
+        <td class="border px-4 py-2">5</td>
+        <td class="border px-4 py-2">
+          <input type="number" name="somme_payee_5" value="{{ patient.somme_payee_5 }}" class="w-full border-none" step="0.01">
+        </td>
+        <td class="border px-4 py-2">
+          <input type="date" name="date_paiement_5" value="{{ patient.date_paiement_5 }}" class="w-full border-none">
+        </td>
+      </tr>
+      <tr>
+        <td class="border px-4 py-2">6</td>
+        <td class="border px-4 py-2">
+          <input type="number" name="somme_payee_6" value="{{ patient.somme_payee_6 }}" class="w-full border-none" step="0.01">
+        </td>
+        <td class="border px-4 py-2">
+          <input type="date" name="date_paiement_6" value="{{ patient.date_paiement_6 }}" class="w-full border-none">
+        </td>
+      </tr>
+      <tr>
+        <td class="border px-4 py-2">7</td>
+        <td class="border px-4 py-2">
+          <input type="number" name="somme_payee_7" value="{{ patient.somme_payee_7 }}" class="w-full border-none" step="0.01">
+        </td>
+        <td class="border px-4 py-2">
+          <input type="date" name="date_paiement_7" value="{{ patient.date_paiement_7 }}" class="w-full border-none">
+        </td>
+      </tr>
+      <tr>
+        <td class="border px-4 py-2">8</td>
+        <td class="border px-4 py-2">
+          <input type="number" name="somme_payee_8" value="{{ patient.somme_payee_8 }}" class="w-full border-none" step="0.01">
+        </td>
+        <td class="border px-4 py-2">
+          <input type="date" name="date_paiement_8" value="{{ patient.date_paiement_8 }}" class="w-full border-none">
+        </td>
+      </tr>
+      <tr>
+        <td class="border px-4 py-2">9</td>
+        <td class="border px-4 py-2">
+          <input type="number" name="somme_payee_9" value="{{ patient.somme_payee_9 }}" class="w-full border-none" step="0.01">
+        </td>
+        <td class="border px-4 py-2">
+          <input type="date" name="date_paiement_9" value="{{ patient.date_paiement_9 }}" class="w-full border-none">
+        </td>
+      </tr>
+      <tr>
+        <td class="border px-4 py-2">10</td>
+        <td class="border px-4 py-2">
+          <input type="number" name="somme_payee_10" value="{{ patient.somme_payee_10 }}" class="w-full border-none" step="0.01">
+        </td>
+        <td class="border px-4 py-2">
+          <input type="date" name="date_paiement_10" value="{{ patient.date_paiement_10 }}" class="w-full border-none">
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</div>
+
+        <hr class="my-6 border-gray-400">
+        <!-- Histoire Obstétrique -->
+        <div class="mb-6" id="obstetrique">
+          <h4 class="font-medium mb-2">Histoire Obstétrique</h4>
+          <div class="overflow-x-auto">
+            <table class="min-w-full table-auto border border-gray-300">
+              <thead>
+                <tr class="bg-gray-100">
+                  <th class="border px-4 py-2">No.</th>
+                  <th class="border px-4 py-2">Année</th>
+                  <th class="border px-4 py-2">Sexe</th>
+                  <th class="border px-4 py-2">Âge gest.</th>
+                  <th class="border px-4 py-2">Poids</th>
+                  <th class="border px-4 py-2">Lieu d'acc.</th>
+                  <th class="border px-4 py-2">Type d'acc.</th>
+                  <th class="border px-4 py-2">Remarques</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Rangées dynamiques -->
+                <tr>
+                  <td class="border px-4 py-4"><input type="text"  name="no_1" value="{{ patient.no_1 }}" class="w-full border-none"></td>
+                  <td class="border px-4 py-4"><input type="text" name="annee_1" value="{{ patient.annee_1 }}" class="w-full border-none"></td>
+                  <td class="border px-4 py-4"><input type="text" name="sexe_1" value="{{ patient.sexe_1 }}" class="w-full border-none"></td>
+                  <td class="border px-4 py-4"><input type="text" name="age_gest_1" value="{{ patient.age_gest_1 }}" class="w-full border-none"></td>
+                  <td class="border px-4 py-4"><input type="text" name="poids_1" value="{{ patient.poids_1 }}" class="w-full border-none"></td>
+                  <td class="border px-4 py-4"><input type="text" name="lieu_acc_1" value="{{ patient.lieu_acc_1 }}" class="w-full border-none"></td>
+                  <td class="border px-4 py-4"><input type="text" name="type_acc_1" value="{{ patient.type_acc_1 }}" class="w-full border-none"></td>
+                  <td class="border px-4 py-4"><input type="text" name="remarques_1" value="{{ patient.remarques_1 }}" class="w-full border-none"></td>
+                </tr>
+                <tr>
+                  <td class="border px-4 py-4"><input type="text" value="{{ patient.no_2 }}" name="no_2" class="w-full border-none"></td>
+                  <td class="border px-4 py-4"><input type="text" value="{{ patient.annee_2 }}" name="annee_2" class="w-full border-none"></td>
+                  <td class="border px-4 py-4"><input type="text" value="{{ patient.sexe_2 }}" name="sexe_2" class="w-full border-none"></td>
+                  <td class="border px-4 py-4"><input type="text" value="{{ patient.age_gest_2 }}" name="age_gest_2" class="w-full border-none"></td>
+                  <td class="border px-4 py-4"><input type="text" value="{{ patient.poids_2 }}" name="poids_2" class="w-full border-none"></td>
+                  <td class="border px-4 py-4"><input type="text" value="{{ patient.lieu_acc_2 }}" name="lieu_acc_2" class="w-full border-none"></td>
+                  <td class="border px-4 py-4"><input type="text" value="{{ patient.type_acc_2 }}" name="type_acc_2" class="w-full border-none"></td>
+                  <td class="border px-4 py-4"><input type="text" value="{{ patient.remarques_2 }}" name="remarques_2" class="w-full border-none"></td>
+                </tr>
+                <tr>
+                  <td class="border px-4 py-4"><input type="text" value="{{ patient.no_3 }}" name="no_3" class="w-full border-none"></td>
+                  <td class="border px-4 py-4"><input type="text" value="{{ patient.annee_3 }}" name="annee_3" class="w-full border-none"></td>
+                  <td class="border px-4 py-4"><input type="text" value="{{ patient.sexe_3 }}" name="sexe_3" class="w-full border-none"></td>
+                  <td class="border px-4 py-4"><input type="text" value="{{ patient.age_gest_3 }}" name="age_gest_3" class="w-full border-none"></td>
+                  <td class="border px-4 py-4"><input type="text" value="{{ patient.poids_3 }}" name="poids_3" class="w-full border-none"></td>
+                  <td class="border px-4 py-4"><input type="text" value="{{ patient.lieu_acc_3 }}" name="lieu_acc_3" class="w-full border-none"></td>
+                  <td class="border px-4 py-4"><input type="text" value="{{ patient.type_acc_3 }}" name="type_acc_3" class="w-full border-none"></td>
+                  <td class="border px-4 py-4"><input type="text" value="{{ patient.remarques_3 }}" name="remarques_3" class="w-full border-none"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- Histoire Médicale -->
+        <div class="mb-6 border border-gray-300 rounded p-4" id="medicale">
+          <h3 class="text-lg font-medium text-center mb-4">Histoire Médicale</h3>
+
+          <!-- Antécédents Médicaux -->
+          <div class="mb-4">
+            <h4 class="font-medium mb-2">Antécédents Médicaux</h4>
+            <table class="w-full border-collapse border border-gray-300">
+              <thead>
+                <tr>
+                  <th class="border border-gray-300 px-4 py-2">Problèmes de santé</th>
+                  <th class="border border-gray-300 px-4 py-2">O/N</th>
+                  <th class="border border-gray-300 px-4 py-2">Remarques</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="border border-gray-300 px-4 py-2">Maladies rénales</td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <select name="maladies_renales" id="maladies_renales" value="{{ patient.maladies_renales }}" class="w-full border rounded">
+                      <option disabled selected>Sélectionner</option>
+                      <option value="Oui">Oui</option>
+                      <option value="Non">Non</option>
+                      <option value="Inconnu">Inconnu</option>
+                    </select>
+                  </td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <input type="text" name="remarques_renales" value="{{ patient.remarques_renales }}" class="w-full border rounded">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border border-gray-300 px-4 py-2">Problèmes cardiaques</td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <select name="problemes_cardiaques" value="{{ patient.problemes_cardiaques }}" class="w-full border rounded">
+                      <option disabled selected>Sélectionner</option>
+                      <option value="Oui">Oui</option>
+                      <option value="Non">Non</option>
+                      <option value="Inconnu">Inconnu</option>
+                    </select>
+                  </td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <input type="text" name="remarques_cardiaques" value="{{ patient.remarques_cardiaques }}" class="w-full border rounded">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border border-gray-300 px-4 py-2">Hypertension artérielle</td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <select name="hypertension_arterielle" value="{{ patient.hypertension_arterielle }}" class="w-full border rounded">
+                      <option disabled selected>Sélectionner</option>
+                      <option value="Oui">Oui</option>
+                      <option value="Non">Non</option>
+                      <option value="Inconnu">Inconnu</option>
+                    </select>
+                  </td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <input type="text" name="remarques_hypertension" value="{{ patient.remarques_hypertension }}" class="w-full border rounded">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border border-gray-300 px-4 py-2">Diabète</td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <select name="diabete" value="{{ patient.diabete }}" class="w-full border rounded">
+                      <option disabled selected>Sélectionner</option>
+                      <option value="Oui">Oui</option>
+                      <option value="Non">Non</option>
+                      <option value="Inconnu">Inconnu</option>
+                    </select>
+                  </td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <input type="text" name="remarques_diabete" value="{{ patient.remarques_diabete }}" class="w-full border rounded">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border border-gray-300 px-4 py-2">Infection</td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <select name="infection" value="{{ patient.infection }}" class="w-full border rounded">
+                      <option disabled selected>Sélectionner</option>
+                      <option value="Oui">Oui</option>
+                      <option value="Non">Non</option>
+                      <option value="Inconnu">Inconnu</option>
+                    </select>
+                  </td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <input type="text" name="remarques_infection" value="{{ patient.remarques_infection }}" class="w-full border rounded">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border border-gray-300 px-4 py-2">Maladie de la Thyroïde</td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <select name="maladie_thyroide" value="{{ patient.maladie_thyroide }}" class="w-full border rounded">
+                      <option disabled selected>Sélectionner</option>
+                      <option value="Oui">Oui</option>
+                      <option value="Non">Non</option>
+                      <option value="Inconnu">Inconnu</option>
+                    </select>
+                  </td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <input type="text" name="remarques_thyroide" value="{{ patient.remarques_thyroide }}" class="w-full border rounded">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border border-gray-300 px-4 py-2">Transfusion</td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <select name="transfusion" value="{{ patient.transfusion }}" class="w-full border rounded">
+                      <option disabled selected>Sélectionner</option>
+                      <option value="Oui">Oui</option>
+                      <option value="Non">Non</option>
+                      <option value="Inconnu">Inconnu</option>
+                    </select>
+                  </td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <input type="text" name="remarques_transfusion" value="{{ patient.remarques_transfusion }}" class="w-full border rounded">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border border-gray-300 px-4 py-2">Chirurgie</td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <select name="chirurgie" value="{{ patient.chirurgie }}" class="w-full border rounded">
+                      <option disabled selected>Sélectionner</option>
+                      <option value="Oui">Oui</option>
+                      <option value="Non">Non</option>
+                      <option value="Inconnu">Inconnu</option>
+                    </select>
+                  </td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <input type="text" name="remarques_chirurgie" value="{{ patient.remarques_chirurgie }}" class="w-full border rounded">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border border-gray-300 px-4 py-2">Herpès</td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <select name="herpes" value="{{ patient.herpes }}" class="w-full border rounded">
+                      <option disabled selected>Sélectionner</option>
+                      <option value="Oui">Oui</option>
+                      <option value="Non">Non</option>
+                      <option value="Inconnu">Inconnu</option>
+                    </select>
+                  </td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <input type="text" name="remarques_herpes" value="{{ patient.remarques_herpes }}" class="w-full border rounded">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <hr class="my-6 border-gray-400">
+          <!-- Antécédents Hérédo-Collatéraux -->
+          <div>
+            <h4 class="font-medium mb-2">Antécédents Hérédo-Collatéraux (Antécédents médicaux familiaux)</h4>
+            <table class="w-full border-collapse border border-gray-300">
+              <thead>
+                <tr>
+                  <th class="border border-gray-300 px-4 py-2">Les antécédents familiaux</th>
+                  <th class="border border-gray-300 px-4 py-2">O/N</th>
+                  <th class="border border-gray-300 px-4 py-2">Commentaires</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="border border-gray-300 px-4 py-2">Hypertension</td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <select name="antecedent_hypertension_fam" value="{{ patient.antecedent_hypertension_fam }}" class="w-full border rounded">
+                      <option disabled selected>Sélectionner</option>
+                      <option value="Oui">Oui</option>
+                      <option value="Non">Non</option>
+                      <option value="Inconnu">Inconnu</option>
+                    </select>
+                  </td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <input type="text" name="remarques_hypertension_fam" value="{{ patient.remarques_hypertension_fam }}" class="w-full border rounded">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border border-gray-300 px-4 py-2">Diabètes</td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <select name="antecedent_diabete_fam" value="{{ patient.antecedent_diabete_fam }}" class="w-full border rounded">
+                      <option disabled selected>Sélectionner</option>
+                      <option value="Oui">Oui</option>
+                      <option value="Non">Non</option>
+                      <option value="Inconnu">Inconnu</option>
+                    </select>
+                  </td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <input type="text" name="remarques_diabete_fam" value="{{ patient.remarques_diabete_fam }}" class="w-full border rounded">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border border-gray-300 px-4 py-2">Maladie cardiaque</td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <select name="antecedent_maladie_cardiaque_fam" value="{{ patient.antecedent_maladie_cardiaque_fam }}" class="w-full border rounded">
+                      <option disabled selected>Sélectionner</option>
+                      <option value="Oui">Oui</option>
+                      <option value="Non">Non</option>
+                      <option value="Inconnu">Inconnu</option>
+                    </select>
+                  </td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <input type="text" name="remarques_maladie_cardiaque_fam" value="{{ patient.remarques_maladie_cardiaque_fam }}" class="w-full border rounded">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border border-gray-300 px-4 py-2">Gémellaire</td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <select name="antecedent_gemellaire_fam" value="{{ patient.antecedent_gemellaire_fam }}" class="w-full border rounded">
+                      <option disabled selected>Sélectionner</option>
+                      <option value="Oui">Oui</option>
+                      <option value="Non">Non</option>
+                      <option value="Inconnu">Inconnu</option>
+                    </select>
+                  </td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <input type="text" name="remarques_gemellaire_fam" value="{{ patient.remarques_gemellaire_fam }}" class="w-full border rounded">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border border-gray-300 px-4 py-2">Malformation</td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <select name="antecedent_malformation_fam" value="{{ patient.antecedent_malformation_fam }}" class="w-full border rounded">
+                      <option disabled selected>Sélectionner</option>
+                      <option value="Oui">Oui</option>
+                      <option value="Non">Non</option>
+                      <option value="Inconnu">Inconnu</option>
+                    </select>
+                  </td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <input type="text" name="remarques_malformation_fam" value="{{ patient.remarques_malformation_fam }}" class="w-full border rounded">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border border-gray-300 px-4 py-2">Maladie génétique</td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <select name="antecedent_maladie_genetique_fam" value="{{ patient.antecedent_maladie_genetique_fam }}" class="w-full border rounded">
+                      <option disabled selected>Sélectionner</option>
+                      <option value="Oui">Oui</option>
+                      <option value="Non">Non</option>
+                      <option value="Inconnu">Inconnu</option>
+                    </select>
+                  </td>
+                  <td class="border border-gray-300 px-4 py-2">
+                    <input type="text" name="remarques_maladie_genetique_fam" value="{{ patient.remarques_maladie_genetique_fam }}" class="w-full border rounded">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <hr style="border: 1px solid #ddd; margin: 20px 0;">
+          <!-- Nutrition-Counseling -->
+          <div class="mb-6 border border-gray-300 rounded p-4" value="{{ patient.nutrition }}" id="nutrition">
+            <h3 class="text-lg font-medium text-center mb-4">Nutrition-Counseling</h3>
+
+            <!-- Conseils Nutritionnels -->
+            <div class="mb-4">
+              <h4 class="font-medium mb-2">Conseils Nutritionnels</h4>
+              <table class="table-auto w-full border border-gray-300">
+                <thead>
+                  <tr class="bg-gray-200">
+                    <th class="border px-4 py-2">Liste des groupes d'aliments</th>
+                    <th class="border px-4 py-2">O/N</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="border px-4 py-2">Produits laitiers</td>
+                    <td class="border px-4 py-2">
+                      <select id="produitsLaitiers" name="produitsLaitiers" value="{{ patient.produitsLaitiers }}" class="w-full border rounded px-2 py-1">
+                        <option value="" disabled selected>Sélectionner</option>
+                        <option value="Oui">Oui</option>
+                        <option value="Non">Non</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="border px-4 py-2">Pain et céréales</td>
+                    <td class="border px-4 py-2">
+                      <select id="painCereales" name="painCereales" value="{{ patient.painCereales }}" class="w-full border rounded px-2 py-1">
+                        <option value="" disabled selected>Sélectionner</option>
+                        <option value="Oui">Oui</option>
+                        <option value="Non">Non</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="border px-4 py-2">Fruits et légumes</td>
+                    <td class="border px-4 py-2">
+                      <select id="fruitsLegumes" name="fruitsLegumes" value="{{ patient.fruitsLegumes }}" class="w-full border rounded px-2 py-1">
+                        <option value="" disabled selected>Sélectionner</option>
+                        <option value="Oui">Oui</option>
+                        <option value="Non">Non</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="border px-4 py-2">Sources protéiniques</td>
+                    <td class="border px-4 py-2">
+                      <select id="sourcesProteiniques" value="{{ patient.sourcesProteiniques }}" name="sourcesProteiniques"
+                        class="w-full border rounded px-2 py-1">
+                        <option value="" disabled selected>Sélectionner</option>
+                        <option value="Oui">Oui</option>
+                        <option value="Non">Non</option>
+                      </select>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <hr class="my-6 border-gray-400">
+            <!-- Sujet de Counseling -->
+            <div class="mb-4">
+              <h4 class="font-medium mb-2">Sujet de Counseling</h4>
+              <table class="table-auto w-full border border-gray-300">
+                <thead>
+                  <tr class="bg-gray-200">
+                    <th class="border px-4 py-2">Plan nutritionnel</th>
+                    <th class="border px-4 py-2">O/N</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="border px-4 py-2">Tabagisme</td>
+                    <td class="border px-4 py-2">
+                      <select id="tabagisme" name="tabagisme" value="{{ patient.tabagisme }}" class="w-full border rounded px-2 py-1">
+                        <option value="" disabled selected>Sélectionner</option>
+                        <option value="Oui">Oui</option>
+                        <option value="Non">Non</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="border px-4 py-2">Alcoolisme</td>
+                    <td class="border px-4 py-2">
+                      <select id="alcoolisme" name="alcoolisme" value="{{ patient.alcoolisme }}" class="w-full border rounded px-2 py-1">
+                        <option value="" disabled selected>Sélectionner</option>
+                        <option value="Oui">Oui</option>
+                        <option value="Non">Non</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="border px-4 py-2">Les stupéfiants</td>
+                    <td class="border px-4 py-2">
+                      <select id="stupefiants" name="stupefiants" value="{{ patient.stupefiants }}" class="w-full border rounded px-2 py-1">
+                        <option value="" disabled selected>Sélectionner</option>
+                        <option value="Oui">Oui</option>
+                        <option value="Non">Non</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="border px-4 py-2">Les médicaments</td>
+                    <td class="border px-4 py-2">
+                      <select id="medicaments" name="medicaments" value="{{ patient.medicaments }}" class="w-full border rounded px-2 py-1">
+                        <option value="" disabled selected>Sélectionner</option>
+                        <option value="Oui">Oui</option>
+                        <option value="Non">Non</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="border px-4 py-2">Travail</td>
+                    <td class="border px-4 py-2">
+                      <select id="travail" name="travail" value="{{ patient.travail }}" class="w-full border rounded px-2 py-1">
+                        <option value="" disabled selected>Sélectionner</option>
+                        <option value="Oui">Oui</option>
+                        <option value="Non">Non</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="border px-4 py-2">Exercice</td>
+                    <td class="border px-4 py-2">
+                      <select id="exercice" name="exercice" value="{{ patient.exercice }}" class="w-full border rounded px-2 py-1">
+                        <option value="" disabled selected>Sélectionner</option>
+                        <option value="Oui">Oui</option>
+                        <option value="Non">Non</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="border px-4 py-2">Rapport Sexuel</td>
+                    <td class="border px-4 py-2">
+                      <select id="rapportSexuel" name="rapportSexuel" value="{{ patient.rapportSexuel }}" class="w-full border rounded px-2 py-1">
+                        <option value="" disabled selected>Sélectionner</option>
+                        <option value="Oui">Oui</option>
+                        <option value="Non">Non</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="border px-4 py-2">Complications de la grossesse</td>
+                    <td class="border px-4 py-2">
+                      <select id="complicationsGrossesse" value="{{ patient.complicationsGrossesse }}" name="complicationsGrossesse"
+                        class="w-full border rounded px-2 py-1">
+                        <option value="" disabled selected>Sélectionner</option>
+                        <option value="Oui">Oui</option>
+                        <option value="Non">Non</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="border px-4 py-2">Soins Dentaires</td>
+                    <td class="border px-4 py-2">
+                      <select id="soinsDentaires" value="{{ patient.soinsDentaires }}" name="soinsDentaires" class="w-full border rounded px-2 py-1">
+                        <option value="" disabled selected>Sélectionner</option>
+                        <option value="Oui">Oui</option>
+                        <option value="Non">Non</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="border px-4 py-2">Allaitement maternel</td>
+                    <td class="border px-4 py-2">
+                      <select id="allaitementMaternel" value="{{ patient.allaitementMaternel }}" name="allaitementMaternel"
+                        class="w-full border rounded px-2 py-1">
+                        <option value="" disabled selected>Sélectionner</option>
+                        <option value="Oui">Oui</option>
+                        <option value="Non">Non</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="border px-4 py-2">Classe Prénatale</td>
+                    <td class="border px-4 py-2">
+                      <select id="classePrenatale" value="{{ patient.classePrenatale }}" name="classePrenatale" class="w-full border rounded px-2 py-1">
+                        <option value="" disabled selected>Sélectionner</option>
+                        <option value="Oui">Oui</option>
+                        <option value="Non">Non</option>
+                      </select>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Examen Physique Initial -->
+          <div class="mb-6 border border-gray-300 rounded p-6" id="examen">
+            <h3 class="text-lg font-medium text-center mb-4">Examen Physique Initial</h3>
+
+            <!-- Tableau 1 -->
+            <table class="table-auto w-full border border-gray-300 mb-4">
+              <thead>
+                <tr class="bg-gray-200">
+                  <th class="border px-4 py-2">Organes</th>
+                  <th class="border px-4 py-2">Poids et Commentaires</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="border px-4 py-2">Tête, cou, thyroïde</td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="tete_cou_thyroide" value="{{ patient.tete_cou_thyroide }}" class="w-full border rounded px-2 py-1">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border px-4 py-2">Dents</td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="dents" value="{{ patient.dents }}" class="w-full border rounded px-2 py-1">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border px-4 py-2">Thorax</td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="thorax" value="{{ patient.thorax }}" class="w-full border rounded px-2 py-1">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border px-4 py-2">Seins</td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="seins" class="w-full border rounded px-2 py-1">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border px-4 py-2">Système Cardio-Vasculaire</td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="systeme_cardiovasculaire" class="w-full border rounded px-2 py-1">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border px-4 py-2">Abdomen</td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="abdomen" class="w-full border rounded px-2 py-1">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Tableau 2 -->
+            <table class="table-auto w-full border border-gray-300 mb-4">
+              <thead>
+                <tr class="bg-gray-200">
+                  <th class="border px-4 py-2">Structure osseuse</th>
+                  <th class="border px-4 py-2">Observation et commentaire</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="border px-4 py-2">Bassin</td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="bassin" class="w-full border rounded px-2 py-1">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Tableau 4 -->
+            <table class="table-auto w-full border border-gray-300 mb-4">
+              <thead>
+                <tr class="bg-gray-200">
+                  <th class="border px-4 py-2">Organes</th>
+                  <th class="border px-4 py-2">Commentaires</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="border px-4 py-2">Taille</td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="taille" class="w-full border rounded px-2 py-1">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border px-4 py-2">Vulve</td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="taille" class="w-full border rounded px-2 py-1">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border px-4 py-2">Vagin</td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="vagin" class="w-full border rounded px-2 py-1">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border px-4 py-2">Col</td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="col" class="w-full border rounded px-2 py-1">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border px-4 py-2">Utérus</td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="uterus" class="w-full border rounded px-2 py-1">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border px-4 py-2">Anus</td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="anus" class="w-full border rounded px-2 py-1">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border px-4 py-2">Varicosités</td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="varicosites" class="w-full border rounded px-2 py-1">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Observations -->
+            <div class="mb-4">
+              <h4 class="font-medium mb-2">Observations</h4>
+              <textarea name="observations" class="w-full border rounded px-3 py-2 h-24"></textarea>
+            </div>
+
+            <!-- Risques identifiés -->
+            <div>
+              <h4 class="font-medium mb-2">Risques identifiés : Allergie - Médication</h4>
+              <textarea name="risques_identifies" class="w-full border rounded px-3 py-2 h-16"></textarea>
+            </div>
+          </div>
+
+          <!-- Immunisation et Tests -->
+          <div class="mb-6 border border-gray-300 rounded p-6" id="immunisation">
+            <h3 class="text-lg font-medium text-center mb-4">Immunisation et Tests</h3>
+            <table class="table-auto w-full border border-gray-300">
+              <thead>
+                <tr class="bg-gray-200">
+                  <th class="border px-4 py-2">Test</th>
+                  <th class="border px-4 py-2">Résultat</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="border px-4 py-2">Immunisation</td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="toxoplasmose" class="w-full border rounded px-2 py-1"
+                      placeholder="Résultat">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border px-4 py-2">Herpès I</td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="herpes1" class="w-full border rounded px-2 py-1"
+                      placeholder="Résultat">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border px-4 py-2">Herpès II</td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="herpes2" class="w-full border rounded px-2 py-1"
+                      placeholder="Résultat">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border px-4 py-2">HPV</td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="hpv" class="w-full border rounded px-2 py-1"
+                      placeholder="Résultat">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border px-4 py-2">Électrophorèse de l'hémoglobine</td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="ehb" class="w-full border rounded px-2 py-1" placeholder="Résultat">
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="border px-4 py-2">Sérologie Rubéole</td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="serologie_rubeole" class="w-full border rounded px-2 py-1"
+                      placeholder="Résultat">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border px-4 py-2">HBs Ag</td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="hbs_ag" class="w-full border rounded px-2 py-1" placeholder="Résultat">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border px-4 py-2">Syphilis</td>
+                  <td class="border px-4 py-2">
+                    <select id="syphilis" name="syphilis" class="w-full border rounded px-2 py-1">
+                      <option value="" disabled selected>Sélectionner</option>
+                      <option value="Oui">Oui</option>
+                      <option value="Non">Non</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border px-4 py-2">Hb</td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="hb" class="w-full border rounded px-2 py-1" placeholder="Résultat">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border px-4 py-2">GS</td>
+                  <td class="border px-4 py-2">
+                    <select id="gs" name="gs" class="w-full border rounded px-2 py-1">
+                      <option value="" disabled selected>Sélectionner</option>
+                      <option value="A+">A+</option>
+                      <option value="A-">A-</option>
+                      <option value="B+">B+</option>
+                      <option value="B-">B-</option>
+                      <option value="AB+">AB+</option>
+                      <option value="AB-">AB-</option>
+                      <option value="O+">O+</option>
+                      <option value="O-">O-</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="border px-4 py-2">HIV</td>
+                  <td class="border px-4 py-2">
+                    <select id="hiv" name="hiv" class="w-full border rounded px-2 py-1">
+                      <option value="" disabled selected>Sélectionner</option>
+                      <option value="Oui">Oui</option>
+                      <option value="Non">Non</option>
+                    </select>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Remarque -->
+            <div class="mt-6">
+              <h4 class="font-medium mb-2">Remarque</h4>
+              <textarea name="remarque" class="w-full border rounded px-3 py-2 h-24"></textarea>
+            </div>
+          </div>
+
+          <!-- Visites Subséquentes -->
+          <div class="mb-6 border border-gray-300 rounded p-6 overflow-x-auto" id="visites">
+            <h3 class="text-lg font-medium text-center mb-4">Visites Subséquentes</h3>
+            <table class="table-auto w-full border border-gray-300">
+              <thead>
+                <tr class="bg-gray-200">
+                  <th class="border px-8 py-3">Date</th>
+                  <th class="border px-8 py-3">Poids</th>
+                  <th class="border px-8 py-3">Âge gestationnel</th>
+                  <th class="border px-8 py-3">HU</th>
+                  <th class="border px-8 py-3">Prés/Post</th>
+                  <th class="border px-8 py-3">BDCF</th>
+                  <th class="border px-8 py-3">TA</th>
+                  <th class="border px-8 py-3">Urine Pr/Glu</th>
+                  <th class="border px-8 py-3">Risque</th>
+                  <th class="border px-8 py-3">Commentaire Lab/Med</th>
+                </tr>
+              </thead>
+              <tbody id="table-body">
+                <!-- Ligne initiale -->
+                <tr>
+                  <td class="border px-4 py-2">
+                    <input type="date" name="date" class="w-full border rounded px-3 py-2">
+                  </td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="poids" class="w-full border rounded px-3 py-2" placeholder="Poids">
+                  </td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="age_gestationnel" class="w-full border rounded px-3 py-2"
+                      placeholder="Âge gestationnel">
+                  </td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="hu" class="w-full border rounded px-3 py-2" placeholder="HU">
+                  </td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="pres_post" class="w-full border rounded px-3 py-2" placeholder="Prés/Post">
+                  </td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="bdcf" class="w-full border rounded px-3 py-2" placeholder="BDCF">
+                  </td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="ta" class="w-full border rounded px-3 py-2" placeholder="TA">
+                  </td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="urine_pr_glu" class="w-full border rounded px-3 py-2"
+                      placeholder="Urine Pr/Glu">
+                  </td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="risque" class="w-full border rounded px-3 py-2" placeholder="Risque">
+                  </td>
+                  <td class="border px-4 py-2">
+                    <textarea name="commentaire_lab_med" class="w-full border rounded px-3 py-2 h-16"
+                      placeholder="Commentaire Lab/Med"></textarea>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Script corrigé pour ajouter des lignes -->
+            <script>
+              function ajouterLigne() {
+                const tableBody = document.getElementById("table-body");
+
+                if (!tableBody) {
+                  console.error("Erreur : corps de la table non trouvé !");
+                  return;
+                }
+
+                // Création d'une nouvelle ligne
+                const row = document.createElement("tr");
+                row.innerHTML = `
+        <td class="border px-4 py-2">
+                    <input type="date" name="date" class="w-full border rounded px-3 py-2">
+                  </td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="poids" class="w-full border rounded px-3 py-2" placeholder="Poids">
+                  </td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="age_gestationnel" class="w-full border rounded px-3 py-2" placeholder="Âge gestationnel">
+                  </td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="hu" class="w-full border rounded px-3 py-2" placeholder="HU">
+                  </td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="pres_post" class="w-full border rounded px-3 py-2" placeholder="Prés/Post">
+                  </td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="bdcf" class="w-full border rounded px-3 py-2" placeholder="BDCF">
+                  </td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="ta" class="w-full border rounded px-3 py-2" placeholder="TA">
+                  </td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="urine_pr_glu" class="w-full border rounded px-3 py-2" placeholder="Urine Pr/Glu">
+                  </td>
+                  <td class="border px-4 py-2">
+                    <input type="text" name="risque" class="w-full border rounded px-3 py-2" placeholder="Risque">
+                  </td>
+                  <td class="border px-4 py-2">
+                    <textarea name="commentaire_lab_med" class="w-full border rounded px-3 py-2 h-16" placeholder="Commentaire Lab/Med"></textarea>
+                  </td>`;
+
+                // Ajout de la ligne au tableau
+                tableBody.appendChild(row);
+              }
+            </script>
+
+            <!-- Bouton pour ajouter une ligne -->
+            <button type="button" onclick="ajouterLigne()"
+              class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700">
+              Ajouter une ligne
+            </button>
+          </div>
+
+          <h5 class="text-xl font-semibold mb-4 text-gray-700">MERE</h5>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="col-span-2">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Date d'accouchement:</label>
+              <input type="date" name="date_accouchement"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Poids:</label>
+              <input type="text" name="poids_mere"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">TA:</label>
+              <input type="text" name="ta_mere"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Albuminurie:</label>
+              <input type="text" name="albuminurie"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Retour des couches:</label>
+              <input type="text" name="retour_couches"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Allaitement:</label>
+              <input type="text" name="allaitement"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Dystocie:</label>
+              <input type="text" name="dystocie"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+          </div>
+
+          <h5 class="text-xl font-semibold mb-4 text-gray-700">ENFANT</h5>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="col-span-2">
+              <label class="block text-sm font-medium text-gray-700 mb-1">État de l'enfant à la naissance:</label>
+              <input type="text" name="etat_enfant_naissance"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Sexe:</label>
+              <input type="text" name="sexe_enfant"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Apgar:</label>
+              <input type="text" name="apgar"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="col-span-2">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Observations:</label>
+              <textarea name="observations_enfant"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                rows="3"></textarea>
+            </div>
+          </div>
+
+          <!-- Bouton de soumission -->
+          <button type="submit" 
+            class="bg-blue-600 text-white px-6 py-2 rounded-md shadow hover:bg-blue-700">{{ patient.id and "Mettre à jour" or "Ajouter" }}</button>
+    </form>
+
+    <!-- Message de confirmation -->
+    <div id="message" class="hidden mt-4 p-4 bg-green-100 text-green-800 rounded-md">
+      <span class="font-medium">Succès</span>
+    </div>
+  </div>
+  <script>
+    function calculerAge(dateNaissance, cibleId) {
+      const naissance = new Date(dateNaissance);
+      const aujourdHui = new Date();
+      let age = aujourdHui.getFullYear() - naissance.getFullYear();
+      const mois = aujourdHui.getMonth() - naissance.getMonth();
+      if (mois < 0 || (mois === 0 && aujourdHui.getDate() < naissance.getDate())) {
+        age--;
+      }
+      document.getElementById(cibleId).value = age;
+    }
+
+    function afficherMessageEtReinitialiser() {
+      const formElement = document.getElementById('formulaire');
+      var data = new FormData(formElement);
+      fetch('/info_patient', {
+        method: 'post',
+        body: data
+      }).then(response => {
+        if (response.ok) {
+          const message = document.getElementById("message");
+          message.classList.remove("hidden");
+          setTimeout(() => {
+            message.classList.add("hidden");
+          }, 3000);
+        } else {
+          alert("Failed to save the patient data");
+        }
+      })
+        ;
+    }
+
+    function gererStatutMatrimonial(valeur) {
+      const infoConjoint = document.getElementById("infoConjoint");
+      if (valeur === "Mariée" || valeur === "Concubine" || valeur === "En couple") {
+        infoConjoint.classList.remove("hidden");
+      } else {
+        infoConjoint.classList.add("hidden");
+      }
+    }
+
+    function calculerDPA(ddr, cibleId) {
+      if (!ddr) return;
+      const dateDDR = new Date(ddr);
+      const dpa = new Date(dateDDR.setDate(dateDDR.getDate() + 280));
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      const moisRestants = Math.floor((dpa - new Date()) / (1000 * 60 * 60 * 24 * 30.44));
+      document.getElementById(cibleId).value = `${dpa.toLocaleDateString('fr-FR', options)} (${moisRestants} mois)`;
+    }
+    function ajouterLigne() {
+      const tableBody = document.getElementById("table-body");
+      const row = document.createElement("tr");
+      row.innerHTML = `
+      <td class="border px-4 py-2"><input type="date" class="w-full border rounded px-3 py-2"></td>
+      <td class="border px-4 py-2"><input type="text" class="w-full border rounded px-3 py-2" placeholder="Poids"></td>
+      <td class="border px-4 py-2"><input type="text" class="w-full border rounded px-3 py-2" placeholder="Âge gestationnel"></td>
+      <td class="border px-4 py-2"><input type="text" class="w-full border rounded px-3 py-2" placeholder="HU"></td>
+      <td class="border px-4 py-2"><input type="text" class="w-full border rounded px-3 py-2" placeholder="Prés/Post"></td>
+      <td class="border px-4 py-2"><input type="text" class="w-full border rounded px-3 py-2" placeholder="BDCF"></td>
+      <td class="border px-4 py-2"><input type="text" class="w-full border rounded px-3 py-2" placeholder="TA"></td>
+      <td class="border px-4 py-2"><input type="text" class="w-full border rounded px-3 py-2" placeholder="Urine Pr/Glu"></td>
+      <td class="border px-4 py-2"><input type="text" class="w-full border rounded px-3 py-2" placeholder="Risque"></td>
+      <td class="border px-4 py-2">
+        <textarea class="w-full border rounded px-3 py-2 h-16" placeholder="Commentaire Lab/Med"></textarea>
+      </td>`;
+      tableBody.appendChild(row);
+    }
+  </script>
+  <script>
+    // Animation pour le bouton "Liste"
+    const btn = document.getElementById('animatedButton');
+    btn.onmouseenter = () => gsap.to(btn, { scale: 1.1, boxShadow: '0px 10px 20px rgba(0, 0, 255, 0.3)', duration: 0.3 });
+    btn.onmouseleave = () => gsap.to(btn, { scale: 1, boxShadow: '0px 4px 6px rgba(0, 0, 255, 0.15)', duration: 0.3 });
+    btn.onclick = () => (location.href = 'liste.html');
+
+    // Animation pour le bouton "Profil"
+    const profileBtn = document.getElementById('profileButton');
+    profileBtn.onmouseenter = () => gsap.to(profileBtn, { scale: 1.1, boxShadow: '0px 10px 20px rgba(0, 128, 0, 0.3)', duration: 0.3 });
+    profileBtn.onmouseleave = () => gsap.to(profileBtn, { scale: 1, boxShadow: '0px 4px 6px rgba(0, 128, 0, 0.15)', duration: 0.3 });
+    profileBtn.onclick = () => alert('Redirection vers le profil');
+  </script>
+  {% endblock %}
