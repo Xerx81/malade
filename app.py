@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for, session, flash
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session, flash, abort
 import sqlite3
 import os
 from datetime import datetime, timedelta
@@ -59,7 +59,8 @@ def init_db():
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE NOT NULL,
         email TEXT UNIQUE NOT NULL,
-        password TEXT NOT NULL
+        password TEXT NOT NULL,
+        role TEXT NOT NULL DEFAULT 'user'
     )''')
 
     numeric_fields = {'payment', 'montant_paye', 'solde_restant', 'cout_total'}
@@ -86,9 +87,25 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-# @app.route('/info_patient')
-# def info_patient():
-#     return render_template('info_patient.html')
+
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            flash('Please log in first.', 'error')
+            return redirect(url_for('login'))
+        
+        conn = sqlite3.connect('clinic.db')
+        c = conn.cursor()
+        c.execute('SELECT role FROM users WHERE id = ?', (session['user_id'],))
+        user = c.fetchone()
+        conn.close()
+        
+        if not user or user[0] != 'admin':
+            return abort(404)
+        return f(*args, **kwargs)
+    return decorated_function
+
 
 def generate_insert_sql(table_name, fields):
     columns = ', '.join(fields)
@@ -104,7 +121,7 @@ def get_form_data(form_data, fields):
 
 
 @app.route('/info_patient', methods=['GET', 'POST'])
-@login_required
+@admin_required
 def info_patient():
     conn = sqlite3.connect('clinic.db')
     c = conn.cursor()
@@ -182,11 +199,12 @@ def info_patient():
 
 
 @app.route('/liste_patients')
+@admin_required
 def liste_patients():
     conn = sqlite3.connect('clinic.db')
     c = conn.cursor()
     # Note: using camelCase column names to match PATIENT_FIELDS
-    c.execute('SELECT id, nom, dateNaissance, weight, age, numeroPersonnel, statut, created_at FROM patients')
+    c.execute('SELECT id, nom, dateNaissance, age, numeroPersonnel, statut, created_at FROM patients')
     patients = c.fetchall()
     conn.close()
     patients_list = [{
@@ -201,6 +219,7 @@ def liste_patients():
     return render_template('liste_patients.html', patients=patients_list)
 
 @app.route('/delete/<int:id>', methods=['DELETE'])
+@admin_required
 def delete_patient(id):
     try:
         conn = sqlite3.connect('clinic.db')
@@ -256,13 +275,14 @@ def login():
             session['user_id'] = user[0]
             session['username'] = user[1]
             flash('Connexion effectuée avec succès!', 'success')
-            return redirect(url_for('dashboard'))
+            # return redirect(url_for('dashboard'))
+            return render_template('dashboard')
         else:
             flash('Nom d\'utilisateur ou mot de passe incorrect.', 'error')
     return render_template('login.html')
 
 @app.route('/dashboard')
-@login_required
+@admin_required
 def dashboard():
     conn = sqlite3.connect('clinic.db')
     c = conn.cursor()
@@ -301,8 +321,9 @@ def dashboard():
                            patients_today=patients_today,
                            active_patients=active_patients)
 
+
 @app.route('/profile', methods=['GET', 'POST'])
-@login_required
+@admin_required
 def profile():
     conn = sqlite3.connect('clinic.db')
     c = conn.cursor()
@@ -335,11 +356,14 @@ def profile():
     conn.close()
     return render_template('profile.html', user=user)
 
+
 @app.route('/logout')
+@login_required
 def logout():
     session.clear()
     flash('Vous avez été déconnecté avec succès!', 'success')
     return redirect(url_for('login'))
+
 
 # Optionally, you may want to require login on the index as well.
 @app.route('/')
@@ -347,14 +371,13 @@ def logout():
 def index():
     return render_template('dashboard.html')
 
-@app.route('/show')
-def showpatient():
-    return render_template('affichage_patients2.html')
 
 @app.route('/afficher_patient/<int:patient_id>')
+@login_required
 def afficher_patient(patient_id):
     conn = sqlite3.connect('clinic.db')
     c = conn.cursor()
+
     c.execute('SELECT * FROM patients WHERE id = ?', (patient_id,))
     patient = c.fetchone()
     conn.close()
@@ -365,6 +388,27 @@ def afficher_patient(patient_id):
     else:
         return "Patient non trouvé", 404
 
+
+# Create first admin user
+def create_admin():
+    conn = sqlite3.connect('clinic.db')
+    c = conn.cursor()
+    
+    # Check if admin exists
+    c.execute('SELECT * FROM users WHERE role = "admin"')
+    admin = c.fetchone()
+    
+    if not admin:
+        hashed_password = generate_password_hash('admin123')
+        c.execute('INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)',
+                  ('admin', 'admin@example.com', hashed_password, 'admin'))
+        conn.commit()
+        print("Admin user created!")
+    
+    conn.close()
+
+
 if __name__ == '__main__':
     init_db()
+    create_admin()
     app.run(host='localhost', port=8000, debug=True)
